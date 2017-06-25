@@ -11,6 +11,8 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+
+        buildConfigField("String", "API_KEY", "\"31fceb4304d9b5e168f6892b64cdc125\"")
     }
     buildTypes {
         release {

@@ -44,7 +44,7 @@ public class MainStationModel {
         this.count = count;
     }
 
-    public java.util.List<StationListElement> getList() {
+    public List<StationListElement> getList() {
         return list;
     }
 
