@@ -7,12 +7,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiModule {
 
-    private String units = "metric";
-    private int countStationArround = 10;
+    public static String units = "metric";
+    public static int countStationArround = 10;
 
-    public static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
+    private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
 
-    public static ApiWeather apiService;
+    private static ApiWeather apiService;
+
+    private ApiModule() {
+    }
 
     public static ApiWeather getInstance() {
         if (apiService == null) {
