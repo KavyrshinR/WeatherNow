@@ -16,6 +16,19 @@ import rx.schedulers.Schedulers;
 
 public class DataManager {
 
+    private static DataManager instance;
+
+    public static DataManager getInstance() {
+        if (instance == null) {
+            instance = new DataManager();
+        }
+
+        return instance;
+    }
+
+    private DataManager() {
+    }
+
     private ApiWeather apiWeather = ApiModule.getInstance();
 
     public Observable<List<StationListElement>> getStationArround(double latitude, double longitude) {
