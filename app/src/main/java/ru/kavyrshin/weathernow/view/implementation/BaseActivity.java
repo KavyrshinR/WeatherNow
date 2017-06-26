@@ -1,9 +1,9 @@
 package ru.kavyrshin.weathernow.view.implementation;
 
-import android.support.v7.app.AppCompatActivity;
+import com.arellomobile.mvp.MvpAppCompatActivity;
 
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends MvpAppCompatActivity {
 
 
 }
