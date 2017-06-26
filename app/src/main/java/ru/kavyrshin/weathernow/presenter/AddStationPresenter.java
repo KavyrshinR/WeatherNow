@@ -1,9 +1,55 @@
 package ru.kavyrshin.weathernow.presenter;
 
+import com.arellomobile.mvp.InjectViewState;
+
+import java.util.List;
+
+import ru.kavyrshin.weathernow.entity.StationListElement;
+import ru.kavyrshin.weathernow.model.DataManager;
+import ru.kavyrshin.weathernow.model.exception.CustomException;
 import ru.kavyrshin.weathernow.view.AddStationView;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
-
+@InjectViewState
 public class AddStationPresenter extends BasePresenter<AddStationView> {
 
+    private DataManager dataManager = DataManager.getInstance();
 
+    public void getArroundStations(double latitude, double longitude) {
+        dataManager.getStationArround(latitude, longitude)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<StationListElement>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        CustomException customException;
+                        if (e instanceof CustomException) {
+                            customException = (CustomException) e;
+                        } else {
+                            e.printStackTrace();
+                            customException = new CustomException(CustomException.UNKNOWN_EXCEPTION, "Неизвестная ошибка");
+                        }
+
+                        switch (customException.getId()) {
+                            case CustomException.SERVER_EXCEPTION:
+                            case CustomException.UNKNOWN_EXCEPTION: {
+                                getViewState().showError(customException.getMessage());
+                                break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onNext(List<StationListElement> stationListElements) {
+                        getViewState().showArroundStations(stationListElements);
+                    }
+                });
+    }
 }
