@@ -7,6 +7,11 @@
     tools:context=".view.implementation.MainActivity"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/toolbar"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/stationList"
