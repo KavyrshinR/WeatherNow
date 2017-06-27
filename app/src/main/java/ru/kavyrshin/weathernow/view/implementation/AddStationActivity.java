@@ -2,6 +2,7 @@ package ru.kavyrshin.weathernow.view.implementation;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -33,6 +34,9 @@ public class AddStationActivity extends BaseActivity implements AddStationView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_station_activity);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         placeAutocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
@@ -54,6 +58,8 @@ public class AddStationActivity extends BaseActivity implements AddStationView {
             }
         });
     }
+
+
 
     @Override
     public void showError(String errorMessage) {
