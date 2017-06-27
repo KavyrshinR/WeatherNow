@@ -3,9 +3,11 @@ package ru.kavyrshin.weathernow.view.implementation;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
@@ -34,6 +36,12 @@ public class AddStationActivity extends BaseActivity implements AddStationView {
         placeAutocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
+        AutocompleteFilter onlyCityFilter = new AutocompleteFilter.Builder()
+                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
+                .build();
+
+        placeAutocompleteFragment.setFilter(onlyCityFilter);
+
         placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -49,7 +57,7 @@ public class AddStationActivity extends BaseActivity implements AddStationView {
 
     @Override
     public void showError(String errorMessage) {
-
+        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -64,6 +72,8 @@ public class AddStationActivity extends BaseActivity implements AddStationView {
         for (StationListElement stationListElement : arroundStations) {
             Log.d("myLogs", stationListElement.getName());
         }
+
+
     }
 
     @Override
