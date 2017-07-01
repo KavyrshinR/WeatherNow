@@ -6,7 +6,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainStationModel {
+import io.realm.RealmObject;
+
+public class MainStationModel extends RealmObject {
 
     @SerializedName("message")
     @Expose

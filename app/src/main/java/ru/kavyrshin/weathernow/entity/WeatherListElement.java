@@ -5,7 +5,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class WeatherListElement {
+import io.realm.RealmObject;
+
+public class WeatherListElement extends RealmObject {
 
     @SerializedName("dt")
     @Expose

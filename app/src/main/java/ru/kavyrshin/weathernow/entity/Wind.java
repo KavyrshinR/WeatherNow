@@ -3,7 +3,9 @@ package ru.kavyrshin.weathernow.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Wind {
+import io.realm.RealmObject;
+
+public class Wind extends RealmObject {
 
     @SerializedName("speed")
     @Expose

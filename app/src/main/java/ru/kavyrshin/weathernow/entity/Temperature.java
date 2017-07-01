@@ -3,7 +3,9 @@ package ru.kavyrshin.weathernow.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Temperature {
+import io.realm.RealmObject;
+
+public class Temperature extends RealmObject {
 
     @SerializedName("day")
     @Expose
