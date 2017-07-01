@@ -18,6 +18,7 @@ public class AddStationPresenter extends BasePresenter<AddStationView> {
     private DataManager dataManager = DataManager.getInstance();
 
     public void getArroundStations(double latitude, double longitude) {
+        getViewState().showLoad();
         dataManager.getStationArround(latitude, longitude)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -29,6 +30,7 @@ public class AddStationPresenter extends BasePresenter<AddStationView> {
 
                     @Override
                     public void onError(Throwable e) {
+                        getViewState().hideLoad();
                         CustomException customException;
                         if (e instanceof CustomException) {
                             customException = (CustomException) e;
@@ -48,6 +50,7 @@ public class AddStationPresenter extends BasePresenter<AddStationView> {
 
                     @Override
                     public void onNext(List<StationListElement> stationListElements) {
+                        getViewState().hideLoad();
                         getViewState().showArroundStations(stationListElements);
                     }
                 });

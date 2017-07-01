@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -33,11 +35,16 @@ public class AddStationActivity extends BaseActivity implements AddStationView, 
     private RecyclerView arroundStations;
     private ArroundStationsAdapter arroundStationsAdapter;
 
+    private ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_station_activity);
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,7 +82,9 @@ public class AddStationActivity extends BaseActivity implements AddStationView, 
 
     @Override
     public void showLoad() {
-
+        if (progressBar != null) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -87,7 +96,9 @@ public class AddStationActivity extends BaseActivity implements AddStationView, 
 
     @Override
     public void hideLoad() {
-
+        if (progressBar != null) {
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
 
