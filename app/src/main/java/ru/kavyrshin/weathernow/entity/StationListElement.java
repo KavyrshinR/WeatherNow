@@ -30,10 +30,10 @@ public class StationListElement {
     private Sys sys;
     @SerializedName("rain")
     @Expose
-    private Object rain;
+    private Rain rain;
     @SerializedName("snow")
     @Expose
-    private Object snow;
+    private Snow snow;
     @SerializedName("clouds")
     @Expose
     private Clouds clouds;
@@ -101,7 +101,7 @@ public class StationListElement {
         return rain;
     }
 
-    public void setRain(Object rain) {
+    public void setRain(Rain rain) {
         this.rain = rain;
     }
 
@@ -109,7 +109,7 @@ public class StationListElement {
         return snow;
     }
 
-    public void setSnow(Object snow) {
+    public void setSnow(Snow snow) {
         this.snow = snow;
     }
 
