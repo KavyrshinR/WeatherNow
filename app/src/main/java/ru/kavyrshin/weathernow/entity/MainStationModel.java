@@ -3,9 +3,9 @@ package ru.kavyrshin.weathernow.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
 public class MainStationModel extends RealmObject {
@@ -21,7 +21,7 @@ public class MainStationModel extends RealmObject {
     private int count;
     @SerializedName("list")
     @Expose
-    private List<StationListElement> list = new ArrayList<>();
+    private RealmList<StationListElement> list = new RealmList<>();
 
     public String getMessage() {
         return message;
@@ -51,7 +51,7 @@ public class MainStationModel extends RealmObject {
         return list;
     }
 
-    public void setList(List<StationListElement> list) {
+    public void setList(RealmList<StationListElement> list) {
         this.list = list;
     }
 

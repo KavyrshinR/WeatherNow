@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
 public class MainWeatherModel extends RealmObject {
@@ -23,7 +24,7 @@ public class MainWeatherModel extends RealmObject {
     private int cnt;
     @SerializedName("list")
     @Expose
-    private List<WeatherListElement> list = null;
+    private RealmList<WeatherListElement> list = new RealmList<>();
 
     public City getCity() {
         return city;
@@ -61,7 +62,7 @@ public class MainWeatherModel extends RealmObject {
         return list;
     }
 
-    public void setList(List<WeatherListElement> list) {
+    public void setList(RealmList<WeatherListElement> list) {
         this.list = list;
     }
 

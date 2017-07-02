@@ -3,8 +3,7 @@ package ru.kavyrshin.weathernow.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
 public class StationListElement extends RealmObject {
@@ -41,7 +40,7 @@ public class StationListElement extends RealmObject {
     private Clouds clouds;
     @SerializedName("weather")
     @Expose
-    private List<Weather> weather = null;
+    private RealmList<Weather> weather = null;
 
     public int getId() {
         return id;
@@ -127,7 +126,7 @@ public class StationListElement extends RealmObject {
         return weather;
     }
 
-    public void setWeather(java.util.List<Weather> weather) {
+    public void setWeather(RealmList<Weather> weather) {
         this.weather = weather;
     }
 
