@@ -1,5 +1,6 @@
 package ru.kavyrshin.weathernow.view.implementation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -104,6 +105,9 @@ public class AddStationActivity extends BaseActivity implements AddStationView, 
 
     @Override
     public void onArroundStationClick(StationListElement stationListElement) {
-        Toast.makeText(this, stationListElement.getName(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent();
+        intent.putExtra(MyStationsActivity.EXTEA_STATION_ID, stationListElement.getId());
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }
