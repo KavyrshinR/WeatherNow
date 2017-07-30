@@ -1,6 +1,7 @@
 package ru.kavyrshin.weathernow.model;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
@@ -61,6 +62,10 @@ public class DataManager {
     }
 
     public void saveStation(CacheCity city) {
-        realm.copyToRealm(city);
+        realm.copyToRealmOrUpdate(city);
+    }
+
+    public List<CacheCity> getFavouriteStations() {
+        return realm.copyFromRealm(new ArrayList<CacheCity>());
     }
 }
