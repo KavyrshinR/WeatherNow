@@ -98,7 +98,7 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
 
                 if (result != -1) {
                     Log.d("myLogs", "Result " + result);
-                    //TODO:Засейвить
+
                 }
             }
         }

@@ -3,8 +3,10 @@ package ru.kavyrshin.weathernow.model;
 
 import java.util.List;
 
+import io.realm.Realm;
 import ru.kavyrshin.weathernow.BuildConfig;
 import ru.kavyrshin.weathernow.MyApplication;
+import ru.kavyrshin.weathernow.entity.CacheCity;
 import ru.kavyrshin.weathernow.entity.MainStationModel;
 import ru.kavyrshin.weathernow.entity.StationListElement;
 import ru.kavyrshin.weathernow.model.api.ApiModule;
@@ -32,6 +34,8 @@ public class DataManager {
 
     private ApiWeather apiWeather = ApiModule.getInstance();
 
+    private Realm realm = Realm.getDefaultInstance();
+
     public Observable<List<StationListElement>> getStationArround(double latitude, double longitude) {
 
         Observable<MainStationModel> mainStationObservable = apiWeather.getStationArround(latitude,
@@ -49,11 +53,14 @@ public class DataManager {
                             if ((mainStationModel != null) && (!mainStationModel.getList().isEmpty())) {
                                 return Observable.just(mainStationModel.getList());
                             } else {
-                                RuntimeException runtimeException = new RuntimeException();
                                 return Observable.error(new CustomException(CustomException.SERVER_EXCEPTION, "Ошибка сервера"));
                             }
                         }
                     });
         }
+    }
+
+    public void saveStation(CacheCity city) {
+        realm.copyToRealm(city);
     }
 }

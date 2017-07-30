@@ -4,6 +4,7 @@ import com.arellomobile.mvp.InjectViewState;
 
 import java.util.List;
 
+import ru.kavyrshin.weathernow.entity.CacheCity;
 import ru.kavyrshin.weathernow.entity.StationListElement;
 import ru.kavyrshin.weathernow.model.DataManager;
 import ru.kavyrshin.weathernow.model.exception.CustomException;
@@ -15,10 +16,14 @@ import rx.schedulers.Schedulers;
 @InjectViewState
 public class AddStationPresenter extends BasePresenter<AddStationView> {
 
+    private String addingCityName = "";
+
     private DataManager dataManager = DataManager.getInstance();
 
-    public void getArroundStations(double latitude, double longitude) {
+    public void getArroundStations(String name, double latitude, double longitude) {
         getViewState().showLoad();
+        addingCityName = name;
+
         dataManager.getStationArround(latitude, longitude)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -54,5 +59,13 @@ public class AddStationPresenter extends BasePresenter<AddStationView> {
                         getViewState().showArroundStations(stationListElements);
                     }
                 });
+    }
+
+
+    public void addStation(int apiCityId) {
+        CacheCity city = new CacheCity();
+        city.setName(addingCityName);
+        city.setId(apiCityId);
+        dataManager.saveStation(city);
     }
 }
