@@ -12,7 +12,7 @@ import java.util.List;
 import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.entity.StationListElement;
 
-public class ArroundStationsAdapter extends RecyclerView.Adapter<ArroundStationsAdapter.MyStationViewHolder> {
+public class ArroundStationsAdapter extends RecyclerView.Adapter<ArroundStationsAdapter.ArroundStationViewHolder> {
 
     public interface ArroundStationsListener {
         void onArroundStationClick(StationListElement stationListElement);
@@ -27,16 +27,16 @@ public class ArroundStationsAdapter extends RecyclerView.Adapter<ArroundStations
     }
 
     @Override
-    public MyStationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ArroundStationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
 
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.arround_station_item, parent, false);
 
-        return new MyStationViewHolder(view, arroundStationsListener);
+        return new ArroundStationViewHolder(view, arroundStationsListener);
     }
 
     @Override
-    public void onBindViewHolder(MyStationViewHolder holder, int position) {
+    public void onBindViewHolder(ArroundStationViewHolder holder, int position) {
         holder.onBind(stationListElements.get(position));
     }
 
@@ -53,7 +53,7 @@ public class ArroundStationsAdapter extends RecyclerView.Adapter<ArroundStations
         stationListElements.addAll(stations);
     }
 
-    static class MyStationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class ArroundStationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ArroundStationsListener arroundStationsListener;
         StationListElement stationListElement;
 
@@ -61,7 +61,7 @@ public class ArroundStationsAdapter extends RecyclerView.Adapter<ArroundStations
         private TextView tvTemperature;
 
 
-        public MyStationViewHolder(View itemView, ArroundStationsListener arroundStationsListener) {
+        public ArroundStationViewHolder(View itemView, ArroundStationsListener arroundStationsListener) {
             super(itemView);
             this.arroundStationsListener = arroundStationsListener;
 
