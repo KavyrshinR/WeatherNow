@@ -7,9 +7,12 @@ import java.util.List;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class MainWeatherModel extends RealmObject {
 
+    @PrimaryKey
+    private int cityId;
     @SerializedName("city")
     @Expose
     private City city;
@@ -25,6 +28,14 @@ public class MainWeatherModel extends RealmObject {
     @SerializedName("list")
     @Expose
     private RealmList<WeatherListElement> list = new RealmList<>();
+
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
 
     public City getCity() {
         return city;
