@@ -3,23 +3,27 @@ package ru.kavyrshin.weathernow.view.implementation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import java.util.List;
 
 import ru.kavyrshin.weathernow.R;
-import ru.kavyrshin.weathernow.entity.WeatherListElement;
+import ru.kavyrshin.weathernow.entity.MainWeatherModel;
 import ru.kavyrshin.weathernow.presenter.MyStationsPresenter;
 import ru.kavyrshin.weathernow.view.MyStationsView;
+import ru.kavyrshin.weathernow.view.implementation.adapter.MyStationsAdapter;
 
 
-public class MyStationsActivity extends BaseActivity implements View.OnClickListener, MyStationsView {
+public class MyStationsActivity extends BaseActivity implements View.OnClickListener, MyStationsView, MyStationsAdapter.MyStationsListener {
 
     public static final int REQUEST_STATION_ID_CODE = 1256;
     public static final String EXTEA_STATION_ID = "Extra StationID";
@@ -33,6 +37,9 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
     private FloatingActionButton btnAddStation;
 
     private RecyclerView stationList;
+    private MyStationsAdapter myStationsAdapter;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
     @Override
@@ -46,10 +53,28 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         setTitle("Мои станции тип");
 
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
+
         btnAddStation = (FloatingActionButton) findViewById(R.id.btnAddStation);
         stationList = (RecyclerView) findViewById(R.id.stationList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        stationList.setLayoutManager(linearLayoutManager);
+        myStationsAdapter = new MyStationsAdapter(this);
+        stationList.setAdapter(myStationsAdapter);
 
         btnAddStation.setOnClickListener(this);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                myStationsPresenter.loadFavouriteStations();
+            }
+        });
+    }
+
+    @Override
+    public void myStationClick() {
 
     }
 
@@ -63,22 +88,26 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void showError(String errorMessage) {
-
+        swipeRefreshLayout.setRefreshing(false);
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showLoad() {
-
+        swipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
-    public void showMyStations(List<WeatherListElement> weatherListElements) {
-
+    public void showMyStations(List<MainWeatherModel> weatherListElements) {
+        swipeRefreshLayout.setRefreshing(false);
+        myStationsAdapter.clearStations();
+        myStationsAdapter.setMyStations(weatherListElements);
+        myStationsAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void hideLoad() {
-
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

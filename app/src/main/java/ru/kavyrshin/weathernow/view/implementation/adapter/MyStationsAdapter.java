@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.entity.MainWeatherModel;
@@ -44,6 +45,14 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return myStations.size();
     }
 
+    public void setMyStations(List<MainWeatherModel> myStations) {
+        this.myStations.addAll(myStations);
+    }
+
+    public void clearStations() {
+        this.myStations.clear();
+    }
+
     static class MyStationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         MyStationsListener myStationsListener;
         MainWeatherModel mainWeatherModel;
@@ -58,7 +67,7 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public MyStationViewHolder(View itemView, MyStationsListener myStationsListener) {
             super(itemView);
             this.myStationsListener = myStationsListener;
-            tvName = (TextView) itemView.findViewById(R.id.tvName);
+            tvName = (TextView) itemView.findViewById(R.id.tvCityName);
             tvTemperatureDay = (TextView) itemView.findViewById(R.id.tvTemperatureDay);
             tvTemperatureNight = (TextView) itemView.findViewById(R.id.tvTemperatureNight);
             tvWeather = (TextView) itemView.findViewById(R.id.tvWeather);
