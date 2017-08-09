@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import ru.kavyrshin.weathernow.BuildConfig;
 import ru.kavyrshin.weathernow.MyApplication;
 import ru.kavyrshin.weathernow.entity.CacheCity;
 import ru.kavyrshin.weathernow.entity.MainStationModel;
+import ru.kavyrshin.weathernow.entity.MainWeatherModel;
 import ru.kavyrshin.weathernow.entity.StationListElement;
 import ru.kavyrshin.weathernow.model.api.ApiModule;
 import ru.kavyrshin.weathernow.model.api.ApiWeather;
@@ -62,10 +64,49 @@ public class DataManager {
     }
 
     public void saveStation(CacheCity city) {
+        realm.beginTransaction();
         realm.copyToRealmOrUpdate(city);
+        realm.commitTransaction();
     }
 
     public List<CacheCity> getFavouriteStations() {
-        return realm.copyFromRealm(new ArrayList<CacheCity>());
+        RealmResults<CacheCity> cacheCities = realm.where(CacheCity.class).findAll();
+        return realm.copyFromRealm(cacheCities);
+    }
+
+    public Observable<List<MainWeatherModel>> getWeather(int[] idStations) {
+
+        if (!MyApplication.isNetworkConnected()) {
+            RealmResults<MainWeatherModel> mainWeatherModels = realm.where(MainWeatherModel.class).findAll();
+            return Observable.just(realm.copyFromRealm(mainWeatherModels));
+        }
+
+
+        ArrayList<Observable<MainWeatherModel>> observables = new ArrayList<>();
+
+        for (int i = 0; i < idStations.length; i++) {
+            observables.add(apiWeather.getWeatherByIdCity(idStations[i], 7, ApiModule.units, BuildConfig.API_KEY));
+        }
+
+        Observable<MainWeatherModel> result = Observable.merge(observables)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
+        return result.concatMap(new Func1<MainWeatherModel, Observable<MainWeatherModel>>() {
+            @Override
+            public Observable<MainWeatherModel> call(MainWeatherModel mainWeatherModel) {
+                mainWeatherModel.setCityId(mainWeatherModel.getCity().getId());
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(mainWeatherModel);
+                realm.commitTransaction();
+                return Observable.just(mainWeatherModel);
+            }
+        }).map(new Func1<MainWeatherModel, List<MainWeatherModel>>() {
+            @Override
+            public List<MainWeatherModel> call(MainWeatherModel mainWeatherModel) {
+                RealmResults<MainWeatherModel> mainWeatherModels = realm.where(MainWeatherModel.class).findAll();
+                return realm.copyFromRealm(mainWeatherModels);
+            }
+        });
     }
 }
