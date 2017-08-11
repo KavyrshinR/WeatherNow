@@ -51,7 +51,7 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
         tvToolbar = (TextView) toolbar.findViewById(R.id.tvOut);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        setTitle("Мои станции тип");
+        setTitle(getString(R.string.my_stations_actionbar_title));
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
 
