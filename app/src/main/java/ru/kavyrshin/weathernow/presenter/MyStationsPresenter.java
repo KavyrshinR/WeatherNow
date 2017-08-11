@@ -46,6 +46,7 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+                        getViewState().showError(e.getMessage());
                     }
 
                     @Override
