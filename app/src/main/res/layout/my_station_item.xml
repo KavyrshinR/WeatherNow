@@ -13,10 +13,18 @@
         android:layout_weight="1">
 
         <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            tools:text="13.08"/>
+
+        <TextView
             android:id="@+id/tvTemperatureDay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:textSize="20sp"
             tools:text="+17"/>
 
         <TextView
@@ -26,20 +34,12 @@
             android:maxLines="1"
             tools:text="+13"/>
 
-        <TextView
-            android:id="@+id/tvCityName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            tools:text="Orel"/>
-
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvWeather"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
-        tools:text="Rain"/>
+    <ImageView
+        android:id="@+id/ivWeather"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        tools:src="@drawable/ic_wind"/>
 
 </LinearLayout>
