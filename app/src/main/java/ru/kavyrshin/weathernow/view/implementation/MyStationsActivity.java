@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -57,9 +56,14 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
 
         btnAddStation = (FloatingActionButton) findViewById(R.id.btnAddStation);
         stationList = (RecyclerView) findViewById(R.id.stationList);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        stationList.setLayoutManager(linearLayoutManager);
+
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//        stationList.setLayoutManager(linearLayoutManager);
+
+        LinearLinearLayoutManager linearLinearLayoutManager = new LinearLinearLayoutManager();
+        stationList.setLayoutManager(linearLinearLayoutManager);
+
         myStationsAdapter = new MyStationsAdapter(this);
         stationList.setAdapter(myStationsAdapter);
 
