@@ -37,14 +37,18 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) { //TODO: Переписать что-ли
         MyStationViewHolder myStationViewHolder = (MyStationViewHolder) holder;
-        myStationViewHolder.onBind(myStations.get(position));
+        myStationViewHolder.onBind(myStations.get(position / 7), position);
     }
 
     @Override
     public int getItemCount() {
-        return myStations.size();
+        int result = 0;
+        for (int i = 0; i < myStations.size(); i++) {
+            result += myStations.get(i).getList().size();
+        }
+        return result;
     }
 
     public void setMyStations(List<MainWeatherModel> myStations) {
@@ -75,10 +79,10 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             ivWeather = (ImageView) itemView.findViewById(R.id.ivWeather);
         }
 
-        public void onBind(MainWeatherModel mainWeatherModel) {
+        public void onBind(MainWeatherModel mainWeatherModel, int position) {
             this.mainWeatherModel = mainWeatherModel;
 
-            WeatherListElement weatherListElement = mainWeatherModel.getList().get(0);
+            WeatherListElement weatherListElement = mainWeatherModel.getList().get(position % 7);
             double dayTemp = weatherListElement.getTemp().getDay();
             double nightTemp = weatherListElement.getTemp().getNight();
 

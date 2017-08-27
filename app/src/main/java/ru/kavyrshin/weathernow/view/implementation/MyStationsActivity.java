@@ -61,7 +61,7 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
 //        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 //        stationList.setLayoutManager(linearLayoutManager);
 
-        LinearLinearLayoutManager linearLinearLayoutManager = new LinearLinearLayoutManager();
+        LinearLinearLayoutManager linearLinearLayoutManager = new LinearLinearLayoutManager(7);
         stationList.setLayoutManager(linearLinearLayoutManager);
 
         myStationsAdapter = new MyStationsAdapter(this);
