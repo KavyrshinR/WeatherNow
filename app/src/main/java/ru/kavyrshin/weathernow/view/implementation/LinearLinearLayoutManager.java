@@ -78,15 +78,64 @@ public class LinearLinearLayoutManager extends RecyclerView.LayoutManager {
 
     @Override
     public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler, RecyclerView.State state) {
-        Log.d(TAG, "scrollVerticallyBy: " + dy);
-        offsetChildrenVertical(-dy);
-        return dy;
+//        Log.d(TAG, "scrollVerticallyBy: dy " + dy);
+        int delta = scrollInternalVertically(dy);
+        offsetChildrenVertical(-delta);
+        return delta;
     }
 
     @Override
     public int scrollHorizontallyBy(int dx, RecyclerView.Recycler recycler, RecyclerView.State state) {
-        Log.d(TAG, "scrollHorizontallyBy: " + dx);
-        offsetChildrenHorizontal(-dx);
+//        Log.d(TAG, "scrollHorizontallyBy: dx " + dx);
+        int delta = scrollInternalHorizontally(dx);
+        offsetChildrenHorizontal(-delta);
+        return delta;
+    }
+
+
+    private int scrollInternalVertically(int dy) {
+        int itemCount = getItemCount();
+        int childCount = getChildCount();
+
+        if (childCount == 0) {
+            return 0;
+        }
+
+        final View firstView = getChildAt(0);
+        final View lastView = getChildAt(childCount - 1);
+
+        int top = getDecoratedTop(firstView);
+        int bottom = getDecoratedBottom(lastView);
+
+
+        if (getHeight() >= bottom - top && childCount == itemCount) {
+            return 0;
+        }
+
+        int delta = 0;
+
+        if (dy < 0) { //контент приходит сверху, уходит вниз
+            int firstViewPosition = getPosition(firstView);
+            if (firstViewPosition < 0) {
+                delta = dy;
+            } else {
+                delta = Math.max(top, dy);
+            }
+
+        } else {
+            int lastViewPosition = getPosition(lastView);
+            if (lastViewPosition < itemCount - 1) {
+                delta = dy;
+            } else {
+                delta = Math.min(bottom - getHeight(), dy);
+            }
+        }
+
+        return delta;
+    }
+
+    private int scrollInternalHorizontally(int dx) {
+
         return dx;
     }
 
