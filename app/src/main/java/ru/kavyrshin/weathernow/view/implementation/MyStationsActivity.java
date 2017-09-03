@@ -20,10 +20,12 @@ import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.entity.MainWeatherModel;
 import ru.kavyrshin.weathernow.presenter.MyStationsPresenter;
 import ru.kavyrshin.weathernow.view.MyStationsView;
+import ru.kavyrshin.weathernow.view.implementation.adapter.MyStationsAdapter;
 import ru.kavyrshin.weathernow.view.implementation.adapter.MyStationsAdapterInner;
 
 
-public class MyStationsActivity extends BaseActivity implements View.OnClickListener, MyStationsView, MyStationsAdapterInner.MyStationsListener {
+public class MyStationsActivity extends BaseActivity implements View.OnClickListener, MyStationsView,
+        MyStationsAdapterInner.MyStationsListener {
 
     public static final int REQUEST_STATION_ID_CODE = 1256;
     public static final String EXTEA_STATION_ID = "Extra StationID";
@@ -37,7 +39,7 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
     private FloatingActionButton btnAddStation;
 
     private RecyclerView stationList;
-    private MyStationsAdapterInner myStationsAdapter;
+    private MyStationsAdapter myStationsAdapter;
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -60,7 +62,7 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         stationList.setLayoutManager(linearLayoutManager);
-        myStationsAdapter = new MyStationsAdapterInner(this);
+        myStationsAdapter = new MyStationsAdapter(this);
         stationList.setAdapter(myStationsAdapter);
 
         btnAddStation.setOnClickListener(this);
@@ -74,8 +76,8 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
-    public void myStationClick() {
-
+    public void myStationClick(int cityId, int unixTime) {
+        Toast.makeText(this, "cityId " + cityId + " time " + unixTime, Toast.LENGTH_SHORT).show();
     }
 
     @Override

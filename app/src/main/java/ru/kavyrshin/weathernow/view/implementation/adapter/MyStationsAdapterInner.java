@@ -17,7 +17,7 @@ import ru.kavyrshin.weathernow.entity.WeatherListElement;
 public class MyStationsAdapterInner extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public interface MyStationsListener {
-        void myStationClick();
+        void myStationClick(int cityId, int unixTime);
     }
 
     private MyStationsListener myStationsListener;
@@ -42,7 +42,7 @@ public class MyStationsAdapterInner extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         WeatherItemViewHolder myStationViewHolder = (WeatherItemViewHolder) holder;
-        myStationViewHolder.onBind(weatherList.get(position));
+        myStationViewHolder.onBind(mainWeatherModel.getCityId(), weatherList.get(position));
     }
 
     @Override
@@ -58,6 +58,8 @@ public class MyStationsAdapterInner extends RecyclerView.Adapter<RecyclerView.Vi
     static class WeatherItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         MyStationsListener myStationsListener;
         WeatherListElement weatherListElement;
+
+        private int cityId;
 
         private TextView tvDate;
         private TextView tvTemperatureDay;
@@ -75,8 +77,9 @@ public class MyStationsAdapterInner extends RecyclerView.Adapter<RecyclerView.Vi
             ivWeather = (ImageView) itemView.findViewById(R.id.ivWeather);
         }
 
-        public void onBind(WeatherListElement weatherListElement) {
+        public void onBind(int cityId, WeatherListElement weatherListElement) {
             this.weatherListElement = weatherListElement;
+            this.cityId = cityId;
 
             double dayTemp = weatherListElement.getTemp().getDay();
             double nightTemp = weatherListElement.getTemp().getNight();
@@ -90,11 +93,12 @@ public class MyStationsAdapterInner extends RecyclerView.Adapter<RecyclerView.Vi
                 ivWeather.setImageResource(resId);
             }
 
+            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-
+            myStationsListener.myStationClick(cityId, weatherListElement.getDt());
         }
 
         public int getIconResId(int weatherId) { //https://openweathermap.org/weather-conditions

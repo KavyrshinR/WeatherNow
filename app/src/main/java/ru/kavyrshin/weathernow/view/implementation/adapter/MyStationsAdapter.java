@@ -1,5 +1,6 @@
 package ru.kavyrshin.weathernow.view.implementation.adapter;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +13,26 @@ import ru.kavyrshin.weathernow.entity.MainWeatherModel;
 
 public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private MyStationsAdapterInner.MyStationsListener myStationsListener;
     private ArrayList<MainWeatherModel> myStations = new ArrayList<>();
+
+    public MyStationsAdapter(MyStationsAdapterInner.MyStationsListener myStationsListener) {
+        this.myStationsListener = myStationsListener;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        MyStationViewHolder myStationViewHolder = new MyStationViewHolder(new RecyclerView(parent.getContext()));
+        RecyclerView recyclerView = new RecyclerView(parent.getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(parent.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        MyStationViewHolder myStationViewHolder = new MyStationViewHolder(recyclerView);
         return myStationViewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         MyStationViewHolder myStationViewHolder = (MyStationViewHolder) holder;
-        myStationViewHolder.recyclerView.setAdapter(new MyStationsAdapterInner(null, myStations.get(position)));
+        myStationViewHolder.recyclerView.setAdapter(new MyStationsAdapterInner(myStationsListener, myStations.get(position)));
     }
 
     @Override
