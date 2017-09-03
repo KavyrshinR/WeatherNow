@@ -21,11 +21,11 @@ import ru.kavyrshin.weathernow.entity.MainWeatherModel;
 import ru.kavyrshin.weathernow.presenter.MyStationsPresenter;
 import ru.kavyrshin.weathernow.view.MyStationsView;
 import ru.kavyrshin.weathernow.view.implementation.adapter.MyStationsAdapter;
-import ru.kavyrshin.weathernow.view.implementation.adapter.MyStationsAdapterInner;
+import ru.kavyrshin.weathernow.view.implementation.adapter.StationWeatherAdapter;
 
 
 public class MyStationsActivity extends BaseActivity implements View.OnClickListener, MyStationsView,
-        MyStationsAdapterInner.MyStationsListener {
+        StationWeatherAdapter.MyStationsListener {
 
     public static final int REQUEST_STATION_ID_CODE = 1256;
     public static final String EXTEA_STATION_ID = "Extra StationID";

@@ -13,10 +13,10 @@ import ru.kavyrshin.weathernow.entity.MainWeatherModel;
 
 public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private MyStationsAdapterInner.MyStationsListener myStationsListener;
+    private StationWeatherAdapter.MyStationsListener myStationsListener;
     private ArrayList<MainWeatherModel> myStations = new ArrayList<>();
 
-    public MyStationsAdapter(MyStationsAdapterInner.MyStationsListener myStationsListener) {
+    public MyStationsAdapter(StationWeatherAdapter.MyStationsListener myStationsListener) {
         this.myStationsListener = myStationsListener;
     }
 
@@ -32,7 +32,7 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         MyStationViewHolder myStationViewHolder = (MyStationViewHolder) holder;
-        myStationViewHolder.recyclerView.setAdapter(new MyStationsAdapterInner(myStationsListener, myStations.get(position)));
+        myStationViewHolder.recyclerView.setAdapter(new StationWeatherAdapter(myStationsListener, myStations.get(position)));
     }
 
     @Override

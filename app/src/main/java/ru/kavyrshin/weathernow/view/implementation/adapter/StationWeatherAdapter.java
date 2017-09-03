@@ -14,7 +14,7 @@ import ru.kavyrshin.weathernow.entity.MainWeatherModel;
 import ru.kavyrshin.weathernow.entity.WeatherListElement;
 
 
-public class MyStationsAdapterInner extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class StationWeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public interface MyStationsListener {
         void myStationClick(int cityId, int unixTime);
@@ -25,7 +25,7 @@ public class MyStationsAdapterInner extends RecyclerView.Adapter<RecyclerView.Vi
     private MainWeatherModel mainWeatherModel;
     private ArrayList<WeatherListElement> weatherList = new ArrayList<>();
 
-    public MyStationsAdapterInner(MyStationsListener myStationsListener, MainWeatherModel mainWeatherModel) {
+    public StationWeatherAdapter(MyStationsListener myStationsListener, MainWeatherModel mainWeatherModel) {
         this.myStationsListener = myStationsListener;
         this.mainWeatherModel = mainWeatherModel;
 
