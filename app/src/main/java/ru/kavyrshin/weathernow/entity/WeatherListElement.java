@@ -13,6 +13,9 @@ public class WeatherListElement extends RealmObject {
     @SerializedName("dt")
     @Expose
     private int dt;
+
+    private int localDt;
+
     @SerializedName("temp")
     @Expose
     private Temperature temp;
@@ -44,6 +47,14 @@ public class WeatherListElement extends RealmObject {
 
     public void setDt(int dt) {
         this.dt = dt;
+    }
+
+    public int getLocalDt() {
+        return localDt;
+    }
+
+    public void setLocalDt(int localDt) {
+        this.localDt = localDt;
     }
 
     public Temperature getTemp() {
