@@ -1,11 +1,16 @@
 package ru.kavyrshin.weathernow.presenter;
 
+import android.util.Log;
+
 import com.arellomobile.mvp.InjectViewState;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.kavyrshin.weathernow.entity.CacheCity;
+import ru.kavyrshin.weathernow.entity.Coord;
 import ru.kavyrshin.weathernow.entity.StationListElement;
+import ru.kavyrshin.weathernow.entity.TimeZone;
 import ru.kavyrshin.weathernow.model.DataManager;
 import ru.kavyrshin.weathernow.model.exception.CustomException;
 import ru.kavyrshin.weathernow.view.AddStationView;
@@ -17,6 +22,7 @@ import rx.schedulers.Schedulers;
 public class AddStationPresenter extends BasePresenter<AddStationView> {
 
     private String addingCityName = "";
+    private ArrayList<StationListElement> stationListElements = new ArrayList<>();
 
     private DataManager dataManager = DataManager.getInstance();
 
@@ -54,18 +60,67 @@ public class AddStationPresenter extends BasePresenter<AddStationView> {
                     }
 
                     @Override
-                    public void onNext(List<StationListElement> stationListElements) {
+                    public void onNext(List<StationListElement> nextStationListElements) {
                         getViewState().hideLoad();
-                        getViewState().showArroundStations(stationListElements);
+                        stationListElements.clear();
+                        stationListElements.addAll(nextStationListElements);//TODO: БЛять. По хорошему это должно быть в интеракторе(?)
+                        getViewState().showArroundStations(nextStationListElements);
                     }
                 });
     }
 
 
     public void addStation(int apiCityId) {
-        CacheCity city = new CacheCity();
+        StationListElement element = null;
+
+        final CacheCity city = new CacheCity();
         city.setName(addingCityName);
         city.setId(apiCityId);
-        dataManager.saveStation(city);
+
+        for (StationListElement item : stationListElements) {
+            if (apiCityId == item.getId()) {
+                element = item;
+            }
+        }
+
+        if (element != null) {
+            Coord coord = element.getCoord();
+            dataManager.getTimeZoneByCoordinate(coord.getLat(), coord.getLon(), element.getDt())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<TimeZone>() {
+                        @Override
+                        public void onCompleted() {
+                            Log.d("myLogs", "А onCompleted() вызывается вообще?");
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            getViewState().hideLoad();
+                            CustomException customException;
+                            if (e instanceof CustomException) {
+                                customException = (CustomException) e;
+                            } else {
+                                e.printStackTrace();
+                                customException = new CustomException(CustomException.UNKNOWN_EXCEPTION, "Неизвестная ошибка");
+                            }
+
+                            switch (customException.getId()) {
+                                case CustomException.SERVER_EXCEPTION:
+                                case CustomException.UNKNOWN_EXCEPTION: {
+                                    getViewState().showError(customException.getMessage());
+                                    break;
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onNext(TimeZone timeZone) {
+                            city.setUtcOffset(timeZone.getRawOffset());
+                            city.setDstOffset(timeZone.getDstOffset());
+                            dataManager.saveStation(city);
+                        }
+                    });
+        }
     }
 }

@@ -10,25 +10,41 @@ public class ApiModule {
     public static String units = "metric";
     public static int countStationArround = 10;
 
-    private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
+    private static final String BASE_URL_WEATHER = "http://api.openweathermap.org/data/2.5/";
+    private static final String BASE_URL_TIMEZONE = "https://maps.googleapis.com/maps/api/timezone/";
 
-    private static ApiWeather apiService;
+    private static ApiWeather apiWeather;
+    private static ApiTimeZone apiTimeZone;
 
     private ApiModule() {
     }
 
-    public static ApiWeather getInstance() {
-        if (apiService == null) {
+    public static ApiWeather getInstanceWeather() {
+        if (apiWeather == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(BASE_URL_WEATHER)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build();
 
-            apiService = retrofit.create(ApiWeather.class);
+            apiWeather = retrofit.create(ApiWeather.class);
         }
 
-        return apiService;
+        return apiWeather;
+    }
+
+    public static ApiTimeZone getInstanceTimeZone() {
+        if (apiTimeZone == null) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL_TIMEZONE)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .build();
+
+            apiTimeZone = retrofit.create(ApiTimeZone.class);
+        }
+
+        return apiTimeZone;
     }
 
 }

@@ -12,7 +12,10 @@ import ru.kavyrshin.weathernow.entity.CacheCity;
 import ru.kavyrshin.weathernow.entity.MainStationModel;
 import ru.kavyrshin.weathernow.entity.MainWeatherModel;
 import ru.kavyrshin.weathernow.entity.StationListElement;
+import ru.kavyrshin.weathernow.entity.TimeZone;
+import ru.kavyrshin.weathernow.entity.WeatherListElement;
 import ru.kavyrshin.weathernow.model.api.ApiModule;
+import ru.kavyrshin.weathernow.model.api.ApiTimeZone;
 import ru.kavyrshin.weathernow.model.api.ApiWeather;
 import ru.kavyrshin.weathernow.model.exception.CustomException;
 import rx.Observable;
@@ -35,7 +38,8 @@ public class DataManager {
     private DataManager() {
     }
 
-    private ApiWeather apiWeather = ApiModule.getInstance();
+    private ApiWeather apiWeather = ApiModule.getInstanceWeather();
+    private ApiTimeZone apiTimeZone = ApiModule.getInstanceTimeZone();
 
     private Realm realm = Realm.getDefaultInstance();
 
@@ -76,6 +80,8 @@ public class DataManager {
 
     public Observable<List<MainWeatherModel>> getWeather(int[] idStations) {
 
+        final ArrayList<CacheCity> favouriteCitys = new ArrayList<>(getFavouriteStations());
+
         if (!MyApplication.isNetworkConnected()) {
             RealmResults<MainWeatherModel> mainWeatherModels = realm.where(MainWeatherModel.class).findAll();
             return Observable.just(realm.copyFromRealm(mainWeatherModels));
@@ -96,6 +102,16 @@ public class DataManager {
             @Override
             public Observable<MainWeatherModel> call(MainWeatherModel mainWeatherModel) {
                 mainWeatherModel.setCityId(mainWeatherModel.getCity().getId());
+
+                for (CacheCity cacheCity : favouriteCitys) {
+                    if (cacheCity.getId() == mainWeatherModel.getCityId()) {
+                        for (WeatherListElement item : mainWeatherModel.getList()) {
+                            item.setLocalDt(item.getDt() + cacheCity.getUtcOffset() + cacheCity.getDstOffset());
+                        }
+                    }
+                }
+
+
                 realm.beginTransaction();
                 realm.copyToRealmOrUpdate(mainWeatherModel);
                 realm.commitTransaction();
@@ -108,5 +124,15 @@ public class DataManager {
                 return realm.copyFromRealm(mainWeatherModels);
             }
         });
+    }
+
+    public Observable<TimeZone> getTimeZoneByCoordinate(double latitude, double longitude, long timestamp) {
+        String coordinate = latitude + "," + longitude;
+
+        if (MyApplication.isNetworkConnected()) {
+            return apiTimeZone.getTimeZoneByCoordinate(coordinate, timestamp, BuildConfig.API_KEY);
+        } else {
+            return Observable.error(new CustomException(CustomException.NETWORK_EXCEPTION, "Нет подключения"));
+        }
     }
 }
