@@ -9,6 +9,9 @@ public class CacheCity extends RealmObject {
     private int id;
     private String name;
 
+    private int utcOffset;
+    private int dstOffset;
+
 
     public int getId() {
         return id;
@@ -24,5 +27,21 @@ public class CacheCity extends RealmObject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getUtcOffset() {
+        return utcOffset;
+    }
+
+    public void setUtcOffset(int utcOffset) {
+        this.utcOffset = utcOffset;
+    }
+
+    public int getDstOffset() {
+        return dstOffset;
+    }
+
+    public void setDstOffset(int dstOffset) {
+        this.dstOffset = dstOffset;
     }
 }
