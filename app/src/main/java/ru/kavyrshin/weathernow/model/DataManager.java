@@ -130,7 +130,7 @@ public class DataManager {
         String coordinate = latitude + "," + longitude;
 
         if (MyApplication.isNetworkConnected()) {
-            return apiTimeZone.getTimeZoneByCoordinate(coordinate, timestamp, BuildConfig.API_KEY);
+            return apiTimeZone.getTimeZoneByCoordinate(coordinate, timestamp, BuildConfig.G_API_KEY);
         } else {
             return Observable.error(new CustomException(CustomException.NETWORK_EXCEPTION, "Нет подключения"));
         }

@@ -13,6 +13,7 @@ android {
         versionName "1.0"
 
         buildConfigField("String", "API_KEY", "\"31fceb4304d9b5e168f6892b64cdc125\"")
+        buildConfigField("String", "G_API_KEY", "\"AIzaSyB3dJtoB5739DCf9lehGQG5Rgc7F6d9Tn0\"")
     }
     buildTypes {
         release {
