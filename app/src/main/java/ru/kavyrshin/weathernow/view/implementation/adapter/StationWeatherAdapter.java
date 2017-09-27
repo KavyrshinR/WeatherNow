@@ -1,7 +1,6 @@
 package ru.kavyrshin.weathernow.view.implementation.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +9,12 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.TimeZone;
 
 import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.entity.MainWeatherModel;
 import ru.kavyrshin.weathernow.entity.WeatherListElement;
-
-import static android.content.ContentValues.TAG;
 
 
 public class StationWeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -93,9 +89,9 @@ public class StationWeatherAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             double dayTemp = weatherListElement.getTemp().getDay();
             double nightTemp = weatherListElement.getTemp().getNight();
 
-            Log.d(TAG, Arrays.toString(TimeZone.getAvailableIDs()));
-            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-            calendar.setTimeInMillis(weatherListElement.getLocalDt());
+            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+            goodDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            calendar.setTimeInMillis((weatherListElement.getLocalDt() * 1000L));
             String formattedDate = goodDateFormat.format(calendar.getTime());
 
             tvDate.setText(formattedDate);
