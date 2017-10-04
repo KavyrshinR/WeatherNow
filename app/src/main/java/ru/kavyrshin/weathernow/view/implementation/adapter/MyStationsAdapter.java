@@ -16,6 +16,9 @@ import ru.kavyrshin.weathernow.entity.MainWeatherModel;
 
 public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private final int STATION_LIST_ITEM = R.layout.station_list_item;
+    private final int SPACE_LIST_ITEM = R.layout.space_list_item;
+
     private StationWeatherAdapter.MyStationsListener myStationsListener;
     private ArrayList<MainWeatherModel> myStations = new ArrayList<>();
 
@@ -25,27 +28,48 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.station_list_item, parent, false);
-        MyStationViewHolder myStationViewHolder = new MyStationViewHolder(view);
-        return myStationViewHolder;
+        if (viewType == STATION_LIST_ITEM) {
+            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+            View view = layoutInflater.inflate(R.layout.station_list_item, parent, false);
+            MyStationViewHolder myStationViewHolder = new MyStationViewHolder(view);
+            return myStationViewHolder;
+        } else {
+            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+            View view = layoutInflater.inflate(R.layout.space_list_item, parent, false);
+            SpaceViewHolder spaceViewHolder = new SpaceViewHolder(view);
+            return spaceViewHolder;
+        }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        MyStationViewHolder myStationViewHolder = (MyStationViewHolder) holder;
-        myStationViewHolder.cityName.setText(myStations.get(position).getCity().getName());
+        int itemType = getItemViewType(position);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(myStationViewHolder.itemView.getContext(),
-                LinearLayoutManager.HORIZONTAL, false);
-        myStationViewHolder.recyclerView.setLayoutManager(linearLayoutManager);
+        if (itemType == STATION_LIST_ITEM) {
+            MyStationViewHolder myStationViewHolder = (MyStationViewHolder) holder;
+            myStationViewHolder.cityName.setText(myStations.get(position).getCity().getName());
 
-        myStationViewHolder.recyclerView.setAdapter(new StationWeatherAdapter(myStationsListener, myStations.get(position)));
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(myStationViewHolder.itemView.getContext(),
+                    LinearLayoutManager.HORIZONTAL, false);
+            myStationViewHolder.recyclerView.setLayoutManager(linearLayoutManager);
+
+            myStationViewHolder.recyclerView.setAdapter(new StationWeatherAdapter(myStationsListener, myStations.get(position)));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return myStations.size();
+        return myStations.size()
+                + 1;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position < myStations.size()) {
+            return STATION_LIST_ITEM;
+        }
+
+        return SPACE_LIST_ITEM;
     }
 
     public void setMyStations(List<MainWeatherModel> myStations) {
@@ -65,6 +89,15 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(itemView);
             cityName = (TextView) itemView.findViewById(R.id.cityName);
             recyclerView = (RecyclerView) itemView.findViewById(R.id.weatherList);
+        }
+
+    }
+
+    static class SpaceViewHolder extends RecyclerView.ViewHolder {
+
+        public SpaceViewHolder(View itemView) {
+            super(itemView);
+
         }
 
     }
