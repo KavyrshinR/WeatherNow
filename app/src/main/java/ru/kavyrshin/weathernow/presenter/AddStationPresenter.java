@@ -85,7 +85,8 @@ public class AddStationPresenter extends BasePresenter<AddStationView> {
 
         if (element != null) {
             Coord coord = element.getCoord();
-            dataManager.getTimeZoneByCoordinate(coord.getLat(), coord.getLon(), element.getDt())
+            unsubscribeOnDestroy(
+                    dataManager.getTimeZoneByCoordinate(coord.getLat(), coord.getLon(), element.getDt())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<TimeZone>() {
@@ -120,7 +121,8 @@ public class AddStationPresenter extends BasePresenter<AddStationView> {
                             city.setDstOffset(timeZone.getDstOffset());
                             dataManager.saveStation(city);
                         }
-                    });
+                    })
+            );
         }
     }
 }
