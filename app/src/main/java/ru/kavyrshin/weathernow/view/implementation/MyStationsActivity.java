@@ -101,7 +101,6 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void showMyStations(List<MainWeatherModel> weatherListElements) {
-        swipeRefreshLayout.setRefreshing(false);
         myStationsAdapter.clearStations();
         myStationsAdapter.setMyStations(weatherListElements);
         myStationsAdapter.notifyDataSetChanged();

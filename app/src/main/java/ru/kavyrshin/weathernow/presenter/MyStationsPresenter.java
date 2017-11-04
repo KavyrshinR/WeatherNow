@@ -1,11 +1,14 @@
 package ru.kavyrshin.weathernow.presenter;
 
+import android.util.Pair;
+
 import com.arellomobile.mvp.InjectViewState;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.kavyrshin.weathernow.entity.CacheCity;
+import ru.kavyrshin.weathernow.entity.DataSource;
 import ru.kavyrshin.weathernow.entity.MainWeatherModel;
 import ru.kavyrshin.weathernow.model.DataManager;
 import ru.kavyrshin.weathernow.view.MyStationsView;
@@ -34,10 +37,12 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
             cityIds[i] = item.getId();
         }
 
-        dataManager.getWeather(cityIds)
+        unsubscribeOnDestroy(
+                dataManager.getWeather(cityIds)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<MainWeatherModel>>() {
+                        .startWith(dataManager.getCachedWeather())
+                .subscribe(new Observer<Pair<DataSource, List<MainWeatherModel>>>() {
                     @Override
                     public void onCompleted() {
 
@@ -50,9 +55,13 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
                     }
 
                     @Override
-                    public void onNext(List<MainWeatherModel> mainWeatherModels) {
-                        getViewState().showMyStations(mainWeatherModels);
+                    public void onNext(Pair<DataSource, List<MainWeatherModel>> mainWeatherModels) {
+                        getViewState().showMyStations(mainWeatherModels.second);
+                        if (mainWeatherModels.first.getSource() == DataSource.INTERNET_DATA_SOURCE) {
+                            getViewState().hideLoad();
+                        }
                     }
-                });
+                })
+        );
     }
 }

@@ -1,6 +1,8 @@
 package ru.kavyrshin.weathernow.model;
 
 
+import android.util.Pair;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import io.realm.RealmResults;
 import ru.kavyrshin.weathernow.BuildConfig;
 import ru.kavyrshin.weathernow.MyApplication;
 import ru.kavyrshin.weathernow.entity.CacheCity;
+import ru.kavyrshin.weathernow.entity.DataSource;
 import ru.kavyrshin.weathernow.entity.MainStationModel;
 import ru.kavyrshin.weathernow.entity.MainWeatherModel;
 import ru.kavyrshin.weathernow.entity.StationListElement;
@@ -78,15 +81,19 @@ public class DataManager {
         return realm.copyFromRealm(cacheCities);
     }
 
-    public Observable<List<MainWeatherModel>> getWeather(int[] idStations) {
+    public Pair<DataSource, List<MainWeatherModel>> getCachedWeather() {
+        RealmResults<MainWeatherModel> mainWeatherModels = realm.where(MainWeatherModel.class).findAll();
+        return new Pair<DataSource, List<MainWeatherModel>>(new DataSource(DataSource.DISK_DATA_SOURCE),
+                realm.copyFromRealm(mainWeatherModels));
+    }
+
+    public Observable<Pair<DataSource, List<MainWeatherModel>>> getWeather(int[] idStations) {
 
         final ArrayList<CacheCity> favouriteCitys = new ArrayList<>(getFavouriteStations());
 
         if (!MyApplication.isNetworkConnected()) {
-            RealmResults<MainWeatherModel> mainWeatherModels = realm.where(MainWeatherModel.class).findAll();
-            return Observable.just(realm.copyFromRealm(mainWeatherModels));
+            return Observable.error(new CustomException(CustomException.NETWORK_EXCEPTION, "Нет подключения"));
         }
-
 
         ArrayList<Observable<MainWeatherModel>> observables = new ArrayList<>();
 
@@ -117,11 +124,12 @@ public class DataManager {
                 realm.commitTransaction();
                 return Observable.just(mainWeatherModel);
             }
-        }).map(new Func1<MainWeatherModel, List<MainWeatherModel>>() {
+        }).map(new Func1<MainWeatherModel, Pair<DataSource, List<MainWeatherModel>>>() {
             @Override
-            public List<MainWeatherModel> call(MainWeatherModel mainWeatherModel) {
+            public Pair<DataSource, List<MainWeatherModel>> call(MainWeatherModel mainWeatherModel) {
                 RealmResults<MainWeatherModel> mainWeatherModels = realm.where(MainWeatherModel.class).findAll();
-                return realm.copyFromRealm(mainWeatherModels);
+                return new Pair<DataSource, List<MainWeatherModel>>(new DataSource(DataSource.INTERNET_DATA_SOURCE),
+                        realm.copyFromRealm(mainWeatherModels));
             }
         });
     }
