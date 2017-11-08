@@ -7,4 +7,5 @@ import ru.kavyrshin.weathernow.entity.StationListElement;
 
 public interface AddStationView extends BaseView {
     void showArroundStations(List<StationListElement> arroundStations);
+    void stationAdded();
 }

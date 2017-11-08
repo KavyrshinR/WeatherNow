@@ -107,9 +107,11 @@ public class AddStationActivity extends BaseActivity implements AddStationView, 
     @Override
     public void onArroundStationClick(StationListElement stationListElement) {
         addStationPresenter.addStation(stationListElement.getId());
+    }
 
+    @Override
+    public void stationAdded() {
         Intent intent = new Intent();
-        intent.putExtra(MyStationsActivity.EXTEA_STATION_ID, stationListElement.getId());
         setResult(RESULT_OK, intent);
         finish();
     }

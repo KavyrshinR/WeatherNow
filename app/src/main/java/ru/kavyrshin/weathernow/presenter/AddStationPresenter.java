@@ -21,6 +21,8 @@ import rx.schedulers.Schedulers;
 @InjectViewState
 public class AddStationPresenter extends BasePresenter<AddStationView> {
 
+    public static final String TAG = "myLogs";
+
     private String addingCityName = "";
     private ArrayList<StationListElement> stationListElements = new ArrayList<>();
 
@@ -120,6 +122,7 @@ public class AddStationPresenter extends BasePresenter<AddStationView> {
                             city.setUtcOffset(timeZone.getRawOffset());
                             city.setDstOffset(timeZone.getDstOffset());
                             dataManager.saveStation(city);
+                            getViewState().stationAdded();
                         }
                     })
             );
