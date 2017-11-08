@@ -21,6 +21,7 @@ public class StationWeatherAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public interface MyStationsListener {
         void myStationClick(int cityId, int unixTime);
+        void myStationLongClick(int cityId, int unixTime);
     }
 
     private MyStationsListener myStationsListener;
@@ -58,7 +59,9 @@ public class StationWeatherAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         this.weatherList.clear();
     }
 
-    static class WeatherItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class WeatherItemViewHolder extends RecyclerView.ViewHolder implements
+            View.OnClickListener,
+            View.OnLongClickListener {
         MyStationsListener myStationsListener;
         WeatherListElement weatherListElement;
 
@@ -104,11 +107,18 @@ public class StationWeatherAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             }
 
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             myStationsListener.myStationClick(cityId, weatherListElement.getDt());
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            myStationsListener.myStationLongClick(cityId, weatherListElement.getDt());
+            return true;
         }
 
         public int getIconResId(int weatherId) { //https://openweathermap.org/weather-conditions
