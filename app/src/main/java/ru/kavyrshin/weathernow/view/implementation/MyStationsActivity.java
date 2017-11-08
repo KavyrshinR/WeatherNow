@@ -7,7 +7,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,6 +80,12 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
+    public void myStationLongClick(int cityId, int unixTime) {
+        myStationsPresenter.deleteFavouriteStation(cityId);
+        Toast.makeText(this, "Удалил" + cityId, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void setTitle(CharSequence title) {
         if (getSupportActionBar() != null) {
             tvToolbar.setText(title);
@@ -124,12 +129,7 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_STATION_ID_CODE) {
             if (resultCode == RESULT_OK) {
-                int result = data.getIntExtra(MyStationsActivity.EXTEA_STATION_ID, -1);
-
-                if (result != -1) {
-                    Log.d("myLogs", "Result " + result);
-
-                }
+                myStationsPresenter.loadFavouriteStations();
             }
         }
     }
