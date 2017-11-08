@@ -27,6 +27,10 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
         loadFavouriteStations();
     }
 
+    public void deleteFavouriteStation(int cityId) {
+        dataManager.deleteFavouriteStation(cityId);
+    }
+
     public void loadFavouriteStations() {
         ArrayList<CacheCity> favouriteCitys = new ArrayList<>(dataManager.getFavouriteStations());
 
@@ -39,9 +43,9 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
 
         unsubscribeOnDestroy(
                 dataManager.getWeather(cityIds)
+                        .startWith(dataManager.getCachedWeather())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                        .startWith(dataManager.getCachedWeather())
                 .subscribe(new Observer<Pair<DataSource, List<MainWeatherModel>>>() {
                     @Override
                     public void onCompleted() {
