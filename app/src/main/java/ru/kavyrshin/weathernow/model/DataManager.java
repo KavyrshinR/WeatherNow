@@ -28,6 +28,8 @@ import rx.schedulers.Schedulers;
 
 public class DataManager {
 
+    public static final String TAG = "myLogs";
+
     private static DataManager instance;
 
     public static DataManager getInstance() {
@@ -43,8 +45,6 @@ public class DataManager {
 
     private ApiWeather apiWeather = ApiModule.getInstanceWeather();
     private ApiTimeZone apiTimeZone = ApiModule.getInstanceTimeZone();
-
-    private Realm realm = Realm.getDefaultInstance();
 
     public Observable<List<StationListElement>> getStationArround(double latitude, double longitude) {
 
@@ -71,20 +71,48 @@ public class DataManager {
     }
 
     public void saveStation(CacheCity city) {
+        Realm realm = Realm.getDefaultInstance();
+
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(city);
         realm.commitTransaction();
+
+        realm.close();
     }
 
     public List<CacheCity> getFavouriteStations() {
+        Realm realm = Realm.getDefaultInstance();
+
         RealmResults<CacheCity> cacheCities = realm.where(CacheCity.class).findAll();
-        return realm.copyFromRealm(cacheCities);
+        List<CacheCity> cacheCitiesList = realm.copyFromRealm(cacheCities);
+
+        realm.close();
+        return cacheCitiesList;
+    }
+
+    public void deleteFavouriteStation(int cityId) {
+        Realm realm = Realm.getDefaultInstance();
+
+        final RealmResults<CacheCity> results = realm.where(CacheCity.class).equalTo("id", cityId).findAll();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                results.deleteAllFromRealm();
+            }
+        });
+
+        realm.close();
     }
 
     public Pair<DataSource, List<MainWeatherModel>> getCachedWeather() {
+        Realm realm = Realm.getDefaultInstance();
+
         RealmResults<MainWeatherModel> mainWeatherModels = realm.where(MainWeatherModel.class).findAll();
-        return new Pair<DataSource, List<MainWeatherModel>>(new DataSource(DataSource.DISK_DATA_SOURCE),
-                realm.copyFromRealm(mainWeatherModels));
+        List<MainWeatherModel> mainWeatherModelList = realm.copyFromRealm(mainWeatherModels);
+
+        realm.close();
+        return new Pair<>(new DataSource(DataSource.DISK_DATA_SOURCE), mainWeatherModelList);
+
     }
 
     public Observable<Pair<DataSource, List<MainWeatherModel>>> getWeather(int[] idStations) {
@@ -108,6 +136,8 @@ public class DataManager {
         return result.concatMap(new Func1<MainWeatherModel, Observable<MainWeatherModel>>() {
             @Override
             public Observable<MainWeatherModel> call(MainWeatherModel mainWeatherModel) {
+                Realm realm = Realm.getDefaultInstance();
+
                 mainWeatherModel.setCityId(mainWeatherModel.getCity().getId());
 
                 for (CacheCity cacheCity : favouriteCitys) {
@@ -122,14 +152,19 @@ public class DataManager {
                 realm.beginTransaction();
                 realm.copyToRealmOrUpdate(mainWeatherModel);
                 realm.commitTransaction();
+
+                realm.close();
                 return Observable.just(mainWeatherModel);
             }
         }).map(new Func1<MainWeatherModel, Pair<DataSource, List<MainWeatherModel>>>() {
             @Override
             public Pair<DataSource, List<MainWeatherModel>> call(MainWeatherModel mainWeatherModel) {
+                Realm realm = Realm.getDefaultInstance();
+
                 RealmResults<MainWeatherModel> mainWeatherModels = realm.where(MainWeatherModel.class).findAll();
-                return new Pair<DataSource, List<MainWeatherModel>>(new DataSource(DataSource.INTERNET_DATA_SOURCE),
-                        realm.copyFromRealm(mainWeatherModels));
+                List<MainWeatherModel> mainWeatherModelList = realm.copyFromRealm(mainWeatherModels);
+
+                return new Pair<>(new DataSource(DataSource.INTERNET_DATA_SOURCE), mainWeatherModelList);
             }
         });
     }
