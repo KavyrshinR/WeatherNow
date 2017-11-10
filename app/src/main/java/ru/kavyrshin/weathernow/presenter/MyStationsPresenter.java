@@ -7,6 +7,7 @@ import com.arellomobile.mvp.InjectViewState;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.kavyrshin.weathernow.MyApplication;
 import ru.kavyrshin.weathernow.entity.CacheCity;
 import ru.kavyrshin.weathernow.entity.DataSource;
 import ru.kavyrshin.weathernow.entity.MainWeatherModel;
@@ -29,6 +30,7 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
 
     public void deleteFavouriteStation(int cityId) {
         dataManager.deleteFavouriteStation(cityId);
+        dataManager.deleteWeatherByStationId(cityId);
     }
 
     public void loadFavouriteStations() {
@@ -41,31 +43,38 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
             cityIds[i] = item.getId();
         }
 
-        unsubscribeOnDestroy(
-                dataManager.getWeather(cityIds)
-                        .startWith(dataManager.getCachedWeather())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Pair<DataSource, List<MainWeatherModel>>>() {
-                    @Override
-                    public void onCompleted() {
+        if (!MyApplication.isNetworkConnected()) {
+            Pair<DataSource, List<MainWeatherModel>> cachedWeather = dataManager.getCachedWeather();
+            getViewState().showMyStations(cachedWeather.second);
+            getViewState().hideLoad();
+        } else {
 
-                    }
+            unsubscribeOnDestroy(
+                    dataManager.getWeather(cityIds)
+                            .startWith(dataManager.getCachedWeather())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<Pair<DataSource, List<MainWeatherModel>>>() {
+                                @Override
+                                public void onCompleted() {
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        getViewState().showError(e.getMessage());
-                    }
+                                }
 
-                    @Override
-                    public void onNext(Pair<DataSource, List<MainWeatherModel>> mainWeatherModels) {
-                        getViewState().showMyStations(mainWeatherModels.second);
-                        if (mainWeatherModels.first.getSource() == DataSource.INTERNET_DATA_SOURCE) {
-                            getViewState().hideLoad();
-                        }
-                    }
-                })
-        );
+                                @Override
+                                public void onError(Throwable e) {
+                                    e.printStackTrace();
+                                    getViewState().showError(e.getMessage());
+                                }
+
+                                @Override
+                                public void onNext(Pair<DataSource, List<MainWeatherModel>> mainWeatherModels) {
+                                    getViewState().showMyStations(mainWeatherModels.second);
+                                    if (mainWeatherModels.first.getSource() == DataSource.INTERNET_DATA_SOURCE) {
+                                        getViewState().hideLoad();
+                                    }
+                                }
+                            })
+            );
+        }
     }
 }

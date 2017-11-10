@@ -104,6 +104,20 @@ public class DataManager {
         realm.close();
     }
 
+    public void deleteWeatherByStationId(int cityId) {
+        Realm realm = Realm.getDefaultInstance();
+
+        final RealmResults<MainWeatherModel> results = realm.where(MainWeatherModel.class).equalTo("cityId", cityId).findAll();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                results.deleteAllFromRealm();
+            }
+        });
+
+        realm.close();
+    }
+
     public Pair<DataSource, List<MainWeatherModel>> getCachedWeather() {
         Realm realm = Realm.getDefaultInstance();
 
@@ -118,10 +132,6 @@ public class DataManager {
     public Observable<Pair<DataSource, List<MainWeatherModel>>> getWeather(int[] idStations) {
 
         final ArrayList<CacheCity> favouriteCitys = new ArrayList<>(getFavouriteStations());
-
-        if (!MyApplication.isNetworkConnected()) {
-            return Observable.error(new CustomException(CustomException.NETWORK_EXCEPTION, "Нет подключения"));
-        }
 
         ArrayList<Observable<MainWeatherModel>> observables = new ArrayList<>();
 
