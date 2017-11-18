@@ -2,6 +2,7 @@ package ru.kavyrshin.weathernow.view.implementation.adapter;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,13 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             View view = layoutInflater.inflate(R.layout.station_list_item, parent, false);
             MyStationViewHolder myStationViewHolder = new MyStationViewHolder(view);
+
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(myStationViewHolder.itemView.getContext(),
+                    LinearLayoutManager.HORIZONTAL, false);
+            myStationViewHolder.recyclerView.setLayoutManager(linearLayoutManager);
+            SnapHelper pagerSnapHelper = new MySnapHelper();
+            pagerSnapHelper.attachToRecyclerView(myStationViewHolder.recyclerView);
+
             return myStationViewHolder;
         } else {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
@@ -48,10 +56,6 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (itemType == STATION_LIST_ITEM) {
             MyStationViewHolder myStationViewHolder = (MyStationViewHolder) holder;
             myStationViewHolder.cityName.setText(myStations.get(position).getCity().getName());
-
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(myStationViewHolder.itemView.getContext(),
-                    LinearLayoutManager.HORIZONTAL, false);
-            myStationViewHolder.recyclerView.setLayoutManager(linearLayoutManager);
 
             myStationViewHolder.recyclerView.setAdapter(new StationWeatherAdapter(myStationsListener, myStations.get(position)));
         }
