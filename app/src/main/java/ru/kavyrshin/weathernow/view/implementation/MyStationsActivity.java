@@ -76,6 +76,7 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void myStationClick(int cityId, int unixTime) {
+        myStationsPresenter.detailClick(cityId, unixTime);
         Toast.makeText(this, "cityId " + cityId + " time " + unixTime, Toast.LENGTH_SHORT).show();
     }
 
@@ -119,9 +120,22 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btnAddStation) {
-            Intent intent = new Intent(this, AddStationActivity.class);
-            startActivityForResult(intent, REQUEST_STATION_ID_CODE);
+            myStationsPresenter.addStationsClick();
         }
+    }
+
+    @Override
+    public void goToAddStation() {
+        Intent intent = new Intent(this, AddStationActivity.class);
+        startActivityForResult(intent, REQUEST_STATION_ID_CODE);
+    }
+
+    @Override
+    public void goToDetail(int cityId, int unixTime) {
+        Intent intent = new Intent(this, DetailedWeatherActivity.class);
+        intent.putExtra(DetailedWeatherActivity.CITY_ID_EXTRA, cityId);
+        intent.putExtra(DetailedWeatherActivity.UNIXTIME_EXTRA, unixTime);
+        startActivity(intent);
     }
 
     @Override

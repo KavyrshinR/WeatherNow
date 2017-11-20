@@ -77,4 +77,12 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
             );
         }
     }
+
+    public void addStationsClick() {
+        getViewState().goToAddStation();
+    }
+
+    public void detailClick(int cityId, int unixTime) {
+        getViewState().goToDetail(cityId, unixTime);
+    }
 }
