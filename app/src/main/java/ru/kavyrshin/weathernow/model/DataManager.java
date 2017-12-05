@@ -29,6 +29,7 @@ import rx.schedulers.Schedulers;
 public class DataManager {
 
     public static final String TAG = "myLogs";
+    public static final double hPa_IN_mmHg = 0.75006375541921;
 
     private static DataManager instance;
 
@@ -126,7 +127,17 @@ public class DataManager {
 
         realm.close();
         return new Pair<>(new DataSource(DataSource.DISK_DATA_SOURCE), mainWeatherModelList);
+    }
 
+    public MainWeatherModel getCachedWeatherById(int cityId) {
+        Realm realm = Realm.getDefaultInstance();
+
+        MainWeatherModel mainWeatherModelRealm =
+                realm.where(MainWeatherModel.class).equalTo("cityId", cityId).findFirst();
+        MainWeatherModel mainWeatherModel = realm.copyFromRealm(mainWeatherModelRealm);
+        realm.close();
+
+        return mainWeatherModel;
     }
 
     public Observable<Pair<DataSource, List<MainWeatherModel>>> getWeather(int[] idStations) {
@@ -154,6 +165,7 @@ public class DataManager {
                     if (cacheCity.getId() == mainWeatherModel.getCityId()) {
                         for (WeatherListElement item : mainWeatherModel.getList()) {
                             item.setLocalDt(item.getDt() + cacheCity.getUtcOffset() + cacheCity.getDstOffset());
+                            item.setPressure(item.getPressure() * hPa_IN_mmHg);
                         }
                     }
                 }
