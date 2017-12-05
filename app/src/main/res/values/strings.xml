@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">WeatherNow</string>
     <string name="my_stations_actionbar_title">My Stations</string>
+
+    <string name="east_char">E</string>
+    <string name="north_char">N</string>
+    <string name="north_east_char">NE</string>
+    <string name="north_west_char">NW</string>
+    <string name="south_char">S</string>
+    <string name="south_east_char">SE</string>
+    <string name="south_west_char">SW</string>
+    <string name="west_char">W</string>
 </resources>

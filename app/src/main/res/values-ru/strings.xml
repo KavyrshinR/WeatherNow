@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="my_stations_actionbar_title">Мои станции</string>
+
+    <string name="north_char">С</string>
+    <string name="north_east_char">СВ</string>
+    <string name="east_char">В</string>
+    <string name="south_east_char">ЮВ</string>
+    <string name="south_char">Ю</string>
+    <string name="south_west_char">ЮЗ</string>
+    <string name="west_char">З</string>
+    <string name="north_west_char">СЗ</string>
+</resources>
