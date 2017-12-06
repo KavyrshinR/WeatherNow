@@ -1,6 +1,7 @@
 package ru.kavyrshin.weathernow.view.implementation;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,9 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
     private int cityId;
     private int unixTimeWeather;
 
+    private Toolbar toolbar;
+    private TextView tvToolbar;
+
     private ImageView imageWeather;
     private TextView tvCityName;
     private TextView tvDate;
@@ -46,6 +50,12 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detailed_weather_activity);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        tvToolbar = (TextView) toolbar.findViewById(R.id.tvOut);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        setTitle("Detailed Weather");
 
         imageWeather = (ImageView) findViewById(R.id.imageWeather);
         tvCityName = (TextView) findViewById(R.id.tvCityName);
@@ -78,6 +88,8 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
         }
 
         if (weather != null) {
+            tvToolbar.setText(weatherModel.getCity().getName());
+
             int resId = getIconResId(weather.getWeather().get(0).getId());
             imageWeather.setImageResource(resId);
             tvCityName.setText(weatherModel.getCity().getName());
@@ -94,8 +106,8 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
             int wordWindDirection = windDirectionWordResId(weather.getDeg());
             tvWindDirection.setText(wordWindDirection);
 
-            tvWindSpeed.setText(String.format(Locale.getDefault(),"%.2f", weather.getSpeed()));
-            tvPressure.setText(String.format(Locale.getDefault(), "%.2f", weather.getPressure()));
+            tvWindSpeed.setText(String.format(Locale.getDefault(),"%.2f м/сек", weather.getSpeed()));
+            tvPressure.setText(String.format(Locale.getDefault(), "Давление: мм. рт. ст. %.2f", weather.getPressure()));
             tvHumidity.setText(String.format(Locale.getDefault(), "%d%%", weather.getHumidity()));
         }
     }
