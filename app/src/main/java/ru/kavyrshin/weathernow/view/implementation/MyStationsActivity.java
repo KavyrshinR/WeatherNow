@@ -61,7 +61,7 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         stationList.setLayoutManager(linearLayoutManager);
-        myStationsAdapter = new MyStationsAdapter(this);
+        myStationsAdapter = new MyStationsAdapter();
         stationList.setAdapter(myStationsAdapter);
 
         btnAddStation.setOnClickListener(this);
@@ -72,6 +72,18 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
                 myStationsPresenter.loadFavouriteStations();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        myStationsAdapter.setMyStationsListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        myStationsAdapter.setMyStationsListener(null);
     }
 
     @Override

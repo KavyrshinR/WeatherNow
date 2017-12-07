@@ -23,8 +23,8 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private StationWeatherAdapter.MyStationsListener myStationsListener;
     private ArrayList<MainWeatherModel> myStations = new ArrayList<>();
 
-    public MyStationsAdapter(StationWeatherAdapter.MyStationsListener myStationsListener) {
-        this.myStationsListener = myStationsListener;
+    public MyStationsAdapter() {
+
     }
 
     @Override
@@ -47,6 +47,10 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             SpaceViewHolder spaceViewHolder = new SpaceViewHolder(view);
             return spaceViewHolder;
         }
+    }
+
+    public void setMyStationsListener(StationWeatherAdapter.MyStationsListener myStationsListener) {
+        this.myStationsListener = myStationsListener;
     }
 
     @Override
@@ -83,6 +87,8 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void clearStations() {
         this.myStations.clear();
     }
+
+
 
     static class MyStationViewHolder extends RecyclerView.ViewHolder {
 
