@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import ru.kavyrshin.weathernow.R;
@@ -22,6 +23,8 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private StationWeatherAdapter.MyStationsListener myStationsListener;
     private ArrayList<MainWeatherModel> myStations = new ArrayList<>();
+
+    private HashMap<Integer, StationWeatherAdapter> adapters = new HashMap<>();
 
     public MyStationsAdapter() {
 
@@ -61,7 +64,11 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             MyStationViewHolder myStationViewHolder = (MyStationViewHolder) holder;
             myStationViewHolder.cityName.setText(myStations.get(position).getCity().getName());
 
-            myStationViewHolder.recyclerView.setAdapter(new StationWeatherAdapter(myStationsListener, myStations.get(position)));
+            if (adapters.get(myStations.get(position).getCityId()) == null) {
+                adapters.put(myStations.get(position).getCityId(), new StationWeatherAdapter(myStationsListener, myStations.get(position)));
+            }
+
+            myStationViewHolder.recyclerView.setAdapter(adapters.get(myStations.get(position).getCityId()));
         }
     }
 
@@ -97,8 +104,8 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         public MyStationViewHolder(View itemView) {
             super(itemView);
-            cityName = (TextView) itemView.findViewById(R.id.cityName);
-            recyclerView = (RecyclerView) itemView.findViewById(R.id.weatherList);
+            cityName = itemView.findViewById(R.id.cityName);
+            recyclerView = itemView.findViewById(R.id.weatherList);
         }
 
     }
