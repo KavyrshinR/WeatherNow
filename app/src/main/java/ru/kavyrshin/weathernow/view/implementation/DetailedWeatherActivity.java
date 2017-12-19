@@ -10,7 +10,6 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.TimeZone;
 
 import ru.kavyrshin.weathernow.R;
@@ -51,21 +50,21 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detailed_weather_activity);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        tvToolbar = (TextView) toolbar.findViewById(R.id.tvOut);
+        toolbar = findViewById(R.id.toolbar);
+        tvToolbar = toolbar.findViewById(R.id.tvOut);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         setTitle("Detailed Weather");
 
-        imageWeather = (ImageView) findViewById(R.id.imageWeather);
-        tvCityName = (TextView) findViewById(R.id.tvCityName);
-        tvDate = (TextView) findViewById(R.id.tvDate);
-        tvTempDay = (TextView) findViewById(R.id.tvTempDay);
-        tvTempNight = (TextView) findViewById(R.id.tvTempNight);
-        tvWindDirection = (TextView) findViewById(R.id.tvWindDirection);
-        tvWindSpeed = (TextView) findViewById(R.id.tvWindSpeed);
-        tvPressure = (TextView) findViewById(R.id.tvPressure);
-        tvHumidity = (TextView) findViewById(R.id.tvHumidity);
+        imageWeather = findViewById(R.id.imageWeather);
+        tvCityName = findViewById(R.id.tvCityName);
+        tvDate = findViewById(R.id.tvDate);
+        tvTempDay = findViewById(R.id.tvTempDay);
+        tvTempNight = findViewById(R.id.tvTempNight);
+        tvWindDirection = findViewById(R.id.tvWindDirection);
+        tvWindSpeed = findViewById(R.id.tvWindSpeed);
+        tvPressure = findViewById(R.id.tvPressure);
+        tvHumidity = findViewById(R.id.tvHumidity);
 
         cityId = getIntent().getIntExtra(CITY_ID_EXTRA, -1);
         unixTimeWeather = getIntent().getIntExtra(UNIXTIME_EXTRA, -1);
@@ -100,15 +99,15 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
             String formattedDate = goodDateFormat.format(calendar.getTime());
 
             tvDate.setText(formattedDate);
-            tvTempDay.setText(String.format(Locale.getDefault(), "%.2f", weather.getTemp().getDay()));
-            tvTempNight.setText(String.format(Locale.getDefault(), "%.2f", weather.getTemp().getNight()));
+            tvTempDay.setText(getString(R.string.temperature_celsius, weather.getTemp().getDay()));
+            tvTempNight.setText(getString(R.string.temperature_celsius, weather.getTemp().getNight()));
 
             int wordWindDirection = windDirectionWordResId(weather.getDeg());
             tvWindDirection.setText(wordWindDirection);
+            tvWindSpeed.setText(getString(R.string.wind_m_per_sec, weather.getSpeed()));
 
-            tvWindSpeed.setText(String.format(Locale.getDefault(),"%.2f м/сек", weather.getSpeed()));
-            tvPressure.setText(String.format(Locale.getDefault(), "Давление: мм. рт. ст. %.2f", weather.getPressure()));
-            tvHumidity.setText(String.format(Locale.getDefault(), "%d%%", weather.getHumidity()));
+            tvPressure.setText(getString(R.string.pressure_mmHg, weather.getPressure()));
+            tvHumidity.setText(getString(R.string.humidity, weather.getHumidity()));
         }
     }
 
