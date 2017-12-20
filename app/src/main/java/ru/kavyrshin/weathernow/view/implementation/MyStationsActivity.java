@@ -7,6 +7,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,16 +51,16 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        tvToolbar = (TextView) toolbar.findViewById(R.id.tvOut);
+        toolbar = findViewById(R.id.toolbar);
+        tvToolbar = toolbar.findViewById(R.id.tvOut);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         setTitle(getString(R.string.my_stations_actionbar_title));
 
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout = findViewById(R.id.swipeRefresh);
 
-        btnAddStation = (FloatingActionButton) findViewById(R.id.btnAddStation);
-        stationList = (RecyclerView) findViewById(R.id.stationList);
+        btnAddStation = findViewById(R.id.btnAddStation);
+        stationList = findViewById(R.id.stationList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         stationList.setLayoutManager(linearLayoutManager);
@@ -75,6 +78,13 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.my_stations_menu, menu);
+        return true;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         myStationsAdapter.setMyStationsListener(this);
@@ -84,6 +94,25 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
     protected void onPause() {
         super.onPause();
         myStationsAdapter.setMyStationsListener(null);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_settings : {
+
+                return true;
+            }
+
+            case R.id.menu_about : {
+
+                return true;
+            }
+
+            default: {
+                return super.onOptionsItemSelected(item);
+            }
+        }
     }
 
     @Override
