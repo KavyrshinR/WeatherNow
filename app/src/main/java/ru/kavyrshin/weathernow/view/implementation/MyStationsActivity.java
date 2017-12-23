@@ -105,7 +105,8 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
             }
 
             case R.id.menu_about : {
-
+                Intent intent = new Intent(MyStationsActivity.this, AboutActivity.class);
+                startActivity(intent);
                 return true;
             }
 
