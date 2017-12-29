@@ -100,7 +100,8 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_settings : {
-
+                Intent intent = new Intent(MyStationsActivity.this, SettingsActivity.class);
+                startActivity(intent);
                 return true;
             }
 
