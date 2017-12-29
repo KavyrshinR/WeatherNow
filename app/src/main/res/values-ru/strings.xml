@@ -20,4 +20,12 @@
     <string name="menu_settings">Настройки</string>
     <string name="menu_about">О приложении</string>
     <string name="activity_title_about">О приложении</string>
+    <string name="pressure_all">Давление</string>
+    <string name="temperature_all">Температура</string>
+    <string name="wind_speed_all">Скорость ветра</string>
+    <string name="hPa_symbol">гПа</string>
+    <string name="mm_of_mercury_symbol">мм. рт. ст.</string>
+    <string name="m_per_sec_symbol">м/сек</string>
+    <string name="mi_per_hour_symbol">миль/час</string>
+    <string name="settings_unit_settings_title">Единицы измерения</string>
 </resources>

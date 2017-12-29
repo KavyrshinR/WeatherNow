@@ -27,4 +27,15 @@
     <string name="freepik_reference">http://www.freepik.com</string>
     <string name="made_by_roundicons">Icon made by Roundicons from www.flaticon.com</string>
     <string name="roundicons_reference">https://roundicons.com</string>
+    <string name="pressure_all">Pressure</string>
+    <string name="temperature_all">Temperature</string>
+    <string name="wind_speed_all">Wind speed</string>
+    <string name="hPa_symbol">hPa</string>
+    <string name="mm_of_mercury_symbol">mm of mercury</string>
+    <string name="celsius_symbol">°C</string>
+    <string name="kelvin_symbol">K</string>
+    <string name="fahrenheit_symbol">°F</string>
+    <string name="m_per_sec_symbol">m/sec</string>
+    <string name="mi_per_hour_symbol">mi/hour</string>
+    <string name="settings_unit_settings_title">Unit settings</string>
 </resources>
