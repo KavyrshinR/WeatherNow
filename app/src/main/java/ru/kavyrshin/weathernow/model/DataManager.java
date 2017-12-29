@@ -1,6 +1,7 @@
 package ru.kavyrshin.weathernow.model;
 
 
+import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import ru.kavyrshin.weathernow.model.api.ApiModule;
 import ru.kavyrshin.weathernow.model.api.ApiTimeZone;
 import ru.kavyrshin.weathernow.model.api.ApiWeather;
 import ru.kavyrshin.weathernow.model.exception.CustomException;
+import ru.kavyrshin.weathernow.util.WeatherSettings;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -186,6 +188,8 @@ public class DataManager {
                 RealmResults<MainWeatherModel> mainWeatherModels = realm.where(MainWeatherModel.class).findAll();
                 List<MainWeatherModel> mainWeatherModelList = realm.copyFromRealm(mainWeatherModels);
 
+                realm.close();
+
                 return new Pair<>(new DataSource(DataSource.INTERNET_DATA_SOURCE), mainWeatherModelList);
             }
         });
@@ -199,5 +203,29 @@ public class DataManager {
         } else {
             return Observable.error(new CustomException(CustomException.NETWORK_EXCEPTION, "Нет подключения"));
         }
+    }
+
+    public void saveWeatherSettings(WeatherSettings weatherSettings) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(weatherSettings);
+        realm.commitTransaction();
+        realm.close();
+    }
+
+    public WeatherSettings getWeatherSettings() {
+        WeatherSettings weatherSettings;
+
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<WeatherSettings> realmResults = realm.where(WeatherSettings.class).findAll();
+        Log.d(TAG, "getWeatherSettings: size " + realmResults.size());
+        if (!realmResults.isEmpty()) {
+            weatherSettings = realm.copyFromRealm(realmResults.first());
+        } else {
+            weatherSettings = new WeatherSettings();
+        }
+        realm.close();
+
+        return weatherSettings;
     }
 }
