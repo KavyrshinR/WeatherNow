@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="temperature_variants">
+        <item>@string/celsius_symbol</item>
+        <item>@string/kelvin_symbol</item>
+        <item>@string/fahrenheit_symbol</item>
+    </array>
+
+    <array name="pressure_variants">
+        <item>@string/hPa_symbol</item>
+        <item>@string/mm_of_mercury_symbol</item>
+    </array>
+
+    <array name="wind_speed_variants">
+        <item>@string/m_per_sec_symbol</item>
+        <item>@string/mi_per_hour_symbol</item>
+    </array>
+</resources>
