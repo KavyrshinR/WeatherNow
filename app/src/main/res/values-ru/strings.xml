@@ -13,8 +13,6 @@
     <string name="humidity">Влажность %d%%</string>
     <string name="pressure_mmHg">Давление: %.2f мм. рт. ст.</string>
     <string name="pressure_hPa">Давление: %.2f гПа</string>
-    <string name="temperature_celsius">%.2f °C</string>
-    <string name="temperature_kelvin">%.2f К</string>
     <string name="wind_m_per_sec">%.2f м/сек</string>
     <string name="wind_mi_per_hour">%.2f миль/час</string>
     <string name="menu_settings">Настройки</string>

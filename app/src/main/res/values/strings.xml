@@ -13,8 +13,9 @@
     <string name="humidity">Humidity %d%%</string>
     <string name="pressure_mmHg">Pressure: %.2f mm of mercury</string>
     <string name="pressure_hPa">Pressure: %.2f hPa</string>
-    <string name="temperature_celsius">%.2f °C</string>
-    <string name="temperature_kelvin">%.2f K</string>
+    <string name="temperature_celsius">%+.2f °C</string>
+    <string name="temperature_kelvin">%+.2f K</string>
+    <string name="temperature_fahrenheit">%+.2f °F</string>
     <string name="wind_m_per_sec">%.2f m/sec</string>
     <string name="wind_mi_per_hour">%.2f mi/hour</string>
     <string name="menu_settings">Settings</string>
