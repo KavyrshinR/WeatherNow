@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import ru.kavyrshin.weathernow.R;
@@ -77,10 +78,10 @@ public class StationWeatherAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         public WeatherItemViewHolder(View itemView, MyStationsListener myStationsListener) {
             super(itemView);
             this.myStationsListener = myStationsListener;
-            tvDate = (TextView) itemView.findViewById(R.id.tvDate);
-            tvTemperatureDay = (TextView) itemView.findViewById(R.id.tvTemperatureDay);
-            tvTemperatureNight = (TextView) itemView.findViewById(R.id.tvTemperatureNight);
-            ivWeather = (ImageView) itemView.findViewById(R.id.ivWeather);
+            tvDate = itemView.findViewById(R.id.tvDate);
+            tvTemperatureDay = itemView.findViewById(R.id.tvTemperatureDay);
+            tvTemperatureNight = itemView.findViewById(R.id.tvTemperatureNight);
+            ivWeather = itemView.findViewById(R.id.ivWeather);
         }
 
         private static SimpleDateFormat goodDateFormat = new SimpleDateFormat("dd.MM HH:mm");
@@ -98,8 +99,8 @@ public class StationWeatherAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             String formattedDate = goodDateFormat.format(calendar.getTime());
 
             tvDate.setText(formattedDate);
-            tvTemperatureDay.setText(dayTemp > 0 ? "+" + dayTemp : Double.toString(dayTemp));
-            tvTemperatureNight.setText(nightTemp > 0 ? "+" + nightTemp : Double.toString(nightTemp));
+            tvTemperatureDay.setText(String.format(Locale.getDefault(), "%+.2f", dayTemp));
+            tvTemperatureNight.setText(String.format(Locale.getDefault(), "%+.2f", nightTemp));
 
             int resId = getIconResId(weatherListElement.getWeather().get(0).getId());
             if (resId > 0) {
