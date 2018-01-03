@@ -16,6 +16,7 @@ import ru.kavyrshin.weathernow.entity.DataSource;
 import ru.kavyrshin.weathernow.entity.MainStationModel;
 import ru.kavyrshin.weathernow.entity.MainWeatherModel;
 import ru.kavyrshin.weathernow.entity.StationListElement;
+import ru.kavyrshin.weathernow.entity.Temperature;
 import ru.kavyrshin.weathernow.entity.TimeZone;
 import ru.kavyrshin.weathernow.entity.WeatherListElement;
 import ru.kavyrshin.weathernow.model.api.ApiModule;
@@ -31,7 +32,7 @@ import rx.schedulers.Schedulers;
 public class DataManager {
 
     public static final String TAG = "myLogs";
-    public static final double hPa_IN_mmHg = 0.75006375541921;
+
 
     private static DataManager instance;
 
@@ -128,6 +129,11 @@ public class DataManager {
         List<MainWeatherModel> mainWeatherModelList = realm.copyFromRealm(mainWeatherModels);
 
         realm.close();
+
+        for (MainWeatherModel item : mainWeatherModelList) {
+            convertWeatherUnit(item, getWeatherSettings());
+        }
+
         return new Pair<>(new DataSource(DataSource.DISK_DATA_SOURCE), mainWeatherModelList);
     }
 
@@ -139,6 +145,8 @@ public class DataManager {
         MainWeatherModel mainWeatherModel = realm.copyFromRealm(mainWeatherModelRealm);
         realm.close();
 
+        convertWeatherUnit(mainWeatherModel, getWeatherSettings());
+
         return mainWeatherModel;
     }
 
@@ -149,7 +157,7 @@ public class DataManager {
         ArrayList<Observable<MainWeatherModel>> observables = new ArrayList<>();
 
         for (int i = 0; i < idStations.length; i++) {
-            observables.add(apiWeather.getWeatherByIdCity(idStations[i], 7, ApiModule.units, BuildConfig.API_KEY));
+            observables.add(apiWeather.getWeatherByIdCity(idStations[i], 7, BuildConfig.API_KEY));
         }
 
         Observable<MainWeatherModel> result = Observable.merge(observables)
@@ -167,7 +175,7 @@ public class DataManager {
                     if (cacheCity.getId() == mainWeatherModel.getCityId()) {
                         for (WeatherListElement item : mainWeatherModel.getList()) {
                             item.setLocalDt(item.getDt() + cacheCity.getUtcOffset() + cacheCity.getDstOffset());
-                            item.setPressure(item.getPressure() * hPa_IN_mmHg);
+
                         }
                     }
                 }
@@ -189,6 +197,12 @@ public class DataManager {
                 List<MainWeatherModel> mainWeatherModelList = realm.copyFromRealm(mainWeatherModels);
 
                 realm.close();
+
+                WeatherSettings weatherSettings = getWeatherSettings();
+
+                for (MainWeatherModel item : mainWeatherModelList) {
+                    convertWeatherUnit(item, weatherSettings);
+                }
 
                 return new Pair<>(new DataSource(DataSource.INTERNET_DATA_SOURCE), mainWeatherModelList);
             }
@@ -227,5 +241,36 @@ public class DataManager {
         realm.close();
 
         return weatherSettings;
+    }
+
+    public void convertWeatherUnit(MainWeatherModel mainWeatherModel, WeatherSettings weatherSettings) {
+        ArrayList<WeatherListElement> weatherList = new ArrayList<>(mainWeatherModel.getList());
+        for (WeatherListElement item : weatherList) {
+            if (weatherSettings.getTemperatureUnit() == WeatherSettings.CELSIUS_UNIT) {
+                Temperature temperature = item.getTemp();
+                temperature.setDay(WeatherSettings.getCelsiusFromKelvin(temperature.getDay()));
+                temperature.setEve(WeatherSettings.getCelsiusFromKelvin(temperature.getEve()));
+                temperature.setMorn(WeatherSettings.getCelsiusFromKelvin(temperature.getMorn()));
+                temperature.setNight(WeatherSettings.getCelsiusFromKelvin(temperature.getNight()));
+                temperature.setMax(WeatherSettings.getCelsiusFromKelvin(temperature.getMax()));
+                temperature.setMin(WeatherSettings.getCelsiusFromKelvin(temperature.getMin()));
+            } else if (weatherSettings.getTemperatureUnit() == WeatherSettings.FAHRENHEIT_UNIT) {
+                Temperature temperature = item.getTemp();
+                temperature.setDay(WeatherSettings.getFahrenheitFromKelvin(temperature.getDay()));
+                temperature.setEve(WeatherSettings.getFahrenheitFromKelvin(temperature.getEve()));
+                temperature.setMorn(WeatherSettings.getFahrenheitFromKelvin(temperature.getMorn()));
+                temperature.setNight(WeatherSettings.getFahrenheitFromKelvin(temperature.getNight()));
+                temperature.setMax(WeatherSettings.getFahrenheitFromKelvin(temperature.getMax()));
+                temperature.setMin(WeatherSettings.getFahrenheitFromKelvin(temperature.getMin()));
+            }
+
+            if (weatherSettings.getPressureUnit() == WeatherSettings.MM_OF_MERCURY_UNIT) {
+                item.setPressure(WeatherSettings.getMmOfMercuryFromHpa(item.getPressure()));
+            }
+
+            if (weatherSettings.getWindSpeedUnit() == WeatherSettings.MI_PER_HOUR_UNIT) {
+                item.setSpeed(WeatherSettings.getMiPerHourFromMeterPerSec(item.getSpeed()));
+            }
+        }
     }
 }
