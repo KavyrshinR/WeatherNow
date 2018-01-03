@@ -19,6 +19,5 @@ public interface ApiWeather {
     @GET("forecast/daily")
     Observable<MainWeatherModel> getWeatherByIdCity(@Query("id") int cityId,
                                                     @Query("cnt") int countDays,
-                                                    @Query("units") String units,
                                                     @Query("APPID") String ApiId);
 }
