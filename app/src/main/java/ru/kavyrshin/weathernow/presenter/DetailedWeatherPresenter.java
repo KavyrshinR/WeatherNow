@@ -13,7 +13,7 @@ public class DetailedWeatherPresenter extends BasePresenter<DetailedWeatherView>
 
     public void getWeatherByCityId(int cityId) {
         MainWeatherModel weatherModel = dataManager.getCachedWeatherById(cityId);
-        getViewState().showWeather(weatherModel);
+        getViewState().showWeather(weatherModel, dataManager.getWeatherSettings());
     }
 
 }

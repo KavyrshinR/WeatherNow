@@ -16,6 +16,7 @@ import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.entity.MainWeatherModel;
 import ru.kavyrshin.weathernow.entity.WeatherListElement;
 import ru.kavyrshin.weathernow.presenter.DetailedWeatherPresenter;
+import ru.kavyrshin.weathernow.util.WeatherSettings;
 import ru.kavyrshin.weathernow.view.DetailedWeatherView;
 
 public class DetailedWeatherActivity extends BaseActivity implements DetailedWeatherView {
@@ -77,7 +78,7 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
     }
 
     @Override
-    public void showWeather(MainWeatherModel weatherModel) {
+    public void showWeather(MainWeatherModel weatherModel, WeatherSettings weatherSettings) {
         WeatherListElement weather = null;
         for (WeatherListElement listElement : weatherModel.getList()) {
             if (listElement.getDt() == unixTimeWeather) {
@@ -89,8 +90,8 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
         if (weather != null) {
             tvToolbar.setText(weatherModel.getCity().getName());
 
-            int resId = getIconResId(weather.getWeather().get(0).getId());
-            imageWeather.setImageResource(resId);
+            int resIdIcon = getIconResId(weather.getWeather().get(0).getId());
+            imageWeather.setImageResource(resIdIcon);
             tvCityName.setText(weatherModel.getCity().getName());
 
             Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
@@ -99,14 +100,41 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
             String formattedDate = goodDateFormat.format(calendar.getTime());
 
             tvDate.setText(formattedDate);
-            tvTempDay.setText(getString(R.string.temperature_celsius, weather.getTemp().getDay()));
-            tvTempNight.setText(getString(R.string.temperature_celsius, weather.getTemp().getNight()));
+
+            int resIdTemperature = R.string.temperature_celsius;
+
+            switch (weatherSettings.getTemperatureUnit()) {
+                case WeatherSettings.KELVIN_UNIT : {
+                    resIdTemperature = R.string.temperature_kelvin;
+                    break;
+                }
+
+                case WeatherSettings.FAHRENHEIT_UNIT : {
+                    resIdTemperature = R.string.temperature_fahrenheit;
+                    break;
+                }
+            }
+
+            tvTempDay.setText(getString(resIdTemperature, weather.getTemp().getDay()));
+            tvTempNight.setText(getString(resIdTemperature, weather.getTemp().getNight()));
 
             int wordWindDirection = windDirectionWordResId(weather.getDeg());
             tvWindDirection.setText(wordWindDirection);
-            tvWindSpeed.setText(getString(R.string.wind_m_per_sec, weather.getSpeed()));
 
-            tvPressure.setText(getString(R.string.pressure_mmHg, weather.getPressure()));
+            int resIdWindSpeed = R.string.wind_m_per_sec;
+
+            if (weatherSettings.getWindSpeedUnit() == WeatherSettings.MI_PER_HOUR_UNIT) {
+                resIdWindSpeed = R.string.wind_mi_per_hour;
+            }
+            tvWindSpeed.setText(getString(resIdWindSpeed, weather.getSpeed()));
+
+            int resIdPressure = R.string.pressure_mmHg;
+
+            if (weatherSettings.getPressureUnit() == WeatherSettings.H_PA_UNIT) {
+                resIdPressure = R.string.pressure_hPa;
+            }
+
+            tvPressure.setText(getString(resIdPressure, weather.getPressure()));
             tvHumidity.setText(getString(R.string.humidity, weather.getHumidity()));
         }
     }
