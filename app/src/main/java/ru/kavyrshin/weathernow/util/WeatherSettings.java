@@ -15,6 +15,10 @@ public class WeatherSettings extends RealmObject {
     public static final int M_PER_SEC_UNIT = 31;
     public static final int MI_PER_HOUR_UNIT = 32;
 
+
+    public static final double KM_IN_MI = 0.62137119223733;
+    public static final double hPa_IN_mmHg = 0.75006375541921;
+
     @PrimaryKey
     private int id = 1;
 
@@ -45,5 +49,32 @@ public class WeatherSettings extends RealmObject {
 
     public int getWindSpeedUnit() {
         return windSpeedUnit;
+    }
+
+
+    public static double getCelsiusFromKelvin(double kelvin) {
+        if (kelvin < 0) {
+            throw new IllegalArgumentException("value kelvin is negative");
+        }
+        return kelvin - 273.15;
+    }
+
+    public static double getFahrenheitFromKelvin(double kelvin) {
+        if (kelvin < 0) {
+            throw new IllegalArgumentException("value kelvin is negative");
+        }
+        return (kelvin * 1.8) - 459.67;
+    }
+
+    public static double getMiPerHourFromMeterPerSec(double meterPerSec) {
+        double kmPerHour = meterPerSec * 60 * 60;
+        kmPerHour = kmPerHour / 1000;
+
+        double result = kmPerHour * KM_IN_MI;
+        return result;
+    }
+
+    public static double getMmOfMercuryFromHpa(double mmOfMercury) {
+        return mmOfMercury * hPa_IN_mmHg;
     }
 }
