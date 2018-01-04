@@ -3,9 +3,11 @@ package ru.kavyrshin.weathernow.view.implementation;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
@@ -16,6 +18,9 @@ import ru.kavyrshin.weathernow.view.SettingsView;
 
 
 public class SettingsActivity extends BaseActivity implements SettingsView, View.OnClickListener {
+
+    private Toolbar toolbar;
+    private TextView tvToolbar;
 
     private LinearLayout temperatureButton;
     private TextView tvTemperatureValue;
@@ -32,6 +37,12 @@ public class SettingsActivity extends BaseActivity implements SettingsView, View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
 
+        toolbar = findViewById(R.id.toolbar);
+        tvToolbar = toolbar.findViewById(R.id.tvOut);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        setTitle(getString(R.string.settings_title));
+
         temperatureButton = findViewById(R.id.temperatureButton);
         tvTemperatureValue = findViewById(R.id.tvTemperatureValue);
         pressureButton = findViewById(R.id.pressureButton);
@@ -45,8 +56,16 @@ public class SettingsActivity extends BaseActivity implements SettingsView, View
     }
 
     @Override
-    public void showError(String errorMessage) {
+    public void setTitle(CharSequence title) {
+        if (getSupportActionBar() != null) {
+            tvToolbar.setText(title);
+        }
+        super.setTitle(title);
+    }
 
+    @Override
+    public void showError(String errorMessage) {
+        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
     }
 
     @Override
