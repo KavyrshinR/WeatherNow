@@ -151,6 +151,7 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
     @Override
     public void showMyStations(List<MainWeatherModel> weatherListElements) {
         myStationsAdapter.clearStations();
+        myStationsAdapter.clearAdapter();
         myStationsAdapter.setMyStations(weatherListElements);
         myStationsAdapter.notifyDataSetChanged();
     }

@@ -95,7 +95,9 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.myStations.clear();
     }
 
-
+    public void clearAdapter() {
+        this.adapters.clear();
+    }
 
     static class MyStationViewHolder extends RecyclerView.ViewHolder {
 
