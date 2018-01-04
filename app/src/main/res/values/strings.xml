@@ -39,4 +39,5 @@
     <string name="m_per_sec_symbol">m/sec</string>
     <string name="mi_per_hour_symbol">mi/hour</string>
     <string name="settings_unit_settings_title">Unit settings</string>
+    <string name="settings_title">Settings</string>
 </resources>

@@ -26,4 +26,5 @@
     <string name="m_per_sec_symbol">м/сек</string>
     <string name="mi_per_hour_symbol">миль/час</string>
     <string name="settings_unit_settings_title">Единицы измерения</string>
+    <string name="settings_title">Настройки</string>
 </resources>
