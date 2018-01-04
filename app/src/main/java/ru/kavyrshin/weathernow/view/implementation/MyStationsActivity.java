@@ -66,6 +66,17 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
         stationList.setLayoutManager(linearLayoutManager);
         myStationsAdapter = new MyStationsAdapter();
         stationList.setAdapter(myStationsAdapter);
+        stationList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    btnAddStation.hide();
+                } else if (dy < 0) {
+                    btnAddStation.show();
+                }
+            }
+        });
 
         btnAddStation.setOnClickListener(this);
 
