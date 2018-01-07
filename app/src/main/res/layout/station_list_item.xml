@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
-    android:layout_marginTop="16dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
     android:layout_marginRight="16dp"
     android:layout_marginLeft="16dp"
     custom:cardElevation="2dp">
@@ -16,21 +17,39 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp">
 
-        <TextView
-            android:id="@+id/cityName"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginBottom="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            tools:text="Орел"/>
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/cityName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="Орел"/>
+
+            <ImageButton
+                android:id="@+id/menu_station"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_more_vert_black_24dp"
+                style="?android:attr/borderlessButtonStyle"/>
+
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/weatherList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp">
 
         </android.support.v7.widget.RecyclerView>
 
