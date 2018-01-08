@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.kavyrshin.weathernow.MyApplication;
+import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.entity.CacheCity;
 import ru.kavyrshin.weathernow.entity.DataSource;
 import ru.kavyrshin.weathernow.entity.MainWeatherModel;
@@ -31,10 +32,18 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
     public void deleteFavouriteStation(int cityId) {
         dataManager.deleteFavouriteStation(cityId);
         dataManager.deleteWeatherByStationId(cityId);
+        loadFavouriteStations();
     }
 
     public void loadFavouriteStations() {
         ArrayList<CacheCity> favouriteCitys = new ArrayList<>(dataManager.getFavouriteStations());
+
+        if (favouriteCitys.isEmpty()) {
+            getViewState().hideLoad();
+            getViewState().showMyStations(new ArrayList<MainWeatherModel>());
+            getViewState().showError(R.string.error_empty_favourite_stations);
+            return;
+        }
 
         int[] cityIds = new int[favouriteCitys.size()];
 
@@ -63,6 +72,7 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
                                 @Override
                                 public void onError(Throwable e) {
                                     e.printStackTrace();
+                                    getViewState().hideLoad();
                                     getViewState().showError(e.getMessage());
                                 }
 
