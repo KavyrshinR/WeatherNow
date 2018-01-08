@@ -1,11 +1,14 @@
 package ru.kavyrshin.weathernow.view.implementation.adapter;
 
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -57,12 +60,33 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         int itemType = getItemViewType(position);
 
         if (itemType == STATION_LIST_ITEM) {
-            MyStationViewHolder myStationViewHolder = (MyStationViewHolder) holder;
+            final MyStationViewHolder myStationViewHolder = (MyStationViewHolder) holder;
             myStationViewHolder.cityName.setText(myStations.get(position).getCity().getName());
+            myStationViewHolder.menuStation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (myStationsListener != null) {
+                        PopupMenu popupMenu = new PopupMenu(myStationViewHolder.itemView.getContext(),
+                                myStationViewHolder.menuStation);
+                        popupMenu.getMenuInflater().inflate(R.menu.station_menu, popupMenu.getMenu());
+                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                if (myStationsListener != null) {
+                                    myStationsListener.menuStationClick(myStations.get(position).getCityId(),
+                                            item.getItemId());
+                                }
+                                return true;
+                            }
+                        });
+                        popupMenu.show();
+                    }
+                }
+            });
 
             if (adapters.get(myStations.get(position).getCityId()) == null) {
                 adapters.put(myStations.get(position).getCityId(), new StationWeatherAdapter(myStationsListener, myStations.get(position)));
@@ -103,11 +127,13 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         TextView cityName;
         RecyclerView recyclerView;
+        ImageButton menuStation;
 
         public MyStationViewHolder(View itemView) {
             super(itemView);
             cityName = itemView.findViewById(R.id.cityName);
             recyclerView = itemView.findViewById(R.id.weatherList);
+            menuStation = itemView.findViewById(R.id.menu_station);
         }
 
     }

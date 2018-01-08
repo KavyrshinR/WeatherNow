@@ -23,6 +23,7 @@ public class StationWeatherAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public interface MyStationsListener {
         void myStationClick(int cityId, int unixTime);
         void myStationLongClick(int cityId, int unixTime);
+        void menuStationClick(int cityId, int menuItem);
     }
 
     private MyStationsListener myStationsListener;
