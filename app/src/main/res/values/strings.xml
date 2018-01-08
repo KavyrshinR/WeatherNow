@@ -40,4 +40,5 @@
     <string name="mi_per_hour_symbol">mi/hour</string>
     <string name="settings_unit_settings_title">Unit settings</string>
     <string name="settings_title">Settings</string>
+    <string name="delete_title">Delete</string>
 </resources>
