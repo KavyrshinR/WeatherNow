@@ -18,7 +18,9 @@
             android:id="@+id/tvDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="14sp"
             android:maxLines="1"
+            android:textColor="@color/subtitleTextColor"
             tools:text="13.08"/>
 
         <TextView
@@ -27,13 +29,16 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:textSize="20sp"
+            android:textColor="@color/titleTextColor"
             tools:text="+17"/>
 
         <TextView
             android:id="@+id/tvTemperatureNight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="14sp"
             android:maxLines="1"
+            android:textColor="@color/subtitleTextColor"
             tools:text="+13"/>
 
     </LinearLayout>
