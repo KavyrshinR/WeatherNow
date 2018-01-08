@@ -11,6 +11,8 @@ public interface MyStationsView extends BaseView {
 
     void showMyStations(List<MainWeatherModel> weatherListElements);
 
+    void showError(int textRes);
+
     @StateStrategyType(OneExecutionStateStrategy.class)
     void goToAddStation();
 

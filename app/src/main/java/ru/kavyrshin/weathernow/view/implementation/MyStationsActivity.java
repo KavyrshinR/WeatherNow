@@ -131,13 +131,18 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
     @Override
     public void myStationClick(int cityId, int unixTime) {
         myStationsPresenter.detailClick(cityId, unixTime);
-        Toast.makeText(this, "cityId " + cityId + " time " + unixTime, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void myStationLongClick(int cityId, int unixTime) {
-        myStationsPresenter.deleteFavouriteStation(cityId);
-        Toast.makeText(this, "Удалил" + cityId, Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void menuStationClick(int cityId, int menuItem) {
+        if (menuItem == R.id.station_menu_delete) {
+            myStationsPresenter.deleteFavouriteStation(cityId);
+        }
     }
 
     @Override
@@ -150,8 +155,12 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void showError(String errorMessage) {
-        swipeRefreshLayout.setRefreshing(false);
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showError(int textRes) {
+        Toast.makeText(this, textRes, Toast.LENGTH_SHORT).show();
     }
 
     @Override
