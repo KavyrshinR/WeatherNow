@@ -70,11 +70,7 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
         cityId = getIntent().getIntExtra(CITY_ID_EXTRA, -1);
         unixTimeWeather = getIntent().getIntExtra(UNIXTIME_EXTRA, -1);
 
-        if (cityId != -1) {
-            detailedWeatherPresenter.getWeatherByCityId(cityId);
-        } else {
-            showError("Unexpected city");
-        }
+        detailedWeatherPresenter.getWeatherByCityId(cityId);
     }
 
     @Override
@@ -142,6 +138,11 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
     @Override
     public void showError(String errorMessage) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showError(int textRes) {
+        Toast.makeText(this, textRes, Toast.LENGTH_SHORT).show();
     }
 
     @Override
