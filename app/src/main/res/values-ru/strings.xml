@@ -2,6 +2,11 @@
 <resources>
     <string name="my_stations_actionbar_title">Мои станции</string>
 
+    <!--///////////////////////////ERROR MESSAGES////////////////////////////-->
+    <string name="error_empty_favourite_stations">Добавьте метеостанцию</string>
+    <string name="error_unexpected_city">Неизвестная станция</string>
+
+
     <string name="north_char">С</string>
     <string name="north_east_char">СВ</string>
     <string name="east_char">В</string>
