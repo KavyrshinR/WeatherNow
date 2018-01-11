@@ -34,6 +34,9 @@ public class AboutActivity extends BaseActivity {
     private TextView tvReferenceRoundicons;
     private int[] roundIconsIds = {R.drawable.ic_tornado, R.drawable.ic_wind};
 
+    private TextView tvCreditOWM;
+    private TextView tvReferenceToLicenceCC;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,8 @@ public class AboutActivity extends BaseActivity {
         tvReferenceFreePik = findViewById(R.id.tvReferenceFreePik);
         listRoundicons = findViewById(R.id.listRoundicons);
         tvReferenceRoundicons = findViewById(R.id.tvReferenceRoundicons);
+        tvCreditOWM = findViewById(R.id.tvCreditOWM);
+        tvReferenceToLicenceCC = findViewById(R.id.tvReferenceToLicenceCC);
 
 
         tvAboutDeveloper.setText(getSpannableStringAboutDeveloper());
@@ -67,6 +72,11 @@ public class AboutActivity extends BaseActivity {
         LinearLayoutManager linearRoundicons = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         listRoundicons.setLayoutManager(linearRoundicons);
         listRoundicons.setAdapter(new SimpleImageAdapter(roundIconsIds));
+
+        tvCreditOWM.setText(getSpannableStringForOWM());
+        tvCreditOWM.setMovementMethod(LinkMovementMethod.getInstance());
+        tvReferenceToLicenceCC.setText(getSpannableStringForLicenseCC());
+        tvReferenceToLicenceCC.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override
@@ -134,6 +144,36 @@ public class AboutActivity extends BaseActivity {
 
         spannableString.setSpan(foregroundColorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(urlFlaticonSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return spannableString;
+    }
+
+    private SpannableString getSpannableStringForOWM() {
+        URLSpan urlSpan = new URLSpan(getString(R.string.open_weather_map_reference));
+        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorAccent));
+
+        String poweredByOWM = getString(R.string.powered_by_openweathermap);
+        int start = poweredByOWM.indexOf(getString(R.string.open_weather_map_reference));
+        int end = start + getString(R.string.open_weather_map_reference).length();
+
+        SpannableString spannableString = new SpannableString(poweredByOWM);
+        spannableString.setSpan(foregroundColorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(urlSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return spannableString;
+    }
+
+    private SpannableString getSpannableStringForLicenseCC() {
+        URLSpan urlSpan = new URLSpan(getString(R.string.license_cc_4_0_reference));
+        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorAccent));
+
+        String licenseIs = getString(R.string.license_cc_4_0_text);
+        int start = licenseIs.indexOf(getString(R.string.license_cc_4_0_reference));
+        int end = start + getString(R.string.license_cc_4_0_reference).length();
+
+        SpannableString spannableString = new SpannableString(licenseIs);
+        spannableString.setSpan(foregroundColorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(urlSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         return spannableString;
     }
