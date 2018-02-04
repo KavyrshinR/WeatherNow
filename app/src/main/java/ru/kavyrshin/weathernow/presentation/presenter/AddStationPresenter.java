@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.presenter;
+package ru.kavyrshin.weathernow.presentation.presenter;
 
 import android.util.Log;
 
@@ -13,7 +13,7 @@ import ru.kavyrshin.weathernow.entity.StationListElement;
 import ru.kavyrshin.weathernow.entity.TimeZone;
 import ru.kavyrshin.weathernow.model.DataManager;
 import ru.kavyrshin.weathernow.model.exception.CustomException;
-import ru.kavyrshin.weathernow.view.AddStationView;
+import ru.kavyrshin.weathernow.presentation.view.AddStationView;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

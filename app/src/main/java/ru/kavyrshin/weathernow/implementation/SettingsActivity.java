@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.view.implementation;
+package ru.kavyrshin.weathernow.implementation;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,9 +12,9 @@ import android.widget.Toast;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import ru.kavyrshin.weathernow.R;
-import ru.kavyrshin.weathernow.presenter.SettingsPresenter;
+import ru.kavyrshin.weathernow.presentation.presenter.SettingsPresenter;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
-import ru.kavyrshin.weathernow.view.SettingsView;
+import ru.kavyrshin.weathernow.presentation.view.SettingsView;
 
 
 public class SettingsActivity extends BaseActivity implements SettingsView, View.OnClickListener {

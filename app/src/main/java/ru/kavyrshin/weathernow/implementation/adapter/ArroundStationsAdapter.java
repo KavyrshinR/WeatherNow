@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.view.implementation.adapter;
+package ru.kavyrshin.weathernow.implementation.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -65,8 +65,8 @@ public class ArroundStationsAdapter extends RecyclerView.Adapter<ArroundStations
             super(itemView);
             this.arroundStationsListener = arroundStationsListener;
 
-            tvName = (TextView) itemView.findViewById(R.id.tvName);
-            tvTemperature = (TextView) itemView.findViewById(R.id.tvTemperature);
+            tvName = itemView.findViewById(R.id.tvName);
+            tvTemperature = itemView.findViewById(R.id.tvTemperature);
         }
 
         public void onBind(StationListElement stationListElement) {

@@ -1,10 +1,10 @@
-package ru.kavyrshin.weathernow.presenter;
+package ru.kavyrshin.weathernow.presentation.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 
 import ru.kavyrshin.weathernow.model.DataManager;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
-import ru.kavyrshin.weathernow.view.SettingsView;
+import ru.kavyrshin.weathernow.presentation.view.SettingsView;
 
 @InjectViewState
 public class SettingsPresenter extends BasePresenter<SettingsView> {

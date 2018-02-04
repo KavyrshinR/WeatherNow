@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.view.implementation;
+package ru.kavyrshin.weathernow.implementation;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -15,9 +15,9 @@ import java.util.TimeZone;
 import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.entity.MainWeatherModel;
 import ru.kavyrshin.weathernow.entity.WeatherListElement;
-import ru.kavyrshin.weathernow.presenter.DetailedWeatherPresenter;
+import ru.kavyrshin.weathernow.presentation.presenter.DetailedWeatherPresenter;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
-import ru.kavyrshin.weathernow.view.DetailedWeatherView;
+import ru.kavyrshin.weathernow.presentation.view.DetailedWeatherView;
 
 public class DetailedWeatherActivity extends BaseActivity implements DetailedWeatherView {
 

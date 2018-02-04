@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.presenter;
+package ru.kavyrshin.weathernow.presentation.presenter;
 
 
 import android.support.annotation.NonNull;

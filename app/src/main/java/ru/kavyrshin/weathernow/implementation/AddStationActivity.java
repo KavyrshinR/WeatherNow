@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.view.implementation;
+package ru.kavyrshin.weathernow.implementation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,9 +21,9 @@ import java.util.List;
 
 import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.entity.StationListElement;
-import ru.kavyrshin.weathernow.presenter.AddStationPresenter;
-import ru.kavyrshin.weathernow.view.AddStationView;
-import ru.kavyrshin.weathernow.view.implementation.adapter.ArroundStationsAdapter;
+import ru.kavyrshin.weathernow.presentation.presenter.AddStationPresenter;
+import ru.kavyrshin.weathernow.presentation.view.AddStationView;
+import ru.kavyrshin.weathernow.implementation.adapter.ArroundStationsAdapter;
 
 
 public class AddStationActivity extends BaseActivity implements AddStationView, ArroundStationsAdapter.ArroundStationsListener {
@@ -44,10 +44,10 @@ public class AddStationActivity extends BaseActivity implements AddStationView, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_station_activity);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         placeAutocompleteFragment = (PlaceAutocompleteFragment)
@@ -69,7 +69,7 @@ public class AddStationActivity extends BaseActivity implements AddStationView, 
             }
         });
 
-        arroundStations = (RecyclerView) findViewById(R.id.arroundStations);
+        arroundStations = findViewById(R.id.arroundStations);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         arroundStations.setLayoutManager(linearLayoutManager);

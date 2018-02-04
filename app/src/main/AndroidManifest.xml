@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.implementation.MyStationsActivity">
+        <activity android:name=".implementation.MyStationsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,19 +20,19 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.implementation.AddStationActivity">
+        <activity android:name=".implementation.AddStationActivity">
 
         </activity>
 
-        <activity android:name=".view.implementation.DetailedWeatherActivity">
+        <activity android:name=".implementation.DetailedWeatherActivity">
 
         </activity>
 
-        <activity android:name=".view.implementation.AboutActivity">
+        <activity android:name=".implementation.AboutActivity">
 
         </activity>
 
-        <activity android:name=".view.implementation.SettingsActivity">
+        <activity android:name=".implementation.SettingsActivity">
 
         </activity>
 

@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.view;
+package ru.kavyrshin.weathernow.presentation.view;
 
 
 import ru.kavyrshin.weathernow.entity.MainWeatherModel;
