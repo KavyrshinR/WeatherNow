@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.implementation;
+package ru.kavyrshin.weathernow.ui;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 

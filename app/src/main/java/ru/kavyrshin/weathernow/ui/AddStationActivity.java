@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.implementation;
+package ru.kavyrshin.weathernow.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +23,7 @@ import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.entity.StationListElement;
 import ru.kavyrshin.weathernow.presentation.presenter.AddStationPresenter;
 import ru.kavyrshin.weathernow.presentation.view.AddStationView;
-import ru.kavyrshin.weathernow.implementation.adapter.ArroundStationsAdapter;
+import ru.kavyrshin.weathernow.ui.adapter.ArroundStationsAdapter;
 
 
 public class AddStationActivity extends BaseActivity implements AddStationView, ArroundStationsAdapter.ArroundStationsListener {

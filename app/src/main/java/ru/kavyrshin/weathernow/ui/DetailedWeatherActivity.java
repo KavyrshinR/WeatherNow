@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.implementation;
+package ru.kavyrshin.weathernow.ui;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;

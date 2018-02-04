@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.implementation;
+package ru.kavyrshin.weathernow.ui;
 
 
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import android.text.style.URLSpan;
 import android.widget.TextView;
 
 import ru.kavyrshin.weathernow.R;
-import ru.kavyrshin.weathernow.implementation.adapter.SimpleImageAdapter;
+import ru.kavyrshin.weathernow.ui.adapter.SimpleImageAdapter;
 
 public class AboutActivity extends BaseActivity {
 

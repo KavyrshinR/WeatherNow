@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.implementation.adapter;
+package ru.kavyrshin.weathernow.ui.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

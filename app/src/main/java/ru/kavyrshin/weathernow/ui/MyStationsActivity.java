@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.implementation;
+package ru.kavyrshin.weathernow.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,8 +22,8 @@ import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.entity.MainWeatherModel;
 import ru.kavyrshin.weathernow.presentation.presenter.MyStationsPresenter;
 import ru.kavyrshin.weathernow.presentation.view.MyStationsView;
-import ru.kavyrshin.weathernow.implementation.adapter.MyStationsAdapter;
-import ru.kavyrshin.weathernow.implementation.adapter.StationWeatherAdapter;
+import ru.kavyrshin.weathernow.ui.adapter.MyStationsAdapter;
+import ru.kavyrshin.weathernow.ui.adapter.StationWeatherAdapter;
 
 
 public class MyStationsActivity extends BaseActivity implements View.OnClickListener, MyStationsView,

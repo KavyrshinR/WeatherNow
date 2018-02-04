@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.implementation;
+package ru.kavyrshin.weathernow.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
