@@ -7,6 +7,8 @@ import com.arellomobile.mvp.InjectViewState;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import ru.kavyrshin.weathernow.MyApplication;
 import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.entity.CacheCity;
@@ -22,6 +24,10 @@ import rx.schedulers.Schedulers;
 public class MyStationsPresenter extends BasePresenter<MyStationsView> {
 
     private DataManager dataManager = DataManager.getInstance();
+
+    @Inject
+    public MyStationsPresenter() {
+    }
 
     @Override
     protected void onFirstViewAttach() {

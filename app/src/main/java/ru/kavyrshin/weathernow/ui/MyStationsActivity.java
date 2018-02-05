@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import java.util.List;
 
@@ -45,6 +46,11 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
+
+    @ProvidePresenter
+    MyStationsPresenter providePresenter() {
+        return myApplication().getApplicationComponent().myStationsComponent().build().presenter();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

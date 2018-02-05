@@ -7,6 +7,7 @@ import dagger.Component;
 import ru.kavyrshin.weathernow.MyApplication;
 import ru.kavyrshin.weathernow.di.AddStationComponent;
 import ru.kavyrshin.weathernow.di.DetailedWeatherComponent;
+import ru.kavyrshin.weathernow.di.MyStationsComponent;
 
 @Singleton
 @Component(modules = {ApplicationModule.class})
@@ -20,6 +21,7 @@ public interface ApplicationComponent {
         ApplicationComponent build();
     }
 
+    MyStationsComponent.Builder myStationsComponent();
     DetailedWeatherComponent.Builder detailedWeatherComponent();
     AddStationComponent.Builder addStationComponent();
 }
