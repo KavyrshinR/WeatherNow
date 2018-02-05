@@ -7,17 +7,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
 import ru.kavyrshin.weathernow.R;
-import ru.kavyrshin.weathernow.entity.MainWeatherModel;
 import ru.kavyrshin.weathernow.entity.WeatherListElement;
 import ru.kavyrshin.weathernow.presentation.presenter.DetailedWeatherPresenter;
-import ru.kavyrshin.weathernow.util.WeatherSettings;
 import ru.kavyrshin.weathernow.presentation.view.DetailedWeatherView;
+import ru.kavyrshin.weathernow.util.WeatherSettings;
 
 public class DetailedWeatherActivity extends BaseActivity implements DetailedWeatherView {
 
@@ -25,9 +25,6 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
     public static final String UNIXTIME_EXTRA = "UnixTime Extra";
 
     private static SimpleDateFormat goodDateFormat = new SimpleDateFormat("dd.MM HH:mm");
-
-    private int cityId;
-    private int unixTimeWeather;
 
     private Toolbar toolbar;
     private TextView tvToolbar;
@@ -45,6 +42,14 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
 
     @InjectPresenter
     DetailedWeatherPresenter detailedWeatherPresenter;
+
+    @ProvidePresenter
+    DetailedWeatherPresenter providePresenter() {
+        return myApplication().getApplicationComponent().detailedWeatherComponent()
+                .cityId(getIntent().getIntExtra(CITY_ID_EXTRA, -1))
+                .unixTime(getIntent().getIntExtra(UNIXTIME_EXTRA, -1))
+                .build().presenter();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,29 +71,17 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
         tvWindSpeed = findViewById(R.id.tvWindSpeed);
         tvPressure = findViewById(R.id.tvPressure);
         tvHumidity = findViewById(R.id.tvHumidity);
-
-        cityId = getIntent().getIntExtra(CITY_ID_EXTRA, -1);
-        unixTimeWeather = getIntent().getIntExtra(UNIXTIME_EXTRA, -1);
-
-        detailedWeatherPresenter.getWeatherByCityId(cityId);
     }
 
     @Override
-    public void showWeather(MainWeatherModel weatherModel, WeatherSettings weatherSettings) {
-        WeatherListElement weather = null;
-        for (WeatherListElement listElement : weatherModel.getList()) {
-            if (listElement.getDt() == unixTimeWeather) {
-                weather = listElement;
-                break;
-            }
-        }
+    public void showWeather(WeatherListElement weather, String cityName, WeatherSettings weatherSettings) {
 
         if (weather != null) {
-            tvToolbar.setText(weatherModel.getCity().getName());
+            tvToolbar.setText(cityName);
 
             int resIdIcon = getIconResId(weather.getWeather().get(0).getId());
             imageWeather.setImageResource(resIdIcon);
-            tvCityName.setText(weatherModel.getCity().getName());
+            tvCityName.setText(cityName);
 
             Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
             goodDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
