@@ -10,10 +10,14 @@ import java.util.Set;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import ru.kavyrshin.weathernow.di.global.ApplicationComponent;
+import ru.kavyrshin.weathernow.di.global.DaggerApplicationComponent;
 
 public class MyApplication extends Application {
 
     public static Context context;
+
+    private ApplicationComponent applicationComponent;
 
     @Override
     public void onCreate() {
@@ -23,6 +27,15 @@ public class MyApplication extends Application {
         Realm.setDefaultConfiguration(realmConfig);
 
         context = getApplicationContext();
+
+        applicationComponent = DaggerApplicationComponent.builder().application(this).build();
+    }
+
+    public ApplicationComponent getApplicationComponent() {
+        if (applicationComponent == null) {
+            throw new NullPointerException("Application component null");
+        }
+        return applicationComponent;
     }
 
     public static boolean isNetworkConnected() {
