@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import dagger.BindsInstance;
 import dagger.Component;
 import ru.kavyrshin.weathernow.MyApplication;
+import ru.kavyrshin.weathernow.di.AddStationComponent;
 import ru.kavyrshin.weathernow.di.DetailedWeatherComponent;
 
 @Singleton
@@ -20,4 +21,5 @@ public interface ApplicationComponent {
     }
 
     DetailedWeatherComponent.Builder detailedWeatherComponent();
+    AddStationComponent.Builder addStationComponent();
 }

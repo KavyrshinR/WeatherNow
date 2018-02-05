@@ -7,6 +7,8 @@ import com.arellomobile.mvp.InjectViewState;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import ru.kavyrshin.weathernow.entity.CacheCity;
 import ru.kavyrshin.weathernow.entity.Coord;
 import ru.kavyrshin.weathernow.entity.StationListElement;
@@ -27,6 +29,10 @@ public class AddStationPresenter extends BasePresenter<AddStationView> {
     private ArrayList<StationListElement> stationListElements = new ArrayList<>();
 
     private DataManager dataManager = DataManager.getInstance();
+
+    @Inject
+    public AddStationPresenter() {
+    }
 
     public void getArroundStations(String name, double latitude, double longitude) {
         getViewState().showLoad();

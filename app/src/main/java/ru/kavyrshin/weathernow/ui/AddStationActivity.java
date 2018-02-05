@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
@@ -38,6 +39,11 @@ public class AddStationActivity extends BaseActivity implements AddStationView, 
 
     private ProgressBar progressBar;
 
+
+    @ProvidePresenter
+    AddStationPresenter providePresenter() {
+        return myApplication().getApplicationComponent().addStationComponent().build().presenter();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
