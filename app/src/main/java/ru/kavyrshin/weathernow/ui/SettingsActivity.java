@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.presentation.presenter.SettingsPresenter;
@@ -31,6 +32,11 @@ public class SettingsActivity extends BaseActivity implements SettingsView, View
 
     @InjectPresenter
     SettingsPresenter settingsPresenter;
+
+    @ProvidePresenter
+    SettingsPresenter providePresenter() {
+        return myApplication().getApplicationComponent().settingsScreenComponent().build().presenter();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

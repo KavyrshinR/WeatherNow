@@ -2,6 +2,8 @@ package ru.kavyrshin.weathernow.presentation.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 
+import javax.inject.Inject;
+
 import ru.kavyrshin.weathernow.model.DataManager;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
 import ru.kavyrshin.weathernow.presentation.view.SettingsView;
@@ -12,6 +14,10 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
     private DataManager dataManager = DataManager.getInstance();
 
     private WeatherSettings weatherSettings;
+
+    @Inject
+    public SettingsPresenter() {
+    }
 
     @Override
     protected void onFirstViewAttach() {
