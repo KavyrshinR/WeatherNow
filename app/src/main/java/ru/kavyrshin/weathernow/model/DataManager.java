@@ -53,7 +53,7 @@ public class DataManager {
     public Observable<List<StationListElement>> getStationArround(double latitude, double longitude) {
 
         Observable<MainStationModel> mainStationObservable = apiWeather.getStationArround(latitude,
-                longitude, ApiModule.countStationArround, ApiModule.units, BuildConfig.API_KEY);
+                longitude, ApiModule.countStationArround, BuildConfig.API_KEY);
 
         if (!MyApplication.isNetworkConnected()) {
             return Observable.error(new CustomException(CustomException.NETWORK_EXCEPTION, "Нет подключения"));

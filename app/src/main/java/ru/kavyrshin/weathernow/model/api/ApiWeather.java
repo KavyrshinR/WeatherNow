@@ -13,7 +13,6 @@ public interface ApiWeather {
     Observable<MainStationModel> getStationArround(@Query("lat") double latitude,
                                                    @Query("lon") double longitude,
                                                    @Query("cnt") int countStations,
-                                                   @Query("units") String units,
                                                    @Query("APPID") String ApiId);
 
     @GET("forecast/daily")
