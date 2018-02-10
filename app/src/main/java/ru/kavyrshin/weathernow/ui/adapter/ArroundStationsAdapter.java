@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.kavyrshin.weathernow.R;
-import ru.kavyrshin.weathernow.entity.StationListElement;
+import ru.kavyrshin.weathernow.domain.models.StationListElement;
 
 public class ArroundStationsAdapter extends RecyclerView.Adapter<ArroundStationsAdapter.ArroundStationViewHolder> {
 

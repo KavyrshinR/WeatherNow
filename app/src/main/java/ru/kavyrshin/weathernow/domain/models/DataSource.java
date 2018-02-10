@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.entity;
+package ru.kavyrshin.weathernow.domain.models;
 
 
 public class DataSource {

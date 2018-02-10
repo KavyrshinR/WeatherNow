@@ -14,8 +14,8 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import ru.kavyrshin.weathernow.R;
-import ru.kavyrshin.weathernow.entity.MainWeatherModel;
-import ru.kavyrshin.weathernow.entity.WeatherListElement;
+import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
+import ru.kavyrshin.weathernow.domain.models.WeatherListElement;
 
 
 public class StationWeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

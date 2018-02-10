@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.entity;
+package ru.kavyrshin.weathernow.domain.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

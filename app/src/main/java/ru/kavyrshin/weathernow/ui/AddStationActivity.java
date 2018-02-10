@@ -21,7 +21,7 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import java.util.List;
 
 import ru.kavyrshin.weathernow.R;
-import ru.kavyrshin.weathernow.entity.StationListElement;
+import ru.kavyrshin.weathernow.domain.models.StationListElement;
 import ru.kavyrshin.weathernow.presentation.presenter.AddStationPresenter;
 import ru.kavyrshin.weathernow.presentation.view.AddStationView;
 import ru.kavyrshin.weathernow.ui.adapter.ArroundStationsAdapter;

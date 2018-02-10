@@ -9,10 +9,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import ru.kavyrshin.weathernow.entity.CacheCity;
-import ru.kavyrshin.weathernow.entity.Coord;
-import ru.kavyrshin.weathernow.entity.StationListElement;
-import ru.kavyrshin.weathernow.entity.TimeZone;
+import ru.kavyrshin.weathernow.domain.models.CacheCity;
+import ru.kavyrshin.weathernow.domain.models.Coord;
+import ru.kavyrshin.weathernow.domain.models.StationListElement;
+import ru.kavyrshin.weathernow.domain.models.TimeZone;
 import ru.kavyrshin.weathernow.data.DataManager;
 import ru.kavyrshin.weathernow.data.exception.CustomException;
 import ru.kavyrshin.weathernow.presentation.view.AddStationView;

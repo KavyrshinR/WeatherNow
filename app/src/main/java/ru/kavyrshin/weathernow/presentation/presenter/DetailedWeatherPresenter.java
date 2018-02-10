@@ -6,8 +6,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import ru.kavyrshin.weathernow.R;
-import ru.kavyrshin.weathernow.entity.MainWeatherModel;
-import ru.kavyrshin.weathernow.entity.WeatherListElement;
+import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
+import ru.kavyrshin.weathernow.domain.models.WeatherListElement;
 import ru.kavyrshin.weathernow.data.DataManager;
 import ru.kavyrshin.weathernow.presentation.view.DetailedWeatherView;
 

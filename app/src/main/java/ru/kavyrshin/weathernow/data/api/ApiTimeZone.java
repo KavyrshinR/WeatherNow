@@ -2,7 +2,7 @@ package ru.kavyrshin.weathernow.data.api;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import ru.kavyrshin.weathernow.entity.TimeZone;
+import ru.kavyrshin.weathernow.domain.models.TimeZone;
 import rx.Observable;
 
 public interface ApiTimeZone {

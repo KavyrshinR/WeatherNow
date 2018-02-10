@@ -3,8 +3,8 @@ package ru.kavyrshin.weathernow.data.api;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import ru.kavyrshin.weathernow.entity.MainStationModel;
-import ru.kavyrshin.weathernow.entity.MainWeatherModel;
+import ru.kavyrshin.weathernow.domain.models.MainStationModel;
+import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
 import rx.Observable;
 
 public interface ApiWeather {

@@ -1,7 +1,7 @@
 package ru.kavyrshin.weathernow.presentation.view;
 
 
-import ru.kavyrshin.weathernow.entity.WeatherListElement;
+import ru.kavyrshin.weathernow.domain.models.WeatherListElement;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
 
 public interface DetailedWeatherView extends BaseView {

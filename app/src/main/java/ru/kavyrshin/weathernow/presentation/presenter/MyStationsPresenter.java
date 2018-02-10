@@ -11,9 +11,9 @@ import javax.inject.Inject;
 
 import ru.kavyrshin.weathernow.MyApplication;
 import ru.kavyrshin.weathernow.R;
-import ru.kavyrshin.weathernow.entity.CacheCity;
-import ru.kavyrshin.weathernow.entity.DataSource;
-import ru.kavyrshin.weathernow.entity.MainWeatherModel;
+import ru.kavyrshin.weathernow.domain.models.CacheCity;
+import ru.kavyrshin.weathernow.domain.models.DataSource;
+import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
 import ru.kavyrshin.weathernow.data.DataManager;
 import ru.kavyrshin.weathernow.presentation.view.MyStationsView;
 import rx.Observer;

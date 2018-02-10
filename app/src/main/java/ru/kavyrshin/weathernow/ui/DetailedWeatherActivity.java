@@ -14,7 +14,7 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import ru.kavyrshin.weathernow.R;
-import ru.kavyrshin.weathernow.entity.WeatherListElement;
+import ru.kavyrshin.weathernow.domain.models.WeatherListElement;
 import ru.kavyrshin.weathernow.presentation.presenter.DetailedWeatherPresenter;
 import ru.kavyrshin.weathernow.presentation.view.DetailedWeatherView;
 import ru.kavyrshin.weathernow.util.WeatherSettings;

@@ -5,7 +5,7 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 
 import java.util.List;
 
-import ru.kavyrshin.weathernow.entity.MainWeatherModel;
+import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
 
 public interface MyStationsView extends BaseView {
 

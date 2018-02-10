@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ru.kavyrshin.weathernow.R;
-import ru.kavyrshin.weathernow.entity.MainWeatherModel;
+import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
 
 
 public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

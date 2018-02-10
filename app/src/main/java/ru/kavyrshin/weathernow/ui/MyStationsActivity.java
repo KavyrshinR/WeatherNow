@@ -20,7 +20,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import java.util.List;
 
 import ru.kavyrshin.weathernow.R;
-import ru.kavyrshin.weathernow.entity.MainWeatherModel;
+import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
 import ru.kavyrshin.weathernow.presentation.presenter.MyStationsPresenter;
 import ru.kavyrshin.weathernow.presentation.view.MyStationsView;
 import ru.kavyrshin.weathernow.ui.adapter.MyStationsAdapter;
