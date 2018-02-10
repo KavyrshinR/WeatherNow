@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.model;
+package ru.kavyrshin.weathernow.data;
 
 
 import android.util.Log;
@@ -19,10 +19,10 @@ import ru.kavyrshin.weathernow.entity.StationListElement;
 import ru.kavyrshin.weathernow.entity.Temperature;
 import ru.kavyrshin.weathernow.entity.TimeZone;
 import ru.kavyrshin.weathernow.entity.WeatherListElement;
-import ru.kavyrshin.weathernow.model.api.ApiModule;
-import ru.kavyrshin.weathernow.model.api.ApiTimeZone;
-import ru.kavyrshin.weathernow.model.api.ApiWeather;
-import ru.kavyrshin.weathernow.model.exception.CustomException;
+import ru.kavyrshin.weathernow.data.api.ApiModule;
+import ru.kavyrshin.weathernow.data.api.ApiTimeZone;
+import ru.kavyrshin.weathernow.data.api.ApiWeather;
+import ru.kavyrshin.weathernow.data.exception.CustomException;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;

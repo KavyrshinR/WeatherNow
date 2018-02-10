@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.model.api;
+package ru.kavyrshin.weathernow.data.api;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;

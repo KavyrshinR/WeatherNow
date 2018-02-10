@@ -12,14 +12,16 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import ru.kavyrshin.weathernow.model.api.ApiTimeZone;
-import ru.kavyrshin.weathernow.model.api.ApiWeather;
+import ru.kavyrshin.weathernow.data.api.ApiTimeZone;
+import ru.kavyrshin.weathernow.data.api.ApiWeather;
 
 @Module
 public class NetworkModule {
 
     private static final String BASE_URL_WEATHER = "http://api.openweathermap.org/data/2.5/";
     private static final String BASE_URL_TIMEZONE = "https://maps.googleapis.com/maps/api/timezone/";
+
+    public static int countStationArround = 10;
 
     @Provides
     @Singleton

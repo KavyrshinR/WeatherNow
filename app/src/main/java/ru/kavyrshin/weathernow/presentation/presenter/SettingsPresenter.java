@@ -4,7 +4,7 @@ import com.arellomobile.mvp.InjectViewState;
 
 import javax.inject.Inject;
 
-import ru.kavyrshin.weathernow.model.DataManager;
+import ru.kavyrshin.weathernow.data.DataManager;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
 import ru.kavyrshin.weathernow.presentation.view.SettingsView;
 

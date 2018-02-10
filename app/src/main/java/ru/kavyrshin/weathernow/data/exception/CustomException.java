@@ -1,4 +1,4 @@
-package ru.kavyrshin.weathernow.model.exception;
+package ru.kavyrshin.weathernow.data.exception;
 
 
 public class CustomException extends RuntimeException {

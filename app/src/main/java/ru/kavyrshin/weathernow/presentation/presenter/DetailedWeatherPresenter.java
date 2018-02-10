@@ -8,7 +8,7 @@ import javax.inject.Named;
 import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.entity.MainWeatherModel;
 import ru.kavyrshin.weathernow.entity.WeatherListElement;
-import ru.kavyrshin.weathernow.model.DataManager;
+import ru.kavyrshin.weathernow.data.DataManager;
 import ru.kavyrshin.weathernow.presentation.view.DetailedWeatherView;
 
 @InjectViewState

@@ -14,7 +14,7 @@ import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.entity.CacheCity;
 import ru.kavyrshin.weathernow.entity.DataSource;
 import ru.kavyrshin.weathernow.entity.MainWeatherModel;
-import ru.kavyrshin.weathernow.model.DataManager;
+import ru.kavyrshin.weathernow.data.DataManager;
 import ru.kavyrshin.weathernow.presentation.view.MyStationsView;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
