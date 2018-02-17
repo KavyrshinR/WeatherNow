@@ -5,13 +5,14 @@ import javax.inject.Singleton;
 import dagger.BindsInstance;
 import dagger.Component;
 import ru.kavyrshin.weathernow.MyApplication;
+import ru.kavyrshin.weathernow.data.DataModule;
 import ru.kavyrshin.weathernow.di.AddStationComponent;
 import ru.kavyrshin.weathernow.di.DetailedWeatherComponent;
 import ru.kavyrshin.weathernow.di.MyStationsComponent;
 import ru.kavyrshin.weathernow.di.SettingsScreenComponent;
 
 @Singleton
-@Component(modules = {ApplicationModule.class})
+@Component(modules = {ApplicationModule.class, DataModule.class, NetworkModule.class, DatabaseModule.class})
 public interface ApplicationComponent {
 
     @Component.Builder
