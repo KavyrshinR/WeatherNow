@@ -9,12 +9,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import ru.kavyrshin.weathernow.MyApplication;
 import ru.kavyrshin.weathernow.R;
-import ru.kavyrshin.weathernow.domain.models.CacheCity;
+import ru.kavyrshin.weathernow.domain.interactors.MyStationsInteractor;
 import ru.kavyrshin.weathernow.domain.models.DataSource;
 import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
-import ru.kavyrshin.weathernow.data.DataManager;
 import ru.kavyrshin.weathernow.presentation.view.MyStationsView;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -23,10 +21,13 @@ import rx.schedulers.Schedulers;
 @InjectViewState
 public class MyStationsPresenter extends BasePresenter<MyStationsView> {
 
-    private DataManager dataManager = DataManager.getInstance();
+//    private DataManager dataManager = DataManager.getInstance();
+
+    private MyStationsInteractor myStationsInteractor;
 
     @Inject
-    public MyStationsPresenter() {
+    public MyStationsPresenter(MyStationsInteractor myStationsInteractor) {
+        this.myStationsInteractor = myStationsInteractor;
     }
 
     @Override
@@ -36,62 +37,59 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
     }
 
     public void deleteFavouriteStation(int cityId) {
-        dataManager.deleteFavouriteStation(cityId);
-        dataManager.deleteWeatherByStationId(cityId);
+        myStationsInteractor.deleteFavouriteStation(cityId);
         loadFavouriteStations();
     }
 
     public void loadFavouriteStations() {
-        ArrayList<CacheCity> favouriteCitys = new ArrayList<>(dataManager.getFavouriteStations());
+//        if (favouriteCities.isEmpty()) {
+//            getViewState().hideLoad();
+//            getViewState().showMyStations(new ArrayList<MainWeatherModel>());
+//            getViewState().showError(R.string.error_empty_favourite_stations);
+//            return;
+//        }
 
-        if (favouriteCitys.isEmpty()) {
-            getViewState().hideLoad();
-            getViewState().showMyStations(new ArrayList<MainWeatherModel>());
-            getViewState().showError(R.string.error_empty_favourite_stations);
-            return;
-        }
+//        if (!MyApplication.isNetworkConnected()) {
+//            Pair<DataSource, List<MainWeatherModel>> cachedWeather = myStationsInteractor.getAllCachedWeather();
+//            getViewState().showMyStations(cachedWeather.second);
+//            getViewState().hideLoad();
+//        } else {
 
-        int[] cityIds = new int[favouriteCitys.size()];
+        unsubscribeOnDestroy(
+                myStationsInteractor.getAllWeather()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Pair<DataSource, List<MainWeatherModel>>>() {
+                            @Override
+                            public void onCompleted() {
 
-        for (int i = 0; i < favouriteCitys.size(); i++) {
-            CacheCity item = favouriteCitys.get(i);
-            cityIds[i] = item.getId();
-        }
+                            }
 
-        if (!MyApplication.isNetworkConnected()) {
-            Pair<DataSource, List<MainWeatherModel>> cachedWeather = dataManager.getCachedWeather();
-            getViewState().showMyStations(cachedWeather.second);
-            getViewState().hideLoad();
-        } else {
+                            @Override
+                            public void onError(Throwable e) {
+                                e.printStackTrace();
+                                getViewState().hideLoad();
+                                getViewState().showError(e.getMessage());
+                            }
 
-            unsubscribeOnDestroy(
-                    dataManager.getWeather(cityIds)
-                            .startWith(dataManager.getCachedWeather())
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Observer<Pair<DataSource, List<MainWeatherModel>>>() {
-                                @Override
-                                public void onCompleted() {
-
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-                                    e.printStackTrace();
+                            @Override
+                            public void onNext(Pair<DataSource, List<MainWeatherModel>> mainWeatherModels) {
+                                if (mainWeatherModels == null) {
                                     getViewState().hideLoad();
-                                    getViewState().showError(e.getMessage());
-                                }
-
-                                @Override
-                                public void onNext(Pair<DataSource, List<MainWeatherModel>> mainWeatherModels) {
+                                    getViewState().showMyStations(new ArrayList<MainWeatherModel>());
+                                    getViewState().showError(R.string.error_empty_favourite_stations);
+                                } else {
                                     getViewState().showMyStations(mainWeatherModels.second);
+
                                     if (mainWeatherModels.first.getSource() == DataSource.INTERNET_DATA_SOURCE) {
                                         getViewState().hideLoad();
                                     }
                                 }
-                            })
-            );
-        }
+
+                            }
+                        })
+        );
+//        }
     }
 
     public void addStationsClick() {
