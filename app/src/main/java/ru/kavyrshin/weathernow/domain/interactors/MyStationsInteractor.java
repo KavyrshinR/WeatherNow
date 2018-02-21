@@ -11,10 +11,9 @@ import javax.inject.Inject;
 import ru.kavyrshin.weathernow.domain.models.CacheCity;
 import ru.kavyrshin.weathernow.domain.models.DataSource;
 import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
-import ru.kavyrshin.weathernow.domain.models.Temperature;
-import ru.kavyrshin.weathernow.domain.models.WeatherListElement;
 import ru.kavyrshin.weathernow.domain.repositories.IStationsRepository;
 import ru.kavyrshin.weathernow.domain.repositories.IWeatherRepository;
+import ru.kavyrshin.weathernow.util.Utils;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
 import rx.Observable;
 import rx.functions.Func1;
@@ -52,7 +51,7 @@ public class MyStationsInteractor {
                         ArrayList<MainWeatherModel> weatherModels = new ArrayList<>(dataSourceListPair.second);
 
                         for (MainWeatherModel item : weatherModels) {
-                            convertWeatherUnit(item, weatherSettings);
+                            Utils.convertWeatherUnit(item, weatherSettings);
                         }
 
                         return Observable.just(dataSourceListPair);
@@ -62,44 +61,10 @@ public class MyStationsInteractor {
         }).subscribeOn(Schedulers.io());
     }
 
-//    public Observable<Pair<DataSource, List<MainWeatherModel>>> getAllCachedWeather() {
-//        return weatherRepository.getAllCachedWeather()
-//                .subscribeOn(Schedulers.io());
-//    }
-
     public void deleteFavouriteStation(int cityId) {
         stationsRepository.deleteFavouriteStation(cityId);
         weatherRepository.deleteWeatherByCityId(cityId);
     }
 
-    public void convertWeatherUnit(MainWeatherModel mainWeatherModel, WeatherSettings weatherSettings) {
-        ArrayList<WeatherListElement> weatherList = new ArrayList<>(mainWeatherModel.getList());
-        for (WeatherListElement item : weatherList) {
-            if (weatherSettings.getTemperatureUnit() == WeatherSettings.CELSIUS_UNIT) {
-                Temperature temperature = item.getTemp();
-                temperature.setDay(WeatherSettings.getCelsiusFromKelvin(temperature.getDay()));
-                temperature.setEve(WeatherSettings.getCelsiusFromKelvin(temperature.getEve()));
-                temperature.setMorn(WeatherSettings.getCelsiusFromKelvin(temperature.getMorn()));
-                temperature.setNight(WeatherSettings.getCelsiusFromKelvin(temperature.getNight()));
-                temperature.setMax(WeatherSettings.getCelsiusFromKelvin(temperature.getMax()));
-                temperature.setMin(WeatherSettings.getCelsiusFromKelvin(temperature.getMin()));
-            } else if (weatherSettings.getTemperatureUnit() == WeatherSettings.FAHRENHEIT_UNIT) {
-                Temperature temperature = item.getTemp();
-                temperature.setDay(WeatherSettings.getFahrenheitFromKelvin(temperature.getDay()));
-                temperature.setEve(WeatherSettings.getFahrenheitFromKelvin(temperature.getEve()));
-                temperature.setMorn(WeatherSettings.getFahrenheitFromKelvin(temperature.getMorn()));
-                temperature.setNight(WeatherSettings.getFahrenheitFromKelvin(temperature.getNight()));
-                temperature.setMax(WeatherSettings.getFahrenheitFromKelvin(temperature.getMax()));
-                temperature.setMin(WeatherSettings.getFahrenheitFromKelvin(temperature.getMin()));
-            }
 
-            if (weatherSettings.getPressureUnit() == WeatherSettings.MM_OF_MERCURY_UNIT) {
-                item.setPressure(WeatherSettings.getMmOfMercuryFromHpa(item.getPressure()));
-            }
-
-            if (weatherSettings.getWindSpeedUnit() == WeatherSettings.MI_PER_HOUR_UNIT) {
-                item.setSpeed(WeatherSettings.getMiPerHourFromMeterPerSec(item.getSpeed()));
-            }
-        }
-    }
 }
