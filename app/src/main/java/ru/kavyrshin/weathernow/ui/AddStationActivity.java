@@ -65,8 +65,7 @@ public class AddStationActivity extends BaseActivity implements AddStationView, 
         placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                addStationPresenter.getArroundStations(place.getName().toString(),
-                        place.getLatLng().latitude, place.getLatLng().longitude);
+                addStationPresenter.getArroundStations(place.getLatLng().latitude, place.getLatLng().longitude);
             }
 
             @Override
