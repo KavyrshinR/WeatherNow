@@ -9,6 +9,6 @@ import rx.Observable;
 public interface IStationsRepository {
     Observable<List<StationListElement>> getStationsArround(double latitude, double longitude, int countStations);
     Observable<List<CacheCity>> getFavouriteStations();
-    void saveFavouriteStation(CacheCity cacheCity);
+    Observable<CacheCity> saveFavouriteStation(int cityId);
     void deleteFavouriteStation(int cityId);
 }
