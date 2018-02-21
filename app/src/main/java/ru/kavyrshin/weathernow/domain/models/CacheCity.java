@@ -44,4 +44,26 @@ public class CacheCity extends RealmObject {
     public void setDstOffset(int dstOffset) {
         this.dstOffset = dstOffset;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CacheCity cacheCity = (CacheCity) o;
+
+        if (id != cacheCity.id) return false;
+        if (utcOffset != cacheCity.utcOffset) return false;
+        if (dstOffset != cacheCity.dstOffset) return false;
+        return name.equals(cacheCity.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + utcOffset;
+        result = 31 * result + dstOffset;
+        return result;
+    }
 }
