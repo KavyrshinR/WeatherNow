@@ -7,6 +7,7 @@ import io.realm.RealmResults;
 import ru.kavyrshin.weathernow.domain.models.CacheCity;
 import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
+import rx.Observable;
 
 public class AppDatabase {
 
@@ -42,10 +43,6 @@ public class AppDatabase {
 
         realm.close();
 
-//        for (MainWeatherModel item : mainWeatherModelList) {
-//            convertWeatherUnit(item, getWeatherSettings());
-//        }
-
         return  mainWeatherModelList;
     }
 
@@ -56,8 +53,6 @@ public class AppDatabase {
                 realm.where(MainWeatherModel.class).equalTo("cityId", cityId).findFirst();
         MainWeatherModel mainWeatherModel = realm.copyFromRealm(mainWeatherModelRealm);
         realm.close();
-
-//        convertWeatherUnit(mainWeatherModel, getWeatherSettings());
 
         return mainWeatherModel;
     }
@@ -72,14 +67,16 @@ public class AppDatabase {
         return cacheCitiesList;
     }
 
-    public void saveCacheCity(CacheCity city) {
-        Realm realm = Realm.getDefaultInstance();
+    public Observable<CacheCity> saveCacheCity(CacheCity city) {
+        CacheCity result = null;
+        final Realm realm = Realm.getDefaultInstance();
 
         realm.beginTransaction();
-        realm.copyToRealmOrUpdate(city);
+        result = realm.copyToRealmOrUpdate(city);
         realm.commitTransaction();
 
         realm.close();
+        return Observable.just(result);
     }
 
     public void deleteCacheCity(int cityId) {
