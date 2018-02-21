@@ -14,9 +14,8 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.presentation.presenter.SettingsPresenter;
-import ru.kavyrshin.weathernow.util.Utils;
-import ru.kavyrshin.weathernow.util.WeatherSettings;
 import ru.kavyrshin.weathernow.presentation.view.SettingsView;
+import ru.kavyrshin.weathernow.util.WeatherSettings;
 
 
 public class SettingsActivity extends BaseActivity implements SettingsView, View.OnClickListener {
@@ -79,18 +78,18 @@ public class SettingsActivity extends BaseActivity implements SettingsView, View
     public void showSettings(WeatherSettings weatherSettings) {
 
         int temperatureUnitSetting = weatherSettings.getTemperatureUnit();
-        if (temperatureUnitSetting == Utils.CELSIUS_UNIT) {
+        if (temperatureUnitSetting == WeatherSettings.CELSIUS_UNIT) {
             tvTemperatureValue.setText(R.string.celsius_symbol);
-        } else if (temperatureUnitSetting == Utils.KELVIN_UNIT) {
+        } else if (temperatureUnitSetting == WeatherSettings.KELVIN_UNIT) {
             tvTemperatureValue.setText(R.string.kelvin_symbol);
         } else {
             tvTemperatureValue.setText(R.string.fahrenheit_symbol);
         }
 
-        tvPressureValue.setText(weatherSettings.getPressureUnit() == Utils.MM_OF_MERCURY_UNIT ?
+        tvPressureValue.setText(weatherSettings.getPressureUnit() == WeatherSettings.MM_OF_MERCURY_UNIT ?
         R.string.mm_of_mercury_symbol : R.string.hPa_symbol);
 
-        tvSpeedValue.setText(weatherSettings.getWindSpeedUnit() == Utils.M_PER_SEC_UNIT ?
+        tvSpeedValue.setText(weatherSettings.getWindSpeedUnit() == WeatherSettings.M_PER_SEC_UNIT ?
         R.string.m_per_sec_symbol : R.string.mi_per_hour_symbol);
     }
 
@@ -113,11 +112,11 @@ public class SettingsActivity extends BaseActivity implements SettingsView, View
                 builder.setItems(R.array.temperature_variants, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        int result = Utils.CELSIUS_UNIT;
+                        int result = WeatherSettings.CELSIUS_UNIT;
                         if (i == 1) {
-                            result = Utils.KELVIN_UNIT;
+                            result = WeatherSettings.KELVIN_UNIT;
                         } else if (i == 2) {
-                            result = Utils.FAHRENHEIT_UNIT;
+                            result = WeatherSettings.FAHRENHEIT_UNIT;
                         }
                         settingsPresenter.saveTemperatureUnit(result);
                     }
@@ -129,9 +128,9 @@ public class SettingsActivity extends BaseActivity implements SettingsView, View
                 builder.setItems(R.array.pressure_variants, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        int result = Utils.MM_OF_MERCURY_UNIT;
+                        int result = WeatherSettings.MM_OF_MERCURY_UNIT;
                         if (i == 0) {
-                            result = Utils.H_PA_UNIT;
+                            result = WeatherSettings.H_PA_UNIT;
                         }
                         settingsPresenter.savePressureUnit(result);
                     }
@@ -143,9 +142,9 @@ public class SettingsActivity extends BaseActivity implements SettingsView, View
                 builder.setItems(R.array.wind_speed_variants, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        int result = Utils.M_PER_SEC_UNIT;
+                        int result = WeatherSettings.M_PER_SEC_UNIT;
                         if (i == 1) {
-                            result = Utils.MI_PER_HOUR_UNIT;
+                            result = WeatherSettings.MI_PER_HOUR_UNIT;
                         }
                         settingsPresenter.saveWindSpeedUnit(result);
                     }

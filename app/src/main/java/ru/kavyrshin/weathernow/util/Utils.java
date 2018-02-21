@@ -8,18 +8,12 @@ import ru.kavyrshin.weathernow.domain.models.StationListElement;
 import ru.kavyrshin.weathernow.domain.models.Temperature;
 import ru.kavyrshin.weathernow.domain.models.WeatherListElement;
 
+import static ru.kavyrshin.weathernow.util.WeatherSettings.CELSIUS_UNIT;
+import static ru.kavyrshin.weathernow.util.WeatherSettings.FAHRENHEIT_UNIT;
+import static ru.kavyrshin.weathernow.util.WeatherSettings.MI_PER_HOUR_UNIT;
+import static ru.kavyrshin.weathernow.util.WeatherSettings.MM_OF_MERCURY_UNIT;
+
 public class Utils {
-
-    public static final int CELSIUS_UNIT = 11;
-    public static final int KELVIN_UNIT = 12;
-    public static final int FAHRENHEIT_UNIT = 13;
-
-    public static final int H_PA_UNIT = 21;
-    public static final int MM_OF_MERCURY_UNIT = 22;
-
-    public static final int M_PER_SEC_UNIT = 31;
-    public static final int MI_PER_HOUR_UNIT = 32;
-
 
     public static final double KM_IN_MI = 0.62137119223733;
     public static final double hPa_IN_mmHg = 0.75006375541921;

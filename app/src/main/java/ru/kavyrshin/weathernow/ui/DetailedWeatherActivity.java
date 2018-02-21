@@ -17,7 +17,6 @@ import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.domain.models.WeatherListElement;
 import ru.kavyrshin.weathernow.presentation.presenter.DetailedWeatherPresenter;
 import ru.kavyrshin.weathernow.presentation.view.DetailedWeatherView;
-import ru.kavyrshin.weathernow.util.Utils;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
 
 public class DetailedWeatherActivity extends BaseActivity implements DetailedWeatherView {
@@ -94,12 +93,12 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
             int resIdTemperature = R.string.temperature_celsius;
 
             switch (weatherSettings.getTemperatureUnit()) {
-                case Utils.KELVIN_UNIT : {
+                case WeatherSettings.KELVIN_UNIT : {
                     resIdTemperature = R.string.temperature_kelvin;
                     break;
                 }
 
-                case Utils.FAHRENHEIT_UNIT : {
+                case WeatherSettings.FAHRENHEIT_UNIT : {
                     resIdTemperature = R.string.temperature_fahrenheit;
                     break;
                 }
@@ -113,14 +112,14 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
 
             int resIdWindSpeed = R.string.wind_m_per_sec;
 
-            if (weatherSettings.getWindSpeedUnit() == Utils.MI_PER_HOUR_UNIT) {
+            if (weatherSettings.getWindSpeedUnit() == WeatherSettings.MI_PER_HOUR_UNIT) {
                 resIdWindSpeed = R.string.wind_mi_per_hour;
             }
             tvWindSpeed.setText(getString(resIdWindSpeed, weather.getSpeed()));
 
             int resIdPressure = R.string.pressure_mmHg;
 
-            if (weatherSettings.getPressureUnit() == Utils.H_PA_UNIT) {
+            if (weatherSettings.getPressureUnit() == WeatherSettings.H_PA_UNIT) {
                 resIdPressure = R.string.pressure_hPa;
             }
 
