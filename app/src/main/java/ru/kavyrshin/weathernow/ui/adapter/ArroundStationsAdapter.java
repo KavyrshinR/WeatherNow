@@ -72,7 +72,8 @@ public class ArroundStationsAdapter extends RecyclerView.Adapter<ArroundStations
         public void onBind(StationListElement stationListElement) {
             this.stationListElement = stationListElement;
             tvName.setText(stationListElement.getName());
-            tvTemperature.setText(stationListElement.getMain().getTemp() + "°");
+            tvTemperature.setText(itemView.getContext()
+                    .getString(R.string.simple_temperature_format, stationListElement.getMain().getTemp()));
             itemView.setOnClickListener(this);
         }
 
