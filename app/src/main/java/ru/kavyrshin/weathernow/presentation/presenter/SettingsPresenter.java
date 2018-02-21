@@ -1,22 +1,24 @@
 package ru.kavyrshin.weathernow.presentation.presenter;
 
+import android.util.Log;
+
 import com.arellomobile.mvp.InjectViewState;
 
 import javax.inject.Inject;
 
-import ru.kavyrshin.weathernow.data.DataManager;
-import ru.kavyrshin.weathernow.util.WeatherSettings;
+import ru.kavyrshin.weathernow.domain.interactors.SettingsInteractor;
 import ru.kavyrshin.weathernow.presentation.view.SettingsView;
+import ru.kavyrshin.weathernow.util.WeatherSettings;
+import rx.Subscriber;
 
 @InjectViewState
 public class SettingsPresenter extends BasePresenter<SettingsView> {
 
-    private DataManager dataManager = DataManager.getInstance();
-
-    private WeatherSettings weatherSettings;
+    private SettingsInteractor settingsInteractor;
 
     @Inject
-    public SettingsPresenter() {
+    public SettingsPresenter(SettingsInteractor settingsInteractor) {
+        this.settingsInteractor = settingsInteractor;
     }
 
     @Override
@@ -25,32 +27,83 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
         getWeatherSettings();
     }
 
-    public void saveTemperatureUnit(int temperatureUnit) {
-        if (weatherSettings.getTemperatureUnit() != temperatureUnit) {
-            weatherSettings.setTemperatureUnit(temperatureUnit);
-            dataManager.saveWeatherSettings(weatherSettings);
-            getViewState().showSettings(weatherSettings);
-        }
+    public void saveTemperatureUnit(@WeatherSettings.TemperatureSettings int temperatureUnit) {
+        settingsInteractor.saveTemperatureSettings(temperatureUnit)
+                .subscribe(new Subscriber<WeatherSettings>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.d("myLogs", "onCompleted()");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(WeatherSettings weatherSettings) {
+                        getViewState().showSettings(weatherSettings);
+                    }
+                });
     }
 
-    public void savePressureUnit(int pressureUnit) {
-        if (weatherSettings.getPressureUnit() != pressureUnit) {
-            weatherSettings.setPressureUnit(pressureUnit);
-            dataManager.saveWeatherSettings(weatherSettings);
-            getViewState().showSettings(weatherSettings);
-        }
+    public void savePressureUnit(@WeatherSettings.PressureSettings int pressureUnit) {
+        settingsInteractor.savePressureSettings(pressureUnit)
+                .subscribe(new Subscriber<WeatherSettings>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(WeatherSettings weatherSettings) {
+                        getViewState().showSettings(weatherSettings);
+                    }
+                });
     }
 
-    public void saveWindSpeedUnit(int windSpeedUnit) {
-        if (weatherSettings.getWindSpeedUnit() != windSpeedUnit) {
-            weatherSettings.setWindSpeedUnit(windSpeedUnit);
-            dataManager.saveWeatherSettings(weatherSettings);
-            getViewState().showSettings(weatherSettings);
-        }
+    public void saveWindSpeedUnit(@WeatherSettings.SpeedSettings int windSpeedUnit) {
+        settingsInteractor.saveWindSpeedSettings(windSpeedUnit)
+                .subscribe(new Subscriber<WeatherSettings>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(WeatherSettings weatherSettings) {
+                        getViewState().showSettings(weatherSettings);
+                    }
+                });
     }
 
     public void getWeatherSettings() {
-        weatherSettings = dataManager.getWeatherSettings();
-        getViewState().showSettings(weatherSettings);
+        settingsInteractor.getWeatherSettings()
+                .subscribe(new Subscriber<WeatherSettings>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(WeatherSettings weatherSettings) {
+                        getViewState().showSettings(weatherSettings);
+                    }
+                });
     }
 }
