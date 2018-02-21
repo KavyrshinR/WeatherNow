@@ -3,6 +3,8 @@ package ru.kavyrshin.weathernow.di.global;
 
 import com.google.gson.Gson;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -31,7 +33,11 @@ public class NetworkModule {
 
     @Provides
     static OkHttpClient okHttpClient() {
-        return new OkHttpClient.Builder().build();
+        return new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
     }
 
     @Provides
