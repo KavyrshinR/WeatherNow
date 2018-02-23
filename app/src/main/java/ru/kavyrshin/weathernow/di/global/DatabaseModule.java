@@ -5,7 +5,6 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import ru.kavyrshin.weathernow.data.database.AppDatabase;
-import ru.kavyrshin.weathernow.util.WeatherSettings;
 
 @Module
 public class DatabaseModule {
@@ -16,8 +15,4 @@ public class DatabaseModule {
         return new AppDatabase();
     }
 
-    @Provides
-    WeatherSettings provideUserUtilSettings(AppDatabase appDatabase) {
-        return appDatabase.getWeatherSettings();
-    }
 }
