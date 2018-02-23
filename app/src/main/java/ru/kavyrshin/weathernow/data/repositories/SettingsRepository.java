@@ -5,70 +5,84 @@ import javax.inject.Inject;
 import ru.kavyrshin.weathernow.data.database.AppDatabase;
 import ru.kavyrshin.weathernow.domain.repositories.ISettingsRepository;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
-import rx.Emitter;
 import rx.Observable;
-import rx.functions.Action1;
+import rx.functions.Func1;
 
 
 public class SettingsRepository implements ISettingsRepository {
 
-    private WeatherSettings weatherSettings;
     private AppDatabase database;
 
 
     @Inject
-    public SettingsRepository(WeatherSettings weatherSettings, AppDatabase database) {
-        this.weatherSettings = weatherSettings;
+    public SettingsRepository(AppDatabase database) {
         this.database = database;
     }
 
     @Override
     public Observable<WeatherSettings> saveTemperatureSettings(@WeatherSettings.TemperatureSettings final int temperatureUnit) {
-        return Observable.create(new Action1<Emitter<WeatherSettings>>() {
-            @Override
-            public void call(Emitter<WeatherSettings> weatherSettingsEmitter) {
-                if (weatherSettings.getTemperatureUnit() != temperatureUnit) {
-                    weatherSettings.setTemperatureUnit(temperatureUnit);
-                    database.saveWeatherSettings(weatherSettings);
-                    weatherSettingsEmitter.onNext(weatherSettings);
-                }
-                weatherSettingsEmitter.onCompleted();
-            }
-        }, Emitter.BackpressureMode.BUFFER);
+
+        return getWeatherSettings()
+                .filter(new Func1<WeatherSettings, Boolean>() {
+                    @Override
+                    public Boolean call(WeatherSettings weatherSettings) {
+                        return temperatureUnit != weatherSettings.getTemperatureUnit();
+                    }
+                })
+                .flatMap(new Func1<WeatherSettings, Observable<WeatherSettings>>() {
+                    @Override
+                    public Observable<WeatherSettings> call(WeatherSettings weatherSettings) {
+                        weatherSettings.setTemperatureUnit(temperatureUnit);
+                        database.saveWeatherSettings(weatherSettings);
+                        return Observable.just(weatherSettings);
+                    }
+                });
     }
 
     @Override
     public Observable<WeatherSettings> savePressureSettings(@WeatherSettings.PressureSettings final int pressureUnit) {
-        return Observable.create(new Action1<Emitter<WeatherSettings>>() {
-            @Override
-            public void call(Emitter<WeatherSettings> weatherSettingsEmitter) {
-                if (weatherSettings.getPressureUnit() != pressureUnit) {
-                    weatherSettings.setPressureUnit(pressureUnit);
-                    database.saveWeatherSettings(weatherSettings);
-                    weatherSettingsEmitter.onNext(weatherSettings);
-                }
-                weatherSettingsEmitter.onCompleted();
-            }
-        }, Emitter.BackpressureMode.BUFFER);
+
+        return getWeatherSettings()
+                .filter(new Func1<WeatherSettings, Boolean>() {
+                    @Override
+                    public Boolean call(WeatherSettings weatherSettings) {
+                        return pressureUnit != weatherSettings.getPressureUnit();
+                    }
+                })
+                .flatMap(new Func1<WeatherSettings, Observable<WeatherSettings>>() {
+                    @Override
+                    public Observable<WeatherSettings> call(WeatherSettings weatherSettings) {
+                        weatherSettings.setTemperatureUnit(pressureUnit);
+                        database.saveWeatherSettings(weatherSettings);
+                        return Observable.just(weatherSettings);
+                    }
+                });
+
     }
 
     @Override
     public Observable<WeatherSettings> saveWindSpeedSettings(@WeatherSettings.SpeedSettings final int windSpeedUnit) {
-        return Observable.create(new Action1<Emitter<WeatherSettings>>() {
-            @Override
-            public void call(Emitter<WeatherSettings> weatherSettingsEmitter) {
-                if (weatherSettings.getWindSpeedUnit() != windSpeedUnit) {
-                    weatherSettings.setWindSpeedUnit(windSpeedUnit);
-                    database.saveWeatherSettings(weatherSettings);
-                    weatherSettingsEmitter.onNext(weatherSettings);
-                }
-                weatherSettingsEmitter.onCompleted();
-            }
-        }, Emitter.BackpressureMode.BUFFER);
+
+        return getWeatherSettings()
+                .filter(new Func1<WeatherSettings, Boolean>() {
+                    @Override
+                    public Boolean call(WeatherSettings weatherSettings) {
+                        return windSpeedUnit != weatherSettings.getWindSpeedUnit();
+                    }
+                })
+                .flatMap(new Func1<WeatherSettings, Observable<WeatherSettings>>() {
+                    @Override
+                    public Observable<WeatherSettings> call(WeatherSettings weatherSettings) {
+                        weatherSettings.setTemperatureUnit(windSpeedUnit);
+                        database.saveWeatherSettings(weatherSettings);
+                        return Observable.just(weatherSettings);
+                    }
+                });
+
     }
 
     @Override
     public Observable<WeatherSettings> getWeatherSettings() {
-        return Observable.just(weatherSettings);
+        return Observable.just(database.getWeatherSettings());
     }
 }
