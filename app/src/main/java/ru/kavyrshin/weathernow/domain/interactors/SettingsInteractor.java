@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import ru.kavyrshin.weathernow.data.repositories.SettingsRepository;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 public class SettingsInteractor {
 
@@ -28,6 +29,7 @@ public class SettingsInteractor {
     }
 
     public Observable<WeatherSettings> getWeatherSettings() {
-        return settingsRepository.getWeatherSettings();
+        return settingsRepository.getWeatherSettings()
+                .subscribeOn(Schedulers.io());
     }
 }
