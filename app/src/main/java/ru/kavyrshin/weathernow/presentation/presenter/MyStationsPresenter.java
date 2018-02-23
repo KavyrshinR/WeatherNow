@@ -16,12 +16,9 @@ import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
 import ru.kavyrshin.weathernow.presentation.view.MyStationsView;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 @InjectViewState
 public class MyStationsPresenter extends BasePresenter<MyStationsView> {
-
-//    private DataManager dataManager = DataManager.getInstance();
 
     private MyStationsInteractor myStationsInteractor;
 
@@ -42,22 +39,9 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
     }
 
     public void loadFavouriteStations() {
-//        if (favouriteCities.isEmpty()) {
-//            getViewState().hideLoad();
-//            getViewState().showMyStations(new ArrayList<MainWeatherModel>());
-//            getViewState().showError(R.string.error_empty_favourite_stations);
-//            return;
-//        }
-
-//        if (!MyApplication.isNetworkConnected()) {
-//            Pair<DataSource, List<MainWeatherModel>> cachedWeather = myStationsInteractor.getAllCachedWeather();
-//            getViewState().showMyStations(cachedWeather.second);
-//            getViewState().hideLoad();
-//        } else {
 
         unsubscribeOnDestroy(
                 myStationsInteractor.getAllWeather()
-                        .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<Pair<DataSource, List<MainWeatherModel>>>() {
                             @Override
@@ -89,7 +73,6 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
                             }
                         })
         );
-//        }
     }
 
     public void addStationsClick() {
