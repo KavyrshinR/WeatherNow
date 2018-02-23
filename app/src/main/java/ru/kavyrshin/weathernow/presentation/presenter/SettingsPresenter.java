@@ -10,6 +10,7 @@ import ru.kavyrshin.weathernow.domain.interactors.SettingsInteractor;
 import ru.kavyrshin.weathernow.presentation.view.SettingsView;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 
 @InjectViewState
 public class SettingsPresenter extends BasePresenter<SettingsView> {
@@ -89,6 +90,7 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
 
     public void getWeatherSettings() {
         settingsInteractor.getWeatherSettings()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<WeatherSettings>() {
                     @Override
                     public void onCompleted() {
