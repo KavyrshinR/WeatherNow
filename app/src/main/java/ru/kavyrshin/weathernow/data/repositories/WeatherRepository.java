@@ -18,9 +18,7 @@ import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
 import ru.kavyrshin.weathernow.domain.models.WeatherListElement;
 import ru.kavyrshin.weathernow.domain.repositories.IWeatherRepository;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class WeatherRepository implements IWeatherRepository {
 
@@ -42,9 +40,7 @@ public class WeatherRepository implements IWeatherRepository {
             observables.add(apiWeather.getWeatherByIdCity(favouriteCities.get(i).getId(), 7, BuildConfig.API_KEY));
         }
 
-        Observable<MainWeatherModel> result = Observable.merge(observables)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        Observable<MainWeatherModel> result = Observable.merge(observables);
 
         return result.concatMap(new Func1<MainWeatherModel, Observable<MainWeatherModel>>() {
             @Override
