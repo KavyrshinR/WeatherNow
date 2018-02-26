@@ -17,15 +17,18 @@ public class SettingsInteractor {
     }
 
     public Observable<WeatherSettings> saveTemperatureSettings(@WeatherSettings.TemperatureSettings int temperatureUnit) {
-        return settingsRepository.saveTemperatureSettings(temperatureUnit);
+        return settingsRepository.saveTemperatureSettings(temperatureUnit)
+                .subscribeOn(Schedulers.io());
     }
 
     public Observable<WeatherSettings> savePressureSettings(@WeatherSettings.PressureSettings int pressureUnit) {
-        return settingsRepository.savePressureSettings(pressureUnit);
+        return settingsRepository.savePressureSettings(pressureUnit)
+                .subscribeOn(Schedulers.io());
     }
 
     public Observable<WeatherSettings> saveWindSpeedSettings(@WeatherSettings.SpeedSettings int windSpeedUnit) {
-        return settingsRepository.saveWindSpeedSettings(windSpeedUnit);
+        return settingsRepository.saveWindSpeedSettings(windSpeedUnit)
+                .subscribeOn(Schedulers.io());
     }
 
     public Observable<WeatherSettings> getWeatherSettings() {
