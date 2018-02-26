@@ -30,20 +30,20 @@ public class AddStationInteractor {
     public Observable<List<StationListElement>> getStationsArround(final double latitude, final double longitude) {
         return settingsRepository.getWeatherSettings()
                 .flatMap(new Func1<WeatherSettings, Observable<List<StationListElement>>>() {
-            @Override
-            public Observable<List<StationListElement>> call(final WeatherSettings weatherSettings) {
-                return stationsRepository.getStationsArround(latitude, longitude, 10)
-                        .flatMap(new Func1<List<StationListElement>, Observable<List<StationListElement>>>() {
-                            @Override
-                            public Observable<List<StationListElement>> call(List<StationListElement> stationListElements) {
-                                for (int i = 0; i < stationListElements.size(); i++) {
-                                    Utils.convertWeatherUnit(stationListElements.get(i), weatherSettings);
-                                }
+                @Override
+                public Observable<List<StationListElement>> call(final WeatherSettings weatherSettings) {
+                    return stationsRepository.getStationsArround(latitude, longitude, 10)
+                            .flatMap(new Func1<List<StationListElement>, Observable<List<StationListElement>>>() {
+                                @Override
+                                public Observable<List<StationListElement>> call(List<StationListElement> stationListElements) {
+                                    for (int i = 0; i < stationListElements.size(); i++) {
+                                        Utils.convertWeatherUnit(stationListElements.get(i), weatherSettings);
+                                    }
 
-                                return Observable.just(stationListElements);
-                            }
-                        })
-                        .subscribeOn(Schedulers.io());
+                                    return Observable.just(stationListElements);
+                                }
+                            })
+                            .subscribeOn(Schedulers.io());
             }
         });
     }
