@@ -30,6 +30,7 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
 
     public void saveTemperatureUnit(@WeatherSettings.TemperatureSettings int temperatureUnit) {
         settingsInteractor.saveTemperatureSettings(temperatureUnit)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<WeatherSettings>() {
                     @Override
                     public void onCompleted() {
@@ -50,6 +51,7 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
 
     public void savePressureUnit(@WeatherSettings.PressureSettings int pressureUnit) {
         settingsInteractor.savePressureSettings(pressureUnit)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<WeatherSettings>() {
                     @Override
                     public void onCompleted() {
@@ -70,6 +72,7 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
 
     public void saveWindSpeedUnit(@WeatherSettings.SpeedSettings int windSpeedUnit) {
         settingsInteractor.saveWindSpeedSettings(windSpeedUnit)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<WeatherSettings>() {
                     @Override
                     public void onCompleted() {
