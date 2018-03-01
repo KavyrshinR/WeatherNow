@@ -10,8 +10,11 @@ import ru.kavyrshin.weathernow.domain.models.WeatherListElement;
 
 import static ru.kavyrshin.weathernow.util.WeatherSettings.CELSIUS_UNIT;
 import static ru.kavyrshin.weathernow.util.WeatherSettings.FAHRENHEIT_UNIT;
+import static ru.kavyrshin.weathernow.util.WeatherSettings.H_PA_UNIT;
+import static ru.kavyrshin.weathernow.util.WeatherSettings.KELVIN_UNIT;
 import static ru.kavyrshin.weathernow.util.WeatherSettings.MI_PER_HOUR_UNIT;
 import static ru.kavyrshin.weathernow.util.WeatherSettings.MM_OF_MERCURY_UNIT;
+import static ru.kavyrshin.weathernow.util.WeatherSettings.M_PER_SEC_UNIT;
 
 public class Utils {
 
@@ -46,6 +49,42 @@ public class Utils {
             if (weatherSettings.getWindSpeedUnit() == MI_PER_HOUR_UNIT) {
                 item.setSpeed(getMiPerHourFromMeterPerSec(item.getSpeed()));
             }
+        }
+    }
+
+    public static void convertWeatherUnit(WeatherListElement weatherListElement, WeatherSettings weatherSettings) {
+        weatherListElement.setTemperatureUnit(KELVIN_UNIT);
+        weatherListElement.setPressureUnit(H_PA_UNIT);
+        weatherListElement.setWindSpeedUnit(M_PER_SEC_UNIT);
+
+        if (weatherSettings.getTemperatureUnit() == CELSIUS_UNIT) {
+            Temperature temperature = weatherListElement.getTemp();
+            temperature.setDay(getCelsiusFromKelvin(temperature.getDay()));
+            temperature.setEve(getCelsiusFromKelvin(temperature.getEve()));
+            temperature.setMorn(getCelsiusFromKelvin(temperature.getMorn()));
+            temperature.setNight(getCelsiusFromKelvin(temperature.getNight()));
+            temperature.setMax(getCelsiusFromKelvin(temperature.getMax()));
+            temperature.setMin(getCelsiusFromKelvin(temperature.getMin()));
+            weatherListElement.setTemperatureUnit(CELSIUS_UNIT);
+        } else if (weatherSettings.getTemperatureUnit() == FAHRENHEIT_UNIT) {
+            Temperature temperature = weatherListElement.getTemp();
+            temperature.setDay(getFahrenheitFromKelvin(temperature.getDay()));
+            temperature.setEve(getFahrenheitFromKelvin(temperature.getEve()));
+            temperature.setMorn(getFahrenheitFromKelvin(temperature.getMorn()));
+            temperature.setNight(getFahrenheitFromKelvin(temperature.getNight()));
+            temperature.setMax(getFahrenheitFromKelvin(temperature.getMax()));
+            temperature.setMin(getFahrenheitFromKelvin(temperature.getMin()));
+            weatherListElement.setTemperatureUnit(FAHRENHEIT_UNIT);
+        }
+
+        if (weatherSettings.getPressureUnit() == MM_OF_MERCURY_UNIT) {
+            weatherListElement.setPressure(getMmOfMercuryFromHpa(weatherListElement.getPressure()));
+            weatherListElement.setPressureUnit(MM_OF_MERCURY_UNIT);
+        }
+
+        if (weatherSettings.getWindSpeedUnit() == MI_PER_HOUR_UNIT) {
+            weatherListElement.setSpeed(getMiPerHourFromMeterPerSec(weatherListElement.getSpeed()));
+            weatherListElement.setWindSpeedUnit(MI_PER_HOUR_UNIT);
         }
     }
 
