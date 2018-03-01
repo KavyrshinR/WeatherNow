@@ -50,6 +50,7 @@ public class WeatherRepository implements IWeatherRepository {
 
                 for (CacheCity cacheCity : favouriteCities) {
                     if (cacheCity.getId() == mainWeatherModel.getCityId()) {
+                        mainWeatherModel.getCity().setName(cacheCity.getName());
                         for (WeatherListElement item : mainWeatherModel.getList()) {
                             item.setLocalDt(item.getDt() + cacheCity.getUtcOffset() + cacheCity.getDstOffset());
 
@@ -78,6 +79,12 @@ public class WeatherRepository implements IWeatherRepository {
         Pair<DataSource, List<MainWeatherModel>> modelPair
                 = new Pair<>(new DataSource(DataSource.DISK_DATA_SOURCE), mainWeatherModelList);
         return Observable.just(modelPair);
+    }
+
+    @Override
+    public Observable<MainWeatherModel> getWeatherByCityId(int cityId) {
+        MainWeatherModel weatherModel = database.getWeatherById(cityId);
+        return Observable.just(weatherModel);
     }
 
     @Override
