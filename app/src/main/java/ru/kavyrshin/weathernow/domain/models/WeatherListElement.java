@@ -7,6 +7,7 @@ import java.util.List;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 
 public class WeatherListElement extends RealmObject {
 
@@ -40,6 +41,15 @@ public class WeatherListElement extends RealmObject {
     @SerializedName("rain")
     @Expose
     private double rain;
+
+    @Ignore
+    private int temperatureUnit;
+
+    @Ignore
+    private int pressureUnit;
+
+    @Ignore
+    private int windSpeedUnit;
 
     public int getDt() {
         return dt;
@@ -121,4 +131,27 @@ public class WeatherListElement extends RealmObject {
         this.rain = rain;
     }
 
+    public int getTemperatureUnit() {
+        return temperatureUnit;
+    }
+
+    public void setTemperatureUnit(int temperatureUnit) {
+        this.temperatureUnit = temperatureUnit;
+    }
+
+    public int getPressureUnit() {
+        return pressureUnit;
+    }
+
+    public void setPressureUnit(int pressureUnit) {
+        this.pressureUnit = pressureUnit;
+    }
+
+    public int getWindSpeedUnit() {
+        return windSpeedUnit;
+    }
+
+    public void setWindSpeedUnit(int windSpeedUnit) {
+        this.windSpeedUnit = windSpeedUnit;
+    }
 }
