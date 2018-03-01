@@ -74,7 +74,7 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
     }
 
     @Override
-    public void showWeather(WeatherListElement weather, String cityName, WeatherSettings weatherSettings) {
+    public void showWeather(WeatherListElement weather, String cityName) {
 
         if (weather != null) {
             tvToolbar.setText(cityName);
@@ -92,7 +92,7 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
 
             int resIdTemperature = R.string.temperature_celsius;
 
-            switch (weatherSettings.getTemperatureUnit()) {
+            switch (weather.getTemperatureUnit()) {
                 case WeatherSettings.KELVIN_UNIT : {
                     resIdTemperature = R.string.temperature_kelvin;
                     break;
@@ -112,14 +112,14 @@ public class DetailedWeatherActivity extends BaseActivity implements DetailedWea
 
             int resIdWindSpeed = R.string.wind_m_per_sec;
 
-            if (weatherSettings.getWindSpeedUnit() == WeatherSettings.MI_PER_HOUR_UNIT) {
+            if (weather.getWindSpeedUnit() == WeatherSettings.MI_PER_HOUR_UNIT) {
                 resIdWindSpeed = R.string.wind_mi_per_hour;
             }
             tvWindSpeed.setText(getString(resIdWindSpeed, weather.getSpeed()));
 
             int resIdPressure = R.string.pressure_mmHg;
 
-            if (weatherSettings.getPressureUnit() == WeatherSettings.H_PA_UNIT) {
+            if (weather.getPressureUnit() == WeatherSettings.H_PA_UNIT) {
                 resIdPressure = R.string.pressure_hPa;
             }
 
