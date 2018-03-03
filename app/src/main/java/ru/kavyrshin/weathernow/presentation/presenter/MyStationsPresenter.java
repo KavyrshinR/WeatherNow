@@ -58,7 +58,7 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
 
                             @Override
                             public void onNext(Pair<DataSource, List<MainWeatherModel>> mainWeatherModels) {
-                                if (mainWeatherModels == null) {
+                                if (mainWeatherModels.second.isEmpty()) {
                                     getViewState().hideLoad();
                                     getViewState().showMyStations(new ArrayList<MainWeatherModel>());
                                     getViewState().showError(R.string.error_empty_favourite_stations);
