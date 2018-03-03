@@ -45,14 +45,7 @@ public class MyStationsInteractor {
                             @Override
                             public Observable<Pair<DataSource, List<MainWeatherModel>>> call(final WeatherSettings weatherSettings) {
                                 return weatherRepository.getWeather(cacheCities)
-                                        .startWith(weatherRepository.getAllCachedWeather())
                                         .subscribeOn(Schedulers.io())
-                                        .filter(new Func1<Pair<DataSource, List<MainWeatherModel>>, Boolean>() {
-                                            @Override
-                                            public Boolean call(Pair<DataSource, List<MainWeatherModel>> dataSourceListPair) {
-                                                return !dataSourceListPair.second.isEmpty();
-                                            }
-                                        })
                                         .concatMap(new Func1<Pair<DataSource, List<MainWeatherModel>>,
                                                 Observable<Pair<DataSource, List<MainWeatherModel>>>>() {
                                             @Override

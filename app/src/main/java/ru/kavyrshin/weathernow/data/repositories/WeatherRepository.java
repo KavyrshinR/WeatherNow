@@ -40,37 +40,39 @@ public class WeatherRepository implements IWeatherRepository {
             observables.add(apiWeather.getWeatherByIdCity(favouriteCities.get(i).getId(), 7, BuildConfig.API_KEY));
         }
 
-        Observable<MainWeatherModel> result = Observable.merge(observables);
 
-        return result.concatMap(new Func1<MainWeatherModel, Observable<MainWeatherModel>>() {
-            @Override
-            public Observable<MainWeatherModel> call(MainWeatherModel mainWeatherModel) {
+        return Observable.mergeDelayError(observables)
+                .concatMap(new Func1<MainWeatherModel, Observable<MainWeatherModel>>() {
+                    @Override
+                    public Observable<MainWeatherModel> call(MainWeatherModel mainWeatherModel) {
 
-                mainWeatherModel.setCityId(mainWeatherModel.getCity().getId());
+                        mainWeatherModel.setCityId(mainWeatherModel.getCity().getId());
 
-                for (CacheCity cacheCity : favouriteCities) {
-                    if (cacheCity.getId() == mainWeatherModel.getCityId()) {
-                        mainWeatherModel.getCity().setName(cacheCity.getName());
-                        for (WeatherListElement item : mainWeatherModel.getList()) {
-                            item.setLocalDt(item.getDt() + cacheCity.getUtcOffset() + cacheCity.getDstOffset());
+                        for (CacheCity cacheCity : favouriteCities) {
+                            if (cacheCity.getId() == mainWeatherModel.getCityId()) {
+                                mainWeatherModel.getCity().setName(cacheCity.getName());
+                                for (WeatherListElement item : mainWeatherModel.getList()) {
+                                    item.setLocalDt(item.getDt() + cacheCity.getUtcOffset() + cacheCity.getDstOffset());
 
+                                }
+                            }
                         }
+
+                        database.saveWeather(mainWeatherModel);
+
+                        return Observable.just(mainWeatherModel);
                     }
-                }
+                    })
+                .map(new Func1<MainWeatherModel, Pair<DataSource, List<MainWeatherModel>>>() {
+                        @Override
+                        public Pair<DataSource, List<MainWeatherModel>> call(MainWeatherModel mainWeatherModel) {
 
-                database.saveWeather(mainWeatherModel);
+                            List<MainWeatherModel> mainWeatherModelList = database.getAllWeather();
 
-                return Observable.just(mainWeatherModel);
-            }
-        }).map(new Func1<MainWeatherModel, Pair<DataSource, List<MainWeatherModel>>>() {
-            @Override
-            public Pair<DataSource, List<MainWeatherModel>> call(MainWeatherModel mainWeatherModel) {
-
-                List<MainWeatherModel> mainWeatherModelList = database.getAllWeather();
-
-                return new Pair<>(new DataSource(DataSource.INTERNET_DATA_SOURCE), mainWeatherModelList);
-            }
-        });
+                            return new Pair<>(new DataSource(DataSource.INTERNET_DATA_SOURCE), mainWeatherModelList);
+                        }
+                    })
+                .startWith(getAllCachedWeather());
     }
 
     @Override
