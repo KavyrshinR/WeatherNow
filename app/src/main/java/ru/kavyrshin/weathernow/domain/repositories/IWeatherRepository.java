@@ -14,5 +14,5 @@ public interface IWeatherRepository {
     Observable<Pair<DataSource, List<MainWeatherModel>>> getWeather(final List<CacheCity> favouriteCities);
     Observable<Pair<DataSource, List<MainWeatherModel>>> getAllCachedWeather();
     Observable<MainWeatherModel> getWeatherByCityId(int cityId);
-    void deleteWeatherByCityId(int cityId);
+    Observable<Boolean> deleteWeatherByCityId(int cityId);
 }

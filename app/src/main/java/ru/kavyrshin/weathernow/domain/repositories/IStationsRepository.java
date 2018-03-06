@@ -10,5 +10,5 @@ public interface IStationsRepository {
     Observable<List<StationListElement>> getStationsArround(double latitude, double longitude, int countStations);
     Observable<List<CacheCity>> getFavouriteStations();
     Observable<CacheCity> saveFavouriteStation(int cityId);
-    void deleteFavouriteStation(int cityId);
+    Observable<Boolean> deleteFavouriteStation(int cityId);
 }

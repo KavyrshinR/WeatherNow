@@ -90,7 +90,7 @@ public class WeatherRepository implements IWeatherRepository {
     }
 
     @Override
-    public void deleteWeatherByCityId(int cityId) {
-        database.deleteWeatherByStationId(cityId);
+    public Observable<Boolean> deleteWeatherByCityId(int cityId) {
+        return Observable.just(database.deleteWeatherByStationId(cityId));
     }
 }

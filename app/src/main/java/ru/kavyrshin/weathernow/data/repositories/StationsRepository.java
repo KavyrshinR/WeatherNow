@@ -92,7 +92,7 @@ public class StationsRepository implements IStationsRepository {
     }
 
     @Override
-    public void deleteFavouriteStation(int cityId) {
-        database.deleteCacheCity(cityId);
+    public Observable<Boolean> deleteFavouriteStation(int cityId) {
+        return Observable.just(database.deleteCacheCity(cityId));
     }
 }
