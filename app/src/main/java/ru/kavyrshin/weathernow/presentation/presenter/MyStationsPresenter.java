@@ -15,6 +15,7 @@ import ru.kavyrshin.weathernow.domain.models.DataSource;
 import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
 import ru.kavyrshin.weathernow.presentation.view.MyStationsView;
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 
 @InjectViewState
@@ -34,8 +35,31 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
     }
 
     public void deleteFavouriteStation(int cityId) {
-        myStationsInteractor.deleteFavouriteStation(cityId);
-        loadFavouriteStations();
+        unsubscribeOnDestroy(
+            myStationsInteractor
+                    .deleteFavouriteStation(cityId)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<Boolean>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            getViewState().showError(e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(Boolean aBoolean) {
+                            if (aBoolean) {
+                                loadFavouriteStations();
+                            } else {
+                                onError(new RuntimeException("DB error"));
+                            }
+                        }
+                    })
+        );
     }
 
     public void loadFavouriteStations() {
