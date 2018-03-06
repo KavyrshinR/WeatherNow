@@ -18,6 +18,7 @@ import ru.kavyrshin.weathernow.util.Utils;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
 import rx.Observable;
 import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 public class MyStationsInteractor {
@@ -66,9 +67,16 @@ public class MyStationsInteractor {
         });
     }
 
-    public void deleteFavouriteStation(int cityId) {
-        stationsRepository.deleteFavouriteStation(cityId);
-        weatherRepository.deleteWeatherByCityId(cityId);
+    public Observable<Boolean> deleteFavouriteStation(int cityId) {
+        return Observable.zip(
+                stationsRepository.deleteFavouriteStation(cityId),
+                weatherRepository.deleteWeatherByCityId(cityId),
+                new Func2<Boolean, Boolean, Boolean>() {
+                    @Override
+                    public Boolean call(Boolean aBoolean, Boolean aBoolean2) {
+                        return aBoolean && aBoolean2;
+                    }
+                }).subscribeOn(Schedulers.io());
     }
 
 
