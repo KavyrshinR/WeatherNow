@@ -66,7 +66,7 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
 
         unsubscribeOnDestroy(
                 myStationsInteractor.getAllWeather()
-                        .observeOn(AndroidSchedulers.mainThread())
+                        .observeOn(AndroidSchedulers.mainThread(), true)
                         .subscribe(new Observer<Pair<DataSource, List<MainWeatherModel>>>() {
                             @Override
                             public void onCompleted() {
