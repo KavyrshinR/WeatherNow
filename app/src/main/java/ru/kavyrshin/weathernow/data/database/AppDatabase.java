@@ -21,20 +21,6 @@ public class AppDatabase {
         realm.close();
     }
 
-    public void deleteWeatherByStationId(int cityId) {
-        Realm realm = Realm.getDefaultInstance();
-
-        final RealmResults<MainWeatherModel> results = realm.where(MainWeatherModel.class).equalTo("cityId", cityId).findAll();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                results.deleteAllFromRealm();
-            }
-        });
-
-        realm.close();
-    }
-
     public List<MainWeatherModel> getAllWeather() {
         Realm realm = Realm.getDefaultInstance();
 
@@ -79,18 +65,34 @@ public class AppDatabase {
         return Observable.just(result);
     }
 
-    public void deleteCacheCity(int cityId) {
+    public boolean deleteWeatherByStationId(int cityId) {
         Realm realm = Realm.getDefaultInstance();
 
-        final RealmResults<CacheCity> results = realm.where(CacheCity.class).equalTo("id", cityId).findAll();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                results.deleteAllFromRealm();
-            }
-        });
+        realm.beginTransaction();
+
+        RealmResults<MainWeatherModel> results = realm.where(MainWeatherModel.class).equalTo("cityId", cityId).findAll();
+        boolean result = results.deleteAllFromRealm();
+
+        realm.commitTransaction();
 
         realm.close();
+
+        return result;
+    }
+
+    public boolean deleteCacheCity(int cityId) {
+        Realm realm = Realm.getDefaultInstance();
+
+        realm.beginTransaction();
+
+        final RealmResults<CacheCity> results = realm.where(CacheCity.class).equalTo("id", cityId).findAll();
+        boolean result = results.deleteAllFromRealm();
+
+        realm.commitTransaction();
+
+        realm.close();
+
+        return result;
     }
 
     public void saveWeatherSettings(WeatherSettings weatherSettings) {
