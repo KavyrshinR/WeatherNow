@@ -63,9 +63,10 @@ public class WeatherRepository implements IWeatherRepository {
                         return Observable.just(mainWeatherModel);
                     }
                     })
-                .map(new Func1<MainWeatherModel, Pair<DataSource, List<MainWeatherModel>>>() {
+                .buffer(favouriteCities.size())
+                .map(new Func1<List<MainWeatherModel>, Pair<DataSource, List<MainWeatherModel>>>() {
                         @Override
-                        public Pair<DataSource, List<MainWeatherModel>> call(MainWeatherModel mainWeatherModel) {
+                        public Pair<DataSource, List<MainWeatherModel>> call(List<MainWeatherModel> mainWeatherModel) {
 
                             List<MainWeatherModel> mainWeatherModelList = database.getAllWeather();
 
