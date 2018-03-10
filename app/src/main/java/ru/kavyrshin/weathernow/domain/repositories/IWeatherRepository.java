@@ -5,14 +5,15 @@ import android.util.Pair;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import ru.kavyrshin.weathernow.domain.models.CacheCity;
 import ru.kavyrshin.weathernow.domain.models.DataSource;
 import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
-import rx.Observable;
 
 public interface IWeatherRepository {
     Observable<Pair<DataSource, List<MainWeatherModel>>> getWeather(final List<CacheCity> favouriteCities);
-    Observable<Pair<DataSource, List<MainWeatherModel>>> getAllCachedWeather();
-    Observable<MainWeatherModel> getWeatherByCityId(int cityId);
-    Observable<Boolean> deleteWeatherByCityId(int cityId);
+    Single<Pair<DataSource, List<MainWeatherModel>>> getAllCachedWeather();
+    Single<MainWeatherModel> getWeatherByCityId(int cityId);
+    Single<Boolean> deleteWeatherByCityId(int cityId);
 }

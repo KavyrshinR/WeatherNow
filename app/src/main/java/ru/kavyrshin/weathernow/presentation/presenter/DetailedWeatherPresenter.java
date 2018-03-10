@@ -5,12 +5,12 @@ import com.arellomobile.mvp.InjectViewState;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableSingleObserver;
 import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.domain.interactors.DetailedWeatherInteractor;
 import ru.kavyrshin.weathernow.domain.models.ConcreteWeather;
 import ru.kavyrshin.weathernow.presentation.view.DetailedWeatherView;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
 
 @InjectViewState
 public class DetailedWeatherPresenter extends BasePresenter<DetailedWeatherView> {
@@ -40,11 +40,7 @@ public class DetailedWeatherPresenter extends BasePresenter<DetailedWeatherView>
     public void getWeather() {
         detailedWeatherInteractor.getWeatherByCityId(cityId, unixTime)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Subscriber<ConcreteWeather>() {
-                @Override
-                public void onCompleted() {
-
-                }
+            .subscribeWith(new DisposableSingleObserver<ConcreteWeather>() {
 
                 @Override
                 public void onError(Throwable e) {
@@ -52,7 +48,7 @@ public class DetailedWeatherPresenter extends BasePresenter<DetailedWeatherView>
                 }
 
                 @Override
-                public void onNext(ConcreteWeather concreteWeather) {
+                public void onSuccess(ConcreteWeather concreteWeather) {
                     getViewState().showWeather(concreteWeather.getWeatherListElement(),
                             concreteWeather.getCityName());
                 }

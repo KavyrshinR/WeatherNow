@@ -9,14 +9,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.domain.interactors.MyStationsInteractor;
 import ru.kavyrshin.weathernow.domain.models.DataSource;
 import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
 import ru.kavyrshin.weathernow.presentation.view.MyStationsView;
-import rx.Observer;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
+
 
 @InjectViewState
 public class MyStationsPresenter extends BasePresenter<MyStationsView> {
@@ -39,11 +40,7 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
             myStationsInteractor
                     .deleteFavouriteStation(cityId)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<Boolean>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
+                    .subscribeWith(new DisposableSingleObserver<Boolean>() {
 
                         @Override
                         public void onError(Throwable e) {
@@ -51,7 +48,7 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
                         }
 
                         @Override
-                        public void onNext(Boolean aBoolean) {
+                        public void onSuccess(Boolean aBoolean) {
                             if (aBoolean) {
                                 loadFavouriteStations();
                             } else {
@@ -67,9 +64,10 @@ public class MyStationsPresenter extends BasePresenter<MyStationsView> {
         unsubscribeOnDestroy(
                 myStationsInteractor.getAllWeather()
                         .observeOn(AndroidSchedulers.mainThread(), true)
-                        .subscribe(new Observer<Pair<DataSource, List<MainWeatherModel>>>() {
+                        .subscribeWith(new DisposableObserver<Pair<DataSource, List<MainWeatherModel>>>() {
+
                             @Override
-                            public void onCompleted() {
+                            public void onComplete() {
 
                             }
 

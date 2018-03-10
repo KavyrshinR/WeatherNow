@@ -8,6 +8,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.Single;
+import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import ru.kavyrshin.weathernow.domain.models.CacheCity;
 import ru.kavyrshin.weathernow.domain.models.DataSource;
 import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
@@ -16,10 +22,6 @@ import ru.kavyrshin.weathernow.domain.repositories.IStationsRepository;
 import ru.kavyrshin.weathernow.domain.repositories.IWeatherRepository;
 import ru.kavyrshin.weathernow.util.Utils;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
-import rx.Observable;
-import rx.functions.Func1;
-import rx.functions.Func2;
-import rx.schedulers.Schedulers;
 
 public class MyStationsInteractor {
 
@@ -37,43 +39,43 @@ public class MyStationsInteractor {
 
     public Observable<Pair<DataSource, List<MainWeatherModel>>> getAllWeather() {
         return stationsRepository.getFavouriteStations()
-                .concatMap(new Func1<List<CacheCity>, Observable<Pair<DataSource, List<MainWeatherModel>>>>() {
-            @Override
-            public Observable<Pair<DataSource, List<MainWeatherModel>>> call(final List<CacheCity> cacheCities) {
+                .flatMapObservable(new Function<List<CacheCity>, Observable<Pair<DataSource, List<MainWeatherModel>>>>() {
+                    @Override
+                    public Observable<Pair<DataSource, List<MainWeatherModel>>> apply(final List<CacheCity> cacheCities) {
 
-                return settingsRepository.getWeatherSettings()
-                        .flatMap(new Func1<WeatherSettings, Observable<Pair<DataSource, List<MainWeatherModel>>>>() {
-                            @Override
-                            public Observable<Pair<DataSource, List<MainWeatherModel>>> call(final WeatherSettings weatherSettings) {
-                                return weatherRepository.getWeather(cacheCities)
-                                        .subscribeOn(Schedulers.io())
-                                        .concatMap(new Func1<Pair<DataSource, List<MainWeatherModel>>,
-                                                Observable<Pair<DataSource, List<MainWeatherModel>>>>() {
-                                            @Override
-                                            public Observable<Pair<DataSource, List<MainWeatherModel>>> call(Pair<DataSource, List<MainWeatherModel>> dataSourceListPair) {
+                        return settingsRepository.getWeatherSettings()
+                                .flatMapObservable(new Function<WeatherSettings, Observable<Pair<DataSource, List<MainWeatherModel>>>>() {
+                                    @Override
+                                    public Observable<Pair<DataSource, List<MainWeatherModel>>> apply(final WeatherSettings weatherSettings) {
+                                        return weatherRepository.getWeather(cacheCities)
+                                                .subscribeOn(Schedulers.io())
+                                                .concatMap(new Function<Pair<DataSource,List<MainWeatherModel>>,
+                                                        ObservableSource<Pair<DataSource,List<MainWeatherModel>>>>() {
+                                                    @Override
+                                                    public Observable<Pair<DataSource, List<MainWeatherModel>>> apply(Pair<DataSource, List<MainWeatherModel>> dataSourceListPair) {
 
-                                                ArrayList<MainWeatherModel> weatherModels = new ArrayList<>(dataSourceListPair.second);
+                                                        ArrayList<MainWeatherModel> weatherModels = new ArrayList<>(dataSourceListPair.second);
 
-                                                for (MainWeatherModel item : weatherModels) {
-                                                    Utils.convertWeatherUnit(item, weatherSettings);
-                                                }
+                                                        for (MainWeatherModel item : weatherModels) {
+                                                            Utils.convertWeatherUnit(item, weatherSettings);
+                                                        }
 
-                                                return Observable.just(dataSourceListPair);
-                                            }
-                                        });
-                            }
-                        });
+                                                        return Observable.just(dataSourceListPair);
+                                                    }
+                                                });
+                                    }
+                                });
             }
         });
     }
 
-    public Observable<Boolean> deleteFavouriteStation(int cityId) {
-        return Observable.zip(
+    public Single<Boolean> deleteFavouriteStation(int cityId) {
+        return Single.zip(
                 stationsRepository.deleteFavouriteStation(cityId),
                 weatherRepository.deleteWeatherByCityId(cityId),
-                new Func2<Boolean, Boolean, Boolean>() {
+                new BiFunction<Boolean, Boolean, Boolean>() {
                     @Override
-                    public Boolean call(Boolean aBoolean, Boolean aBoolean2) {
+                    public Boolean apply(Boolean aBoolean, Boolean aBoolean2) throws Exception {
                         return aBoolean && aBoolean2;
                     }
                 }).subscribeOn(Schedulers.io());

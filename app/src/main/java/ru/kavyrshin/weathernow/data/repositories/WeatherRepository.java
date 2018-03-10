@@ -9,6 +9,10 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.Single;
+import io.reactivex.functions.Function;
 import ru.kavyrshin.weathernow.BuildConfig;
 import ru.kavyrshin.weathernow.data.api.ApiWeather;
 import ru.kavyrshin.weathernow.data.database.AppDatabase;
@@ -17,8 +21,6 @@ import ru.kavyrshin.weathernow.domain.models.DataSource;
 import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
 import ru.kavyrshin.weathernow.domain.models.WeatherListElement;
 import ru.kavyrshin.weathernow.domain.repositories.IWeatherRepository;
-import rx.Observable;
-import rx.functions.Func1;
 
 public class WeatherRepository implements IWeatherRepository {
 
@@ -37,15 +39,14 @@ public class WeatherRepository implements IWeatherRepository {
         ArrayList<Observable<MainWeatherModel>> observables = new ArrayList<>();
 
         for (int i = 0; i < favouriteCities.size(); i++) {
-            observables.add(apiWeather.getWeatherByIdCity(favouriteCities.get(i).getId(), 7, BuildConfig.API_KEY));
+            observables.add(apiWeather.getWeatherByIdCity(favouriteCities.get(i).getId(), 7, BuildConfig.API_KEY).toObservable());
         }
 
 
         return Observable.mergeDelayError(observables)
-                .concatMap(new Func1<MainWeatherModel, Observable<MainWeatherModel>>() {
+                .concatMap(new Function<MainWeatherModel, ObservableSource<MainWeatherModel>>() {
                     @Override
-                    public Observable<MainWeatherModel> call(MainWeatherModel mainWeatherModel) {
-
+                    public ObservableSource<MainWeatherModel> apply(MainWeatherModel mainWeatherModel) throws Exception {
                         mainWeatherModel.setCityId(mainWeatherModel.getCity().getId());
 
                         for (CacheCity cacheCity : favouriteCities) {
@@ -62,36 +63,36 @@ public class WeatherRepository implements IWeatherRepository {
 
                         return Observable.just(mainWeatherModel);
                     }
-                    })
+                })
                 .buffer(favouriteCities.size())
-                .map(new Func1<List<MainWeatherModel>, Pair<DataSource, List<MainWeatherModel>>>() {
-                        @Override
-                        public Pair<DataSource, List<MainWeatherModel>> call(List<MainWeatherModel> mainWeatherModel) {
+                .map(new Function<List<MainWeatherModel>, Pair<DataSource,List<MainWeatherModel>>>() {
 
-                            List<MainWeatherModel> mainWeatherModelList = database.getAllWeather();
+                    @Override
+                    public Pair<DataSource, List<MainWeatherModel>> apply(List<MainWeatherModel> mainWeatherModels) throws Exception {
+                        List<MainWeatherModel> mainWeatherModelList = database.getAllWeather();
 
-                            return new Pair<>(new DataSource(DataSource.INTERNET_DATA_SOURCE), mainWeatherModelList);
-                        }
-                    })
-                .startWith(getAllCachedWeather());
+                        return new Pair<>(new DataSource(DataSource.INTERNET_DATA_SOURCE), mainWeatherModelList);
+                    }
+                })
+                .startWith(getAllCachedWeather().toObservable());
     }
 
     @Override
-    public Observable<Pair<DataSource, List<MainWeatherModel>>> getAllCachedWeather() {
+    public Single<Pair<DataSource, List<MainWeatherModel>>> getAllCachedWeather() {
         List<MainWeatherModel> mainWeatherModelList = database.getAllWeather();
         Pair<DataSource, List<MainWeatherModel>> modelPair
                 = new Pair<>(new DataSource(DataSource.DISK_DATA_SOURCE), mainWeatherModelList);
-        return Observable.just(modelPair);
+        return Single.just(modelPair);
     }
 
     @Override
-    public Observable<MainWeatherModel> getWeatherByCityId(int cityId) {
+    public Single<MainWeatherModel> getWeatherByCityId(int cityId) {
         MainWeatherModel weatherModel = database.getWeatherById(cityId);
-        return Observable.just(weatherModel);
+        return Single.just(weatherModel);
     }
 
     @Override
-    public Observable<Boolean> deleteWeatherByCityId(int cityId) {
-        return Observable.just(database.deleteWeatherByStationId(cityId));
+    public Single<Boolean> deleteWeatherByCityId(int cityId) {
+        return Single.just(database.deleteWeatherByStationId(cityId));
     }
 }

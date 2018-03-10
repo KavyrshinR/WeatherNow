@@ -2,10 +2,11 @@ package ru.kavyrshin.weathernow.domain.interactors;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 import ru.kavyrshin.weathernow.data.repositories.SettingsRepository;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
-import rx.Observable;
-import rx.schedulers.Schedulers;
+
 
 public class SettingsInteractor {
 
@@ -16,22 +17,22 @@ public class SettingsInteractor {
         this.settingsRepository = settingsRepository;
     }
 
-    public Observable<WeatherSettings> saveTemperatureSettings(@WeatherSettings.TemperatureSettings int temperatureUnit) {
+    public Single<WeatherSettings> saveTemperatureSettings(@WeatherSettings.TemperatureSettings int temperatureUnit) {
         return settingsRepository.saveTemperatureSettings(temperatureUnit)
                 .subscribeOn(Schedulers.io());
     }
 
-    public Observable<WeatherSettings> savePressureSettings(@WeatherSettings.PressureSettings int pressureUnit) {
+    public Single<WeatherSettings> savePressureSettings(@WeatherSettings.PressureSettings int pressureUnit) {
         return settingsRepository.savePressureSettings(pressureUnit)
                 .subscribeOn(Schedulers.io());
     }
 
-    public Observable<WeatherSettings> saveWindSpeedSettings(@WeatherSettings.SpeedSettings int windSpeedUnit) {
+    public Single<WeatherSettings> saveWindSpeedSettings(@WeatherSettings.SpeedSettings int windSpeedUnit) {
         return settingsRepository.saveWindSpeedSettings(windSpeedUnit)
                 .subscribeOn(Schedulers.io());
     }
 
-    public Observable<WeatherSettings> getWeatherSettings() {
+    public Single<WeatherSettings> getWeatherSettings() {
         return settingsRepository.getWeatherSettings()
                 .subscribeOn(Schedulers.io());
     }

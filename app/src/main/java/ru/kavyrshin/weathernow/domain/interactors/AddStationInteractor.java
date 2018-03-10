@@ -5,15 +5,16 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
+import io.reactivex.SingleSource;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import ru.kavyrshin.weathernow.domain.models.CacheCity;
 import ru.kavyrshin.weathernow.domain.models.StationListElement;
 import ru.kavyrshin.weathernow.domain.repositories.ISettingsRepository;
 import ru.kavyrshin.weathernow.domain.repositories.IStationsRepository;
 import ru.kavyrshin.weathernow.util.Utils;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
-import rx.Observable;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class AddStationInteractor {
 
@@ -27,20 +28,20 @@ public class AddStationInteractor {
         this.settingsRepository = settingsRepository;
     }
 
-    public Observable<List<StationListElement>> getStationsArround(final double latitude, final double longitude) {
+    public Single<List<StationListElement>> getStationsArround(final double latitude, final double longitude) {
         return settingsRepository.getWeatherSettings()
-                .flatMap(new Func1<WeatherSettings, Observable<List<StationListElement>>>() {
+                .flatMap(new Function<WeatherSettings, SingleSource<List<StationListElement>>>() {
                 @Override
-                public Observable<List<StationListElement>> call(final WeatherSettings weatherSettings) {
+                public Single<List<StationListElement>> apply(final WeatherSettings weatherSettings) {
                     return stationsRepository.getStationsArround(latitude, longitude, 10)
-                            .flatMap(new Func1<List<StationListElement>, Observable<List<StationListElement>>>() {
+                            .flatMap(new Function<List<StationListElement>, SingleSource<List<StationListElement>>>() {
                                 @Override
-                                public Observable<List<StationListElement>> call(List<StationListElement> stationListElements) {
+                                public Single<List<StationListElement>> apply(List<StationListElement> stationListElements) {
                                     for (int i = 0; i < stationListElements.size(); i++) {
                                         Utils.convertWeatherUnit(stationListElements.get(i), weatherSettings);
                                     }
 
-                                    return Observable.just(stationListElements);
+                                    return Single.just(stationListElements);
                                 }
                             })
                             .subscribeOn(Schedulers.io());
@@ -48,7 +49,7 @@ public class AddStationInteractor {
         });
     }
 
-    public Observable<CacheCity> saveStation(int cityId) {
+    public Single<CacheCity> saveStation(int cityId) {
         return stationsRepository.saveFavouriteStation(cityId)
                 .subscribeOn(Schedulers.io());
     }

@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
+import io.reactivex.SingleSource;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import ru.kavyrshin.weathernow.domain.models.ConcreteWeather;
 import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
 import ru.kavyrshin.weathernow.domain.models.WeatherListElement;
@@ -11,9 +15,6 @@ import ru.kavyrshin.weathernow.domain.repositories.ISettingsRepository;
 import ru.kavyrshin.weathernow.domain.repositories.IWeatherRepository;
 import ru.kavyrshin.weathernow.util.Utils;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
-import rx.Observable;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class DetailedWeatherInteractor {
 
@@ -26,12 +27,12 @@ public class DetailedWeatherInteractor {
         this.settingsRepository = settingsRepository;
     }
 
-    public Observable<ConcreteWeather> getWeatherByCityId(int cityId, final int time) {
+    public Single<ConcreteWeather> getWeatherByCityId(int cityId, final int time) {
         return weatherRepository.getWeatherByCityId(cityId)
                 .subscribeOn(Schedulers.io())
-                .flatMap(new Func1<MainWeatherModel, Observable<ConcreteWeather>>() {
+                .flatMap(new Function<MainWeatherModel, SingleSource<ConcreteWeather>>() {
                     @Override
-                    public Observable<ConcreteWeather> call(MainWeatherModel mainWeatherModel) {
+                    public Single<ConcreteWeather> apply(MainWeatherModel mainWeatherModel) {
                         ArrayList<WeatherListElement> weatherListElements = new ArrayList<>(mainWeatherModel.getList());
                         final ConcreteWeather result = new ConcreteWeather();
                         result.setCityName(mainWeatherModel.getCity().getName());
@@ -45,15 +46,15 @@ public class DetailedWeatherInteractor {
                         if (result.getWeatherListElement() != null) {
 
                             return settingsRepository.getWeatherSettings()
-                                    .flatMap(new Func1<WeatherSettings, Observable<ConcreteWeather>>() {
+                                    .flatMap(new Function<WeatherSettings, SingleSource<ConcreteWeather>>() {
                                         @Override
-                                        public Observable<ConcreteWeather> call(WeatherSettings weatherSettings) {
+                                        public Single<ConcreteWeather> apply(WeatherSettings weatherSettings) {
                                             Utils.convertWeatherUnit(result.getWeatherListElement(), weatherSettings);
-                                            return Observable.just(result);
+                                            return Single.just(result);
                                         }
                                     });
                         } else {
-                            return Observable.error(new RuntimeException("unexpected weather"));
+                            return Single.error(new RuntimeException("unexpected weather"));
                         }
                     }
                 });

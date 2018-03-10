@@ -2,11 +2,13 @@ package ru.kavyrshin.weathernow.data.repositories;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
+import io.reactivex.SingleSource;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import ru.kavyrshin.weathernow.data.database.AppDatabase;
 import ru.kavyrshin.weathernow.domain.repositories.ISettingsRepository;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
-import rx.Observable;
-import rx.functions.Func1;
 
 
 public class SettingsRepository implements ISettingsRepository {
@@ -20,69 +22,69 @@ public class SettingsRepository implements ISettingsRepository {
     }
 
     @Override
-    public Observable<WeatherSettings> saveTemperatureSettings(@WeatherSettings.TemperatureSettings final int temperatureUnit) {
+    public Single<WeatherSettings> saveTemperatureSettings(@WeatherSettings.TemperatureSettings final int temperatureUnit) {
 
         return getWeatherSettings()
-                .filter(new Func1<WeatherSettings, Boolean>() {
+                .filter(new Predicate<WeatherSettings>() {
                     @Override
-                    public Boolean call(WeatherSettings weatherSettings) {
+                    public boolean test(WeatherSettings weatherSettings) throws Exception {
                         return temperatureUnit != weatherSettings.getTemperatureUnit();
                     }
                 })
-                .flatMap(new Func1<WeatherSettings, Observable<WeatherSettings>>() {
+                .flatMapSingle(new Function<WeatherSettings, SingleSource<WeatherSettings>>() {
                     @Override
-                    public Observable<WeatherSettings> call(WeatherSettings weatherSettings) {
+                    public SingleSource<WeatherSettings> apply(WeatherSettings weatherSettings) throws Exception {
                         weatherSettings.setTemperatureUnit(temperatureUnit);
                         database.saveWeatherSettings(weatherSettings);
-                        return Observable.just(weatherSettings);
+                        return Single.just(weatherSettings);
                     }
                 });
     }
 
     @Override
-    public Observable<WeatherSettings> savePressureSettings(@WeatherSettings.PressureSettings final int pressureUnit) {
+    public Single<WeatherSettings> savePressureSettings(@WeatherSettings.PressureSettings final int pressureUnit) {
 
         return getWeatherSettings()
-                .filter(new Func1<WeatherSettings, Boolean>() {
+                .filter(new Predicate<WeatherSettings>() {
                     @Override
-                    public Boolean call(WeatherSettings weatherSettings) {
+                    public boolean test(WeatherSettings weatherSettings) throws Exception {
                         return pressureUnit != weatherSettings.getPressureUnit();
                     }
                 })
-                .flatMap(new Func1<WeatherSettings, Observable<WeatherSettings>>() {
+                .flatMapSingle(new Function<WeatherSettings, SingleSource<WeatherSettings>>() {
                     @Override
-                    public Observable<WeatherSettings> call(WeatherSettings weatherSettings) {
-                        weatherSettings.setTemperatureUnit(pressureUnit);
+                    public SingleSource<WeatherSettings> apply(WeatherSettings weatherSettings) throws Exception {
+                        weatherSettings.setPressureUnit(pressureUnit);
                         database.saveWeatherSettings(weatherSettings);
-                        return Observable.just(weatherSettings);
+                        return Single.just(weatherSettings);
                     }
                 });
 
     }
 
     @Override
-    public Observable<WeatherSettings> saveWindSpeedSettings(@WeatherSettings.SpeedSettings final int windSpeedUnit) {
+    public Single<WeatherSettings> saveWindSpeedSettings(@WeatherSettings.SpeedSettings final int windSpeedUnit) {
 
         return getWeatherSettings()
-                .filter(new Func1<WeatherSettings, Boolean>() {
+                .filter(new Predicate<WeatherSettings>() {
                     @Override
-                    public Boolean call(WeatherSettings weatherSettings) {
+                    public boolean test(WeatherSettings weatherSettings) throws Exception {
                         return windSpeedUnit != weatherSettings.getWindSpeedUnit();
                     }
                 })
-                .flatMap(new Func1<WeatherSettings, Observable<WeatherSettings>>() {
+                .flatMapSingle(new Function<WeatherSettings, SingleSource<WeatherSettings>>() {
                     @Override
-                    public Observable<WeatherSettings> call(WeatherSettings weatherSettings) {
-                        weatherSettings.setTemperatureUnit(windSpeedUnit);
+                    public SingleSource<WeatherSettings> apply(WeatherSettings weatherSettings) throws Exception {
+                        weatherSettings.setWindSpeedUnit(windSpeedUnit);
                         database.saveWeatherSettings(weatherSettings);
-                        return Observable.just(weatherSettings);
+                        return Single.just(weatherSettings);
                     }
                 });
 
     }
 
     @Override
-    public Observable<WeatherSettings> getWeatherSettings() {
-        return Observable.just(database.getWeatherSettings());
+    public Single<WeatherSettings> getWeatherSettings() {
+        return Single.just(database.getWeatherSettings());
     }
 }

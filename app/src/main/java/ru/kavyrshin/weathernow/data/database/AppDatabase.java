@@ -7,7 +7,6 @@ import io.realm.RealmResults;
 import ru.kavyrshin.weathernow.domain.models.CacheCity;
 import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
-import rx.Observable;
 
 public class AppDatabase {
 
@@ -53,7 +52,7 @@ public class AppDatabase {
         return cacheCitiesList;
     }
 
-    public Observable<CacheCity> saveCacheCity(CacheCity city) {
+    public CacheCity saveCacheCity(CacheCity city) {
         CacheCity result = null;
         final Realm realm = Realm.getDefaultInstance();
 
@@ -62,7 +61,7 @@ public class AppDatabase {
         realm.commitTransaction();
 
         realm.close();
-        return Observable.just(result);
+        return result;
     }
 
     public boolean deleteWeatherByStationId(int cityId) {

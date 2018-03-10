@@ -1,20 +1,18 @@
 package ru.kavyrshin.weathernow.presentation.presenter;
 
-import android.util.Log;
-
 import com.arellomobile.mvp.InjectViewState;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableSingleObserver;
 import ru.kavyrshin.weathernow.data.exception.CustomException;
 import ru.kavyrshin.weathernow.domain.interactors.AddStationInteractor;
 import ru.kavyrshin.weathernow.domain.models.CacheCity;
 import ru.kavyrshin.weathernow.domain.models.StationListElement;
 import ru.kavyrshin.weathernow.presentation.view.AddStationView;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
 
 @InjectViewState
 public class AddStationPresenter extends BasePresenter<AddStationView> {
@@ -34,11 +32,7 @@ public class AddStationPresenter extends BasePresenter<AddStationView> {
         unsubscribeOnDestroy(
             addStationInteractor.getStationsArround(latitude, longitude)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<List<StationListElement>>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
+                    .subscribeWith(new DisposableSingleObserver<List<StationListElement>>() {
 
                         @Override
                         public void onError(Throwable e) {
@@ -61,9 +55,9 @@ public class AddStationPresenter extends BasePresenter<AddStationView> {
                         }
 
                         @Override
-                        public void onNext(List<StationListElement> nextStationListElements) {
+                        public void onSuccess(List<StationListElement> stationListElements) {
                             getViewState().hideLoad();
-                            getViewState().showArroundStations(nextStationListElements);
+                            getViewState().showArroundStations(stationListElements);
                         }
                     })
         );
@@ -75,11 +69,7 @@ public class AddStationPresenter extends BasePresenter<AddStationView> {
         unsubscribeOnDestroy(
                 addStationInteractor.saveStation(apiCityId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<CacheCity>() {
-                    @Override
-                    public void onCompleted() {
-                        Log.d("myLogs", "onCompleted()");
-                    }
+                .subscribeWith(new DisposableSingleObserver<CacheCity>() {
 
                     @Override
                     public void onError(Throwable e) {
@@ -102,7 +92,7 @@ public class AddStationPresenter extends BasePresenter<AddStationView> {
                     }
 
                     @Override
-                    public void onNext(CacheCity cacheCity) {
+                    public void onSuccess(CacheCity cacheCity) {
                         if (cacheCity != null) {
                             getViewState().stationAdded();
                         }
