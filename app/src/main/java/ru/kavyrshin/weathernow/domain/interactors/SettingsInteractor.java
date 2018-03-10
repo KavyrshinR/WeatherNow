@@ -4,16 +4,16 @@ import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
-import ru.kavyrshin.weathernow.data.repositories.SettingsRepository;
+import ru.kavyrshin.weathernow.domain.repositories.ISettingsRepository;
 import ru.kavyrshin.weathernow.util.WeatherSettings;
 
 
 public class SettingsInteractor {
 
-    private SettingsRepository settingsRepository;
+    private ISettingsRepository settingsRepository;
 
     @Inject
-    public SettingsInteractor(SettingsRepository settingsRepository) {
+    public SettingsInteractor(ISettingsRepository settingsRepository) {
         this.settingsRepository = settingsRepository;
     }
 
