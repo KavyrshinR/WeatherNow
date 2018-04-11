@@ -19,7 +19,7 @@ import static ru.kavyrshin.weathernow.util.WeatherSettings.M_PER_SEC_UNIT;
 public class Utils {
 
     public static final double KM_IN_MI = 0.62137119223733;
-    public static final double hPa_IN_mmHg = 0.75006375541921;
+    public static final double mmHg_IN_hPa = 0.75006375541921;
 
     public static void convertWeatherUnit(MainWeatherModel mainWeatherModel, WeatherSettings weatherSettings) {
         ArrayList<WeatherListElement> weatherList = new ArrayList<>(mainWeatherModel.getList());
@@ -132,7 +132,7 @@ public class Utils {
         return result;
     }
 
-    public static double getMmOfMercuryFromHpa(double mmOfMercury) {
-        return mmOfMercury * hPa_IN_mmHg;
+    public static double getMmOfMercuryFromHpa(double hPa) {
+        return hPa * mmHg_IN_hPa;
     }
 }
