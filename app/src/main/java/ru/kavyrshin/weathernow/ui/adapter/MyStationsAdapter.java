@@ -42,7 +42,9 @@ public class MyStationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(myStationViewHolder.itemView.getContext(),
                     LinearLayoutManager.HORIZONTAL, false);
+            MarginItemDecoration marginItemDecoration = new MarginItemDecoration(8, MarginItemDecoration.HORIZONTAL);
             myStationViewHolder.recyclerView.setLayoutManager(linearLayoutManager);
+            myStationViewHolder.recyclerView.addItemDecoration(marginItemDecoration);
             SnapHelper pagerSnapHelper = new MySnapHelper();
             pagerSnapHelper.attachToRecyclerView(myStationViewHolder.recyclerView);
 

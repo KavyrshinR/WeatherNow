@@ -23,6 +23,7 @@ import ru.kavyrshin.weathernow.R;
 import ru.kavyrshin.weathernow.domain.models.MainWeatherModel;
 import ru.kavyrshin.weathernow.presentation.presenter.MyStationsPresenter;
 import ru.kavyrshin.weathernow.presentation.view.MyStationsView;
+import ru.kavyrshin.weathernow.ui.adapter.MarginItemDecoration;
 import ru.kavyrshin.weathernow.ui.adapter.MyStationsAdapter;
 import ru.kavyrshin.weathernow.ui.adapter.StationWeatherAdapter;
 
@@ -69,7 +70,10 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
         stationList = findViewById(R.id.stationList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        MarginItemDecoration marginItemDecoration = new MarginItemDecoration(8, MarginItemDecoration.VERTICAL);
+
         stationList.setLayoutManager(linearLayoutManager);
+        stationList.addItemDecoration(marginItemDecoration);
         myStationsAdapter = new MyStationsAdapter();
         stationList.setAdapter(myStationsAdapter);
         stationList.addOnScrollListener(new RecyclerView.OnScrollListener() {
