@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -45,7 +45,7 @@
                 android:clickable="true"
                 android:focusable="true"/>
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listFreePik"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
                 custom:layout_constraintTop_toBottomOf="@+id/tvReferenceFreePik"
                 custom:layout_constraintLeft_toLeftOf="parent">
 
-            </android.support.v7.widget.RecyclerView>
+            </androidx.recyclerview.widget.RecyclerView>
 
             <TextView
                 android:id="@+id/tvReferenceRoundicons"
@@ -67,7 +67,7 @@
                 android:clickable="true"
                 android:focusable="true"/>
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listRoundicons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                 custom:layout_constraintTop_toBottomOf="@+id/tvReferenceRoundicons"
                 custom:layout_constraintLeft_toLeftOf="parent">
 
-            </android.support.v7.widget.RecyclerView>
+            </androidx.recyclerview.widget.RecyclerView>
 
             <TextView
                 android:id="@+id/tvCreditOWM"
@@ -103,7 +103,7 @@
                 android:clickable="true"
                 android:focusable="true"/>
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 

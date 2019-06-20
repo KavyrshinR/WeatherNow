@@ -1,9 +1,9 @@
 package ru.kavyrshin.weathernow;
 
 import android.content.pm.ActivityInfo;
-import android.support.test.filters.RequiresDevice;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.filters.RequiresDevice;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.Assert;
 import org.junit.Rule;
