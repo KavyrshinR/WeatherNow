@@ -2,11 +2,6 @@ package ru.kavyrshin.weathernow.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,8 +9,14 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class MyStationsActivity extends BaseActivity implements View.OnClickList
         btnAddStation = findViewById(R.id.btnAddStation);
         stationList = findViewById(R.id.stationList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         MarginItemDecoration marginItemDecoration = new MarginItemDecoration(8, MarginItemDecoration.VERTICAL);
 
         stationList.setLayoutManager(linearLayoutManager);
